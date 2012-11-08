@@ -283,7 +283,7 @@ class Preferences(QDialog, Ui_PreferencesDialog):
             
 
     def langPopulate(self):
-        translationPath = normpath(sys.modules['ui.gui'].__path__[0] + '/i18n/')
+        translationPath = normpath(sys.modules['dff.ui.gui'].__path__[0] + '/i18n/')
         i = 0
         selected = 0
         for oneFile in listdir(translationPath):
