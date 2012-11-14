@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>About</name>
     <message>
@@ -46,27 +47,27 @@
     <message>
         <location filename="../../../api/gui/widget/search_widget.py" line="407"/>
         <source>match(s)</source>
-        <translation>correspondance(s)</translation>
+        <translation type="obsolete">correspondance(s)</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search_widget.py" line="454"/>
         <source>current match(s): </source>
-        <translation>correspondance(s) trouvée(s) : </translation>
+        <translation type="obsolete">correspondance(s) trouvée(s) : </translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search_widget.py" line="429"/>
         <source>Invalid clause</source>
-        <translation>Clause invalide</translation>
+        <translation type="obsolete">Clause invalide</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search_widget.py" line="452"/>
         <source>Field</source>
-        <translation>Champ</translation>
+        <translation type="obsolete">Champ</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search_widget.py" line="453"/>
         <source>Clause</source>
-        <translation>Clause</translation>
+        <translation type="obsolete">Clause</translation>
     </message>
 </context>
 <context>
@@ -74,17 +75,17 @@
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="380"/>
         <source>Contains</source>
-        <translation>Contient</translation>
+        <translation type="obsolete">Contient</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="381"/>
         <source>Name does not contain</source>
-        <translation>Nom ne contient pas</translation>
+        <translation type="obsolete">Nom ne contient pas</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="382"/>
         <source>Name contains</source>
-        <translation>Nom contient</translation>
+        <translation type="obsolete">Nom contient</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="382"/>
@@ -94,72 +95,72 @@
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="384"/>
         <source>Does not contain</source>
-        <translation>Ne contient pas</translation>
+        <translation type="obsolete">Ne contient pas</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="385"/>
         <source>Size at least</source>
-        <translation>Taille au moins</translation>
+        <translation type="obsolete">Taille au moins</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="386"/>
         <source>Size at most</source>
-        <translation>Taille au plus</translation>
+        <translation type="obsolete">Taille au plus</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="387"/>
         <source>Date less than</source>
-        <translation>Date au moins</translation>
+        <translation type="obsolete">Date au moins</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="388"/>
         <source>Date most than</source>
-        <translation>Date au plus</translation>
+        <translation type="obsolete">Date au plus</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="389"/>
         <source>Deleted</source>
-        <translation>Effacé</translation>
+        <translation type="obsolete">Effacé</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="390"/>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation type="obsolete">Type</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="391"/>
         <source>Mime-type</source>
-        <translation>Type Mime</translation>
+        <translation type="obsolete">Type Mime</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="392"/>
         <source>Extended attributes</source>
-        <translation>Attributs étendus</translation>
+        <translation type="obsolete">Attributs étendus</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/build_search_clause.ui" line="14"/>
+        <location filename="../resources/build_search_clause.ui" line="14"/>
         <source>Build a search clause</source>
-        <translation>Construction d&apos;une clause de recherche</translation>
+        <translation type="obsolete">Construction d&apos;une clause de recherche</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/build_search_clause.ui" line="28"/>
+        <location filename="../resources/build_search_clause.ui" line="28"/>
         <source>Add</source>
-        <translation>Ajouter</translation>
+        <translation type="obsolete">Ajouter</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/build_search_clause.ui" line="45"/>
+        <location filename="../resources/build_search_clause.ui" line="45"/>
         <source>Add extended attributes</source>
-        <translation>Ajout d&apos;attribut étendu</translation>
+        <translation type="obsolete">Ajout d&apos;attribut étendu</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/build_search_clause.ui" line="83"/>
+        <location filename="../resources/build_search_clause.ui" line="83"/>
         <source>Clause(s)</source>
-        <translation>Clause(s)</translation>
+        <translation type="obsolete">Clause(s)</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="383"/>
         <source>From dictionary</source>
-        <translation>Depuis dictionnaire</translation>
+        <translation type="obsolete">Depuis dictionnaire</translation>
     </message>
 </context>
 <context>
@@ -213,9 +214,9 @@
         <translation type="obsolete">Édition du dictionnaire</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/edit_dict.ui" line="6"/>
+        <location filename="../resources/edit_dict.ui" line="6"/>
         <source>Edit dictionary</source>
-        <translation>Édition du dictionnaire</translation>
+        <translation type="obsolete">Édition du dictionnaire</translation>
     </message>
 </context>
 <context>
@@ -229,50 +230,60 @@
 <context>
     <name>ExtractDialog</name>
     <message>
-        <location filename="../../../ui/gui/resources/extractdialog.ui" line="30"/>
+        <location filename="../../../ui/gui/resources/extractdialog.ui" line="14"/>
         <source>Extract</source>
         <translation>Extraire</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/extractdialog.ui" line="76"/>
+        <location filename="../../../ui/gui/resources/extractdialog.ui" line="32"/>
         <source>Recursive mode</source>
         <translation>Mode récursif</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/extractdialog.ui" line="89"/>
+        <location filename="../../../ui/gui/resources/extractdialog.ui" line="57"/>
         <source>Destination folder:</source>
         <translation>Répertoire de destination :</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/extractdialog.ui" line="116"/>
+        <location filename="../../../ui/gui/resources/extractdialog.ui" line="71"/>
         <source>Browse</source>
         <translation>Parcourir</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/extractdialog.ui" line="39"/>
+        <source>Preserve tree</source>
+        <translation>Conserver l&apos;arboresecence</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/extractdialog.ui" line="46"/>
+        <source>Overwrite existing</source>
+        <translation>Ecraser les fichiers</translation>
     </message>
 </context>
 <context>
     <name>Extractor</name>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="118"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="117"/>
         <source>Extraction path is mandatory</source>
         <translation>Répertoire d&apos;extraction obligatoire</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="119"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="118"/>
         <source>Choose the destination folder for extraction</source>
         <translation>Choisir le répertoire de destination pour l&apos;extraction</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="120"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="119"/>
         <source>Overwrite attempt</source>
         <translation>Tentative d&apos;écrasement</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="121"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="120"/>
         <source>Some selected files or folders already exist in the destination folder</source>
         <translation>Certains fichiers ou répertoires existent déjà dans le répertoire de destination</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="122"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="121"/>
         <source>Overwrite with selected ones ?</source>
         <translation>Écraser avec l&apos;élément sélectionné ?</translation>
     </message>
@@ -376,7 +387,7 @@
         <translation>Générer un squelette</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/ide/ide.py" line="280"/>
+        <location filename="../../../ui/gui/ide/ide.py" line="278"/>
         <source>Open file</source>
         <translation>Ouvrir un fichier</translation>
     </message>
@@ -416,17 +427,17 @@
         <translation>Décommenter</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/ide/ide.py" line="278"/>
+        <location filename="../../../ui/gui/ide/ide.py" line="276"/>
         <source>Save document ?</source>
         <translation>Sauvegarder le document ?</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/ide/ide.py" line="279"/>
+        <location filename="../../../ui/gui/ide/ide.py" line="277"/>
         <source>No file found</source>
         <translation>Aucun fichier trouvé</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/ide/ide.py" line="281"/>
+        <location filename="../../../ui/gui/ide/ide.py" line="279"/>
         <source>Save file as</source>
         <translation>Sauvegarder le fichier sous</translation>
     </message>
@@ -529,7 +540,7 @@
         <translation>Addresse électronique de l&apos;auteur :</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/ide/idewizard.py" line="59"/>
+        <location filename="../../../ui/gui/ide/idewizard.py" line="58"/>
         <source>Location</source>
         <translation>Destination</translation>
     </message>
@@ -565,37 +576,37 @@
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="560"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation type="obsolete">Nom</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="561"/>
         <source>Size</source>
-        <translation>Taille</translation>
+        <translation type="obsolete">Taille</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="562"/>
         <source>Accessed time</source>
-        <translation>Date d&apos;accès</translation>
+        <translation type="obsolete">Date d&apos;accès</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="563"/>
         <source>Changed time</source>
-        <translation>Date de changement</translation>
+        <translation type="obsolete">Date de changement</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="564"/>
         <source>Modified time</source>
-        <translation>Date de modification</translation>
+        <translation type="obsolete">Date de modification</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="565"/>
         <source>Module</source>
-        <translation>Module</translation>
+        <translation type="obsolete">Module</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="566"/>
         <source>Deleted</source>
-        <translation>Effacé</translation>
+        <translation type="obsolete">Effacé</translation>
     </message>
 </context>
 <context>
@@ -606,24 +617,24 @@
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="142"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="149"/>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="106"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="113"/>
         <source>Load</source>
         <translation>Charger</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="118"/>
+        <location filename="../resources/mainwindow.ui" line="118"/>
         <source>Open evidence file(s)</source>
-        <translation>Ouvrir un ou plusieurs fichier(s)</translation>
+        <translation type="obsolete">Ouvrir un ou plusieurs fichier(s)</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="130"/>
+        <location filename="../resources/mainwindow.ui" line="130"/>
         <source>Open local device</source>
-        <translation>Ouvrir un périphérique local</translation>
+        <translation type="obsolete">Ouvrir un périphérique local</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="14"/>
@@ -631,120 +642,145 @@
         <translation>Digital Forensics Framework</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="61"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="60"/>
         <source>Edit</source>
         <translation>Édition</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="39"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="38"/>
         <source>Module</source>
         <translation>Module</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="47"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="251"/>
         <source>IDE</source>
         <translation>IDE</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="154"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="161"/>
         <source>Preferences</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="54"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="53"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="67"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="66"/>
         <source>View</source>
         <translation>Vue</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="166"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="173"/>
         <source>Maximize</source>
         <translation>Maximizer</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="178"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="185"/>
         <source>Fullscreen mode</source>
         <translation>Mode plein écran</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="202"/>
+        <location filename="../resources/mainwindow.ui" line="202"/>
         <source>Shell</source>
-        <translation>Ligne de commande</translation>
+        <translation type="obsolete">Ligne de commande</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="214"/>
+        <location filename="../resources/mainwindow.ui" line="214"/>
         <source>Python interpreter</source>
-        <translation>Interpréteur Python
+        <translation type="obsolete">Interpréteur Python
 </translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="190"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="197"/>
         <source>Browser</source>
         <translation>Navigateur</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="109"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="116"/>
         <source>Load module</source>
         <translation>Charger un module</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="238"/>
+        <location filename="../resources/mainwindow.ui" line="238"/>
         <source>Open</source>
-        <translation>Ouvrir</translation>
+        <translation type="obsolete">Ouvrir</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="90"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="88"/>
         <source>Toolbar</source>
         <translation>Barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="101"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="108"/>
         <source>About DFF ...</source>
         <translation>À propos de DFF ...</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="226"/>
+        <location filename="../resources/mainwindow.ui" line="226"/>
         <source>DFF Documentation</source>
-        <translation>Documentation de DFF</translation>
+        <translation type="obsolete">Documentation de DFF</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="422"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="412"/>
         <source>Error while loading help</source>
         <translation>Erreur durant le chargement de l&apos;aide</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="423"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="413"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
         <translation>&lt;br&gt;Vous pouvez consulter l&apos;aide en ligne sur &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="424"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="414"/>
         <source>Not an help file.</source>
         <translation>N&apos;est pas un fichier d&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="425"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="415"/>
         <source>Documentation path not found.</source>
         <translation>Chemin non trouvé.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="250"/>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="266"/>
         <source>Browse</source>
         <translation>Parcourir</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="270"/>
+        <location filename="../resources/mainwindow.ui" line="270"/>
         <source>Preview</source>
-        <translation>Prévisualisation</translation>
+        <translation type="obsolete">Prévisualisation</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/mainwindow.ui" line="259"/>
-        <source>Wizard</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="125"/>
+        <source>Open evidence</source>
+        <translation>Ouvrir une image</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="137"/>
+        <source>Open device</source>
+        <translation>Ouvrir un périphérique</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="212"/>
+        <source>Console</source>
+        <translation>Console</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="227"/>
+        <source>Live scripting</source>
+        <translation>Interpreteur python</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="239"/>
+        <source>Documentation</source>
+        <translation>Documentation</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/mainwindow.ui" line="254"/>
+        <source>Open the IDE</source>
+        <translation>Ouvrir l&apos;IDE</translation>
     </message>
 </context>
 <context>
@@ -757,80 +793,80 @@
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="68"/>
         <source>Select one or several mime-types</source>
-        <translation>Sélectionner un ou plusieurs types Mimes</translation>
+        <translation type="obsolete">Sélectionner un ou plusieurs types Mimes</translation>
     </message>
 </context>
 <context>
     <name>ModifIndex</name>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="24"/>
+        <location filename="../resources/modif_index.ui" line="24"/>
         <source>Index content</source>
-        <translation>Contenu de l&apos;index</translation>
+        <translation type="obsolete">Contenu de l&apos;index</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="42"/>
+        <location filename="../resources/modif_index.ui" line="42"/>
         <source>Select the directories you wish to index. Changes will take effect when you click on &apos;OK&apos;</source>
-        <translation>Sélectionner les répertoires devant être indexés. Les changement prennent effet une fois cliqué sur &apos;OK&apos;</translation>
+        <translation type="obsolete">Sélectionner les répertoires devant être indexés. Les changement prennent effet une fois cliqué sur &apos;OK&apos;</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="70"/>
+        <location filename="../resources/modif_index.ui" line="70"/>
         <source>Select nodes</source>
-        <translation>Sélectionner les nœuds</translation>
+        <translation type="obsolete">Sélectionner les nœuds</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="77"/>
+        <location filename="../resources/modif_index.ui" line="77"/>
         <source>Indexed items</source>
-        <translation>Éléments indexés</translation>
+        <translation type="obsolete">Éléments indexés</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="90"/>
+        <location filename="../resources/modif_index.ui" line="90"/>
         <source>Advanced</source>
-        <translation>Avancé</translation>
+        <translation type="obsolete">Avancé</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="96"/>
+        <location filename="../resources/modif_index.ui" line="96"/>
         <source>Attributes list</source>
-        <translation>Liste des attributs</translation>
+        <translation type="obsolete">Liste des attributs</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="114"/>
+        <location filename="../resources/modif_index.ui" line="114"/>
         <source>Select which nodes&apos; attributes you wish to index.</source>
-        <translation>Sélectionner les attributs internes aux nœuds à indexer.</translation>
+        <translation type="obsolete">Sélectionner les attributs internes aux nœuds à indexer.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="149"/>
+        <location filename="../resources/modif_index.ui" line="149"/>
         <source>File type</source>
-        <translation>Type de fichier</translation>
+        <translation type="obsolete">Type de fichier</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="167"/>
+        <location filename="../resources/modif_index.ui" line="167"/>
         <source>Select what types of nodes you wish to index.</source>
-        <translation>Sélectionner le type de nœud à indexer.</translation>
+        <translation type="obsolete">Sélectionner le type de nœud à indexer.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="195"/>
+        <location filename="../resources/modif_index.ui" line="195"/>
         <source>Mime types</source>
-        <translation>Type Mime</translation>
+        <translation type="obsolete">Type Mime</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="213"/>
+        <location filename="../resources/modif_index.ui" line="213"/>
         <source>Options</source>
-        <translation>Options</translation>
+        <translation type="obsolete">Options</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="219"/>
+        <location filename="../resources/modif_index.ui" line="219"/>
         <source>Index file content</source>
-        <translation>Indexer le contenu des fichiers</translation>
+        <translation type="obsolete">Indexer le contenu des fichiers</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="226"/>
+        <location filename="../resources/modif_index.ui" line="226"/>
         <source>Index attributes</source>
-        <translation>Indexer les attributs</translation>
+        <translation type="obsolete">Indexer les attributs</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modif_index.ui" line="14"/>
+        <location filename="../resources/modif_index.ui" line="14"/>
         <source>Indexer options</source>
-        <translation>Options de l&apos;indexation</translation>
+        <translation type="obsolete">Options de l&apos;indexation</translation>
     </message>
 </context>
 <context>
@@ -869,70 +905,70 @@
 <context>
     <name>NodeBrowser</name>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="41"/>
+        <location filename="../resources/nodebrowser.ui" line="41"/>
         <source>Open in new tab</source>
-        <translation>Ouvrir dans un nouvel onglet</translation>
+        <translation type="obsolete">Ouvrir dans un nouvel onglet</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="50"/>
+        <location filename="../resources/nodebrowser.ui" line="50"/>
         <source>Open</source>
-        <translation>Ouvrir</translation>
+        <translation type="obsolete">Ouvrir</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="62"/>
+        <location filename="../resources/nodebrowser.ui" line="62"/>
         <source>Open with</source>
-        <translation>Ouvrir avec</translation>
+        <translation type="obsolete">Ouvrir avec</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="74"/>
+        <location filename="../resources/nodebrowser.ui" line="74"/>
         <source>Hex viewer</source>
-        <translation>Visualiseur hexadécimal</translation>
+        <translation type="obsolete">Visualiseur hexadécimal</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="86"/>
+        <location filename="../resources/nodebrowser.ui" line="86"/>
         <source>Extract</source>
-        <translation>Extraire</translation>
+        <translation type="obsolete">Extraire</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="30"/>
+        <location filename="../resources/nodebrowser.ui" line="30"/>
         <source>Browser</source>
-        <translation>Navigateur</translation>
+        <translation type="obsolete">Navigateur</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodebrowser.ui" line="94"/>
+        <location filename="../resources/nodebrowser.ui" line="94"/>
         <source>Relevant module</source>
-        <translation>Module conseillé</translation>
+        <translation type="obsolete">Module conseillé</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/nodebrowser.py" line="294"/>
         <source>Apply module</source>
-        <translation>Application de module</translation>
+        <translation type="obsolete">Application de module</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/nodebrowser.py" line="294"/>
         <source>Do you want to apply module </source>
-        <translation>Voulez-vous appliquer le module </translation>
+        <translation type="obsolete">Voulez-vous appliquer le module </translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/nodebrowser.py" line="294"/>
         <source> on this node ?</source>
-        <translation> sur ce noeud ?</translation>
+        <translation type="obsolete"> sur ce noeud ?</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/nodebrowser.py" line="295"/>
         <source>Always</source>
-        <translation>Toujours</translation>
+        <translation type="obsolete">Toujours</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/nodebrowser.py" line="370"/>
         <source>Empty files</source>
-        <translation>Fichiers vides</translation>
+        <translation type="obsolete">Fichiers vides</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/nodebrowser.py" line="371"/>
         <source>the following nodes could not be opened with Hex viewer because they are either empty or folders
 </source>
-        <translation>les nœuds suivants ne peuvent être ouverts avec le Visualiseur hexadécimal car ce sont des répertoires ou ils sont vides</translation>
+        <translation type="obsolete">les nœuds suivants ne peuvent être ouverts avec le Visualiseur hexadécimal car ce sont des répertoires ou ils sont vides</translation>
     </message>
 </context>
 <context>
@@ -966,89 +1002,89 @@
 <context>
     <name>NodeViewBox</name>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="37"/>
+        <location filename="../resources/nodeviewbox.ui" line="37"/>
         <source>Previous</source>
-        <translation>Précédent</translation>
+        <translation type="obsolete">Précédent</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="159"/>
+        <location filename="../resources/nodeviewbox.ui" line="159"/>
         <source>Return to root</source>
-        <translation>Revenir à la racine</translation>
+        <translation type="obsolete">Revenir à la racine</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="271"/>
+        <location filename="../resources/nodeviewbox.ui" line="271"/>
         <source>Add to bookmarks</source>
-        <translation>Ajouter aux favoris</translation>
+        <translation type="obsolete">Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="300"/>
+        <location filename="../resources/nodeviewbox.ui" line="300"/>
         <source>Display search engine</source>
-        <translation>Afficher le moteur de recherche</translation>
+        <translation type="obsolete">Afficher le moteur de recherche</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="190"/>
+        <location filename="../resources/nodeviewbox.ui" line="190"/>
         <source>List</source>
-        <translation>Liste</translation>
+        <translation type="obsolete">Liste</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="199"/>
+        <location filename="../resources/nodeviewbox.ui" line="199"/>
         <source>Icons</source>
-        <translation>Icônes</translation>
+        <translation type="obsolete">Icônes</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="218"/>
+        <location filename="../resources/nodeviewbox.ui" line="218"/>
         <source>Small</source>
-        <translation>Petit</translation>
+        <translation type="obsolete">Petit</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="223"/>
+        <location filename="../resources/nodeviewbox.ui" line="223"/>
         <source>Medium</source>
-        <translation>Moyen</translation>
+        <translation type="obsolete">Moyen</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="228"/>
+        <location filename="../resources/nodeviewbox.ui" line="228"/>
         <source>Large</source>
-        <translation>Grand</translation>
+        <translation type="obsolete">Grand</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="86"/>
+        <location filename="../resources/nodeviewbox.ui" line="86"/>
         <source>Next</source>
-        <translation>Suivant</translation>
+        <translation type="obsolete">Suivant</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="133"/>
+        <location filename="../resources/nodeviewbox.ui" line="133"/>
         <source>Move to top</source>
-        <translation>Répertoire parent</translation>
+        <translation type="obsolete">Répertoire parent</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="245"/>
+        <location filename="../resources/nodeviewbox.ui" line="245"/>
         <source>Activate thumbnails</source>
-        <translation>Activer les imagettes</translation>
+        <translation type="obsolete">Activer les imagettes</translation>
     </message>
     <message>
         <location filename="../../../api/gui/box/nodeviewbox.py" line="340"/>
         <source>You must specify at least one node.</source>
-        <translation>Vous devez sélectionner au moins un nœud.</translation>
+        <translation type="obsolete">Vous devez sélectionner au moins un nœud.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="326"/>
+        <location filename="../resources/nodeviewbox.ui" line="326"/>
         <source>Attributes selection</source>
-        <translation>Sélection des attributs</translation>
+        <translation type="obsolete">Sélection des attributs</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="186"/>
+        <location filename="../resources/nodeviewbox.ui" line="186"/>
         <source>View as</source>
-        <translation>Type de vue</translation>
+        <translation type="obsolete">Type de vue</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="214"/>
+        <location filename="../resources/nodeviewbox.ui" line="214"/>
         <source>Icon size</source>
-        <translation>Taille des icônes</translation>
+        <translation type="obsolete">Taille des icônes</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodeviewbox.ui" line="352"/>
+        <location filename="../resources/nodeviewbox.ui" line="352"/>
         <source>Show attributes panel</source>
-        <translation>Afficher la fenêtre d&apos;attributs</translation>
+        <translation type="obsolete">Afficher la fenêtre d&apos;attributs</translation>
     </message>
 </context>
 <context>
@@ -1056,20 +1092,20 @@
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="350"/>
         <source>Remove</source>
-        <translation>Effacer</translation>
+        <translation type="obsolete">Effacer</translation>
     </message>
 </context>
 <context>
     <name>OrAnd</name>
     <message>
-        <location filename="../../../ui/gui/resources/or_and.ui" line="15"/>
+        <location filename="../resources/or_and.ui" line="15"/>
         <source>Or</source>
-        <translation>Ou</translation>
+        <translation type="obsolete">Ou</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/or_and.ui" line="25"/>
+        <location filename="../resources/or_and.ui" line="25"/>
         <source>And</source>
-        <translation>Et</translation>
+        <translation type="obsolete">Et</translation>
     </message>
 </context>
 <context>
@@ -1229,7 +1265,7 @@
 <context>
     <name>Preview</name>
     <message>
-        <location filename="../../../ui/gui/widget/preview.py" line="72"/>
+        <location filename="../../../ui/gui/widget/preview.py" line="104"/>
         <source>Preview</source>
         <translation>Prévisualisation</translation>
     </message>
@@ -1237,102 +1273,107 @@
 <context>
     <name>PropertyTable</name>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="118"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="144"/>
         <source>name</source>
         <translation>nom</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="120"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="147"/>
         <source>file</source>
         <translation>fichier</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="122"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="149"/>
         <source>folder</source>
         <translation>répertoire</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="125"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="152"/>
         <source>generated by</source>
         <translation>généré par</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="126"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="153"/>
         <source>size</source>
         <translation>taille</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="127"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="154"/>
         <source>relevant module(s)</source>
         <translation>module(s) conseillé(s)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="121"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="148"/>
         <source> with module(s) applied on it</source>
         <translation> avec modules appliqué dessus</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="123"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="150"/>
         <source> empty</source>
         <translation> vide</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="124"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="151"/>
         <source> deleted</source>
         <translation> effacé</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="128"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="155"/>
         <source>children</source>
         <translation>fils</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="129"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="156"/>
         <source>file(s)</source>
         <translation>fichier(s)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="130"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="157"/>
         <source> totalizing </source>
         <translation> totalisant </translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="131"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="158"/>
         <source> bytes</source>
         <translation> octets</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="132"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="159"/>
         <source>folder(s)</source>
         <translation>répertoire(s)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="119"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="146"/>
         <source>node type</source>
         <translation>type de nœud</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="133"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="160"/>
         <source>attributes</source>
         <translation>attributs</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/widget/propertytable.py" line="145"/>
+        <source>link path</source>
+        <translation>Chemin du lien</translation>
     </message>
 </context>
 <context>
     <name>SearchClause</name>
     <message>
-        <location filename="../../../ui/gui/resources/search_clause.ui" line="26"/>
+        <location filename="../resources/search_clause.ui" line="26"/>
         <source>Or</source>
-        <translation>Ou</translation>
+        <translation type="obsolete">Ou</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_clause.ui" line="36"/>
+        <location filename="../resources/search_clause.ui" line="36"/>
         <source>And</source>
-        <translation>Et</translation>
+        <translation type="obsolete">Et</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_clause.ui" line="103"/>
+        <location filename="../resources/search_clause.ui" line="103"/>
         <source>Remove</source>
-        <translation>Effacer</translation>
+        <translation type="obsolete">Effacer</translation>
     </message>
 </context>
 <context>
@@ -1343,22 +1384,22 @@
         <translation type="obsolete">Édition du dictionnaire</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_dict.ui" line="43"/>
+        <location filename="../resources/search_dict.ui" line="43"/>
         <source>Edit dictionary</source>
-        <translation>Édition du dictionnaire</translation>
+        <translation type="obsolete">Édition du dictionnaire</translation>
     </message>
 </context>
 <context>
     <name>SearchEmpty</name>
     <message>
-        <location filename="../../../ui/gui/resources/search_empty.ui" line="15"/>
+        <location filename="../resources/search_empty.ui" line="15"/>
         <source>Empty</source>
-        <translation>Vide</translation>
+        <translation type="obsolete">Vide</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_empty.ui" line="22"/>
+        <location filename="../resources/search_empty.ui" line="22"/>
         <source>Not empty</source>
-        <translation>Non-vide</translation>
+        <translation type="obsolete">Non-vide</translation>
     </message>
 </context>
 <context>
@@ -1366,144 +1407,144 @@
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="249"/>
         <source>Kilo byte(s)</source>
-        <translation>Kilo octet(s)</translation>
+        <translation type="obsolete">Kilo octet(s)</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="250"/>
         <source>Mega byte(s)</source>
-        <translation>Méga octet(s)</translation>
+        <translation type="obsolete">Méga octet(s)</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/build_search_clause.py" line="251"/>
         <source>Giga byte(s)</source>
-        <translation>Giga octet(s)</translation>
+        <translation type="obsolete">Giga octet(s)</translation>
     </message>
 </context>
 <context>
     <name>SearchSize</name>
     <message>
-        <location filename="../../../ui/gui/resources/search_size.ui" line="23"/>
+        <location filename="../resources/search_size.ui" line="23"/>
         <source>Byte(s)</source>
-        <translation>Octet(s)</translation>
+        <translation type="obsolete">Octet(s)</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_size.ui" line="28"/>
+        <location filename="../resources/search_size.ui" line="28"/>
         <source>Kilo byte(s)</source>
-        <translation>Kilo octet(s)</translation>
+        <translation type="obsolete">Kilo octet(s)</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_size.ui" line="33"/>
+        <location filename="../resources/search_size.ui" line="33"/>
         <source>Mega byte(s)</source>
-        <translation>Méga octet(s)</translation>
+        <translation type="obsolete">Méga octet(s)</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_size.ui" line="38"/>
+        <location filename="../resources/search_size.ui" line="38"/>
         <source>Giga byte(s)</source>
-        <translation>Giga octet(s)</translation>
+        <translation type="obsolete">Giga octet(s)</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_size.ui" line="46"/>
+        <location filename="../resources/search_size.ui" line="46"/>
         <source>Exclusive</source>
-        <translation>Exclure</translation>
+        <translation type="obsolete">Exclure</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search_size.ui" line="56"/>
+        <location filename="../resources/search_size.ui" line="56"/>
         <source>Inclusive</source>
-        <translation>Inclure</translation>
+        <translation type="obsolete">Inclure</translation>
     </message>
 </context>
 <context>
     <name>SearchStr</name>
     <message>
-        <location filename="../../../ui/gui/resources/search_str.ui" line="28"/>
+        <location filename="../resources/search_str.ui" line="28"/>
         <source>Case sensitive</source>
-        <translation>Sensible à la casse</translation>
+        <translation type="obsolete">Sensible à la casse</translation>
     </message>
 </context>
 <context>
     <name>SearchTab</name>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="53"/>
+        <location filename="../resources/search.ui" line="53"/>
         <source>Check all results</source>
-        <translation>Sélectionner tous les résultats</translation>
+        <translation type="obsolete">Sélectionner tous les résultats</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="56"/>
+        <location filename="../resources/search.ui" line="56"/>
         <source>Select all</source>
-        <translation>Sélectionner tout</translation>
+        <translation type="obsolete">Sélectionner tout</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="76"/>
+        <location filename="../resources/search.ui" line="76"/>
         <source>Export</source>
-        <translation>Exporter</translation>
+        <translation type="obsolete">Exporter</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="100"/>
+        <location filename="../resources/search.ui" line="100"/>
         <source>Attributes</source>
-        <translation>Attributs</translation>
+        <translation type="obsolete">Attributs</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="117"/>
+        <location filename="../resources/search.ui" line="117"/>
         <source>Search options</source>
-        <translation>Options</translation>
+        <translation type="obsolete">Options</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="29"/>
+        <location filename="../resources/search.ui" line="29"/>
         <source>Path</source>
-        <translation>Chemin</translation>
+        <translation type="obsolete">Chemin</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="136"/>
+        <location filename="../resources/search.ui" line="136"/>
         <source>Name contains</source>
-        <translation>Nom contient</translation>
+        <translation type="obsolete">Nom contient</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="146"/>
+        <location filename="../resources/search.ui" line="146"/>
         <source>Case sensitive</source>
-        <translation>Sensible à la casse</translation>
+        <translation type="obsolete">Sensible à la casse</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="160"/>
+        <location filename="../resources/search.ui" line="160"/>
         <source>Add search clause</source>
-        <translation>Ajouter une clause de recherche</translation>
+        <translation type="obsolete">Ajouter une clause de recherche</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="278"/>
+        <location filename="../resources/search.ui" line="278"/>
         <source>Resulting search clause</source>
-        <translation>Clause de recherche</translation>
+        <translation type="obsolete">Clause de recherche</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="312"/>
+        <location filename="../resources/search.ui" line="312"/>
         <source>match(s)</source>
-        <translation>correspondance(s)</translation>
+        <translation type="obsolete">correspondance(s)</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="332"/>
+        <location filename="../resources/search.ui" line="332"/>
         <source>Stop</source>
-        <translation>Stopper</translation>
+        <translation type="obsolete">Stopper</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="339"/>
+        <location filename="../resources/search.ui" line="339"/>
         <source>Find</source>
-        <translation>Rechercher</translation>
+        <translation type="obsolete">Rechercher</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="14"/>
+        <location filename="../resources/search.ui" line="14"/>
         <source>Advanced search</source>
-        <translation>Recherche avancée</translation>
+        <translation type="obsolete">Recherche avancée</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/search.ui" line="192"/>
+        <location filename="../resources/search.ui" line="192"/>
         <source>Search queries</source>
-        <translation>Requêtes de recherche</translation>
+        <translation type="obsolete">Requêtes de recherche</translation>
     </message>
 </context>
 <context>
     <name>SelectAttr</name>
     <message>
-        <location filename="../../../ui/gui/resources/selectattrs.ui" line="30"/>
+        <location filename="../resources/selectattrs.ui" line="30"/>
         <source>Select attributes to display</source>
-        <translation>Sélectionner les attributs à afficher</translation>
+        <translation type="obsolete">Sélectionner les attributs à afficher</translation>
     </message>
     <message>
         <location filename="../resources/selectattrs.ui" line="50"/>
@@ -1511,29 +1552,29 @@
         <translation type="obsolete">Sélection d&apos;attributs : ajouter un attribut à afficher dans le navigateur</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/selectattrs.ui" line="77"/>
+        <location filename="../resources/selectattrs.ui" line="77"/>
         <source>Dynamic attributes</source>
-        <translation>Attributs dynamiques</translation>
+        <translation type="obsolete">Attributs dynamiques</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/selectattrs.ui" line="133"/>
+        <location filename="../resources/selectattrs.ui" line="133"/>
         <source>Data types</source>
-        <translation>Type de données</translation>
+        <translation type="obsolete">Type de données</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/selectattrs.ui" line="185"/>
+        <location filename="../resources/selectattrs.ui" line="185"/>
         <source>Display module name</source>
-        <translation>Afficher le nom du module</translation>
+        <translation type="obsolete">Afficher le nom du module</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/selectattrs.ui" line="195"/>
+        <location filename="../resources/selectattrs.ui" line="195"/>
         <source>Sort by deleted</source>
-        <translation>Tri fonction des éléments effacés</translation>
+        <translation type="obsolete">Tri fonction des éléments effacés</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/selectattrs.ui" line="50"/>
+        <location filename="../resources/selectattrs.ui" line="50"/>
         <source>Attributes selection : add an attribute to display in the node browser</source>
-        <translation>Sélection d&apos;attributs : ajouter un attribut à afficher dans le navigateur</translation>
+        <translation type="obsolete">Sélection d&apos;attributs : ajouter un attribut à afficher dans le navigateur</translation>
     </message>
 </context>
 <context>
@@ -1558,34 +1599,96 @@
     </message>
 </context>
 <context>
+    <name>TagManagerDialog</name>
+    <message>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="62"/>
+        <source>Warning</source>
+        <translation>Attention</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="63"/>
+        <source>No nodes was selected in the browser.</source>
+        <translation>Aucun noeud n&apos;a été sélectionné dans l&apos;explorateur.</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="64"/>
+        <source>No tags was selected in the available tags list.</source>
+        <translation>Aucune balise n&apos;a été sélectionné dans la liste de balise disponible. </translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="65"/>
+        <source>No tags was selected in the selected nodes tags list.</source>
+        <translation>Aucune balise n&apos;a été sélectionné dans la liste de balise.</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
+        <source>This is a default tags it cannot be deleted. All concerned VFS nodes was untagged.</source>
+        <translation>Ceci est une balise par default il ne peut être suprimer.Toutes les autre balises on été detagger.</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="67"/>
+        <source>Are you sure ? This will delete this tag for all nodes in the VFS !</source>
+        <translation>Etes-vous sûr? Ceci suprimera toutes les balises pour tous les noeuds du VFS !</translation>
+    </message>
+</context>
+<context>
+    <name>Tags</name>
+    <message>
+        <location filename="../../../ui/gui/resources/tags.ui" line="14"/>
+        <source>Tag management</source>
+        <translation>Gestion des balises</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tags.ui" line="40"/>
+        <source>Add and remove tags from selected nodes
+Add new or delete existings tags (Double-click to edit)</source>
+        <translation>Ajoute et enleve des balises pour les noeuds sélectionnés Créée de nouvelles balises ou suprimme les existantes. (Double-clickez pour modifier) </translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tags.ui" line="68"/>
+        <source>Tags management</source>
+        <translation>Gestion des balises</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tags.ui" line="82"/>
+        <source>Selected nodes tags</source>
+        <translation>Balises des noeuds sélectionnés </translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tags.ui" line="89"/>
+        <source>Available tags</source>
+        <translation>Balises disponible</translation>
+    </message>
+</context>
+<context>
     <name>TaskManager</name>
     <message>
-        <location filename="../../../ui/gui/resources/taskmanager.ui" line="44"/>
+        <location filename="../../../ui/gui/resources/taskmanager.ui" line="56"/>
         <source>PID</source>
         <translation>Processus</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/taskmanager.ui" line="49"/>
+        <location filename="../../../ui/gui/resources/taskmanager.ui" line="61"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/taskmanager.ui" line="54"/>
+        <location filename="../../../ui/gui/resources/taskmanager.ui" line="66"/>
         <source>State</source>
         <translation>État</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/taskmanager.ui" line="59"/>
+        <location filename="../../../ui/gui/resources/taskmanager.ui" line="71"/>
         <source>Info</source>
         <translation>Informations</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/taskmanager.ui" line="64"/>
+        <location filename="../../../ui/gui/resources/taskmanager.ui" line="76"/>
         <source>Exec Time</source>
         <translation>Temps d&apos;execution</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/taskmanager.ui" line="36"/>
+        <location filename="../../../ui/gui/resources/taskmanager.ui" line="48"/>
         <source>Task Manager</source>
         <translation>Gestionnaire des tâches</translation>
     </message>
@@ -1595,7 +1698,7 @@
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1351"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation type="obsolete">Nom</translation>
     </message>
 </context>
 <context>
@@ -1603,37 +1706,37 @@
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1037"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation type="obsolete">Nom</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1038"/>
         <source>Size</source>
-        <translation>Taille</translation>
+        <translation type="obsolete">Taille</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1039"/>
         <source>Accessed time</source>
-        <translation>Date d&apos;accès</translation>
+        <translation type="obsolete">Date d&apos;accès</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1040"/>
         <source>Changed time</source>
-        <translation>Date de changement</translation>
+        <translation type="obsolete">Date de changement</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1041"/>
         <source>Modified time</source>
-        <translation>Date de modification</translation>
+        <translation type="obsolete">Date de modification</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1042"/>
         <source>Module</source>
-        <translation>Module</translation>
+        <translation type="obsolete">Module</translation>
     </message>
     <message>
         <location filename="../../../api/gui/model/vfsitemmodel.py" line="1043"/>
         <source>Deleted</source>
-        <translation>Effacé</translation>
+        <translation type="obsolete">Effacé</translation>
     </message>
 </context>
 <context>
@@ -1688,6 +1791,29 @@
     </message>
 </context>
 <context>
+    <name>edittag</name>
+    <message>
+        <location filename="../../../ui/gui/resources/tagedit.ui" line="22"/>
+        <source>Name :</source>
+        <translation>Nom :</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tagedit.ui" line="32"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tagedit.ui" line="41"/>
+        <source>set color</source>
+        <translation>Définir la couleur</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tagedit.ui" line="14"/>
+        <source>Edit tag</source>
+        <translation>Modification de la balise</translation>
+    </message>
+</context>
+<context>
     <name>evidenceDialog</name>
     <message>
         <location filename="../../../ui/gui/resources/evidencedialog.ui" line="27"/>
@@ -1728,27 +1854,27 @@
 <context>
     <name>procMB</name>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="148"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="170"/>
         <source>Results</source>
         <translation>Résultats</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="150"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
         <source>No results</source>
         <translation>Aucun résultat</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="147"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="169"/>
         <source>Provided Arguments</source>
         <translation>Arguments fournis</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="149"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="171"/>
         <source>Processus Information</source>
         <translation>Information sur le processus</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="146"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="168"/>
         <source>Output</source>
         <translation>Sortie</translation>
     </message>
