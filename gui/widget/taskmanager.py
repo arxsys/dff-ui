@@ -42,6 +42,9 @@ class Processus(QTreeWidget, Ui_TaskManager):
     def __init__(self, parent):
         super(QTreeWidget, self).__init__()
         self.setupUi(self)
+        self.tr("Fail")
+        self.tr("Finish")
+        self.tr("Running")
         self.__mainWindow = parent        
         self.name = "Task manager"
         self.initTreeProcess()
@@ -66,8 +69,8 @@ class Processus(QTreeWidget, Ui_TaskManager):
 	    self.procItemDic[proc] = item
 	    item.setText(0, str(proc.pid))
 	    item.setText(1, str(proc.name))
-          if item.text(2) != str(proc.state):
-            item.setText(2, str(proc.state))
+          if item.text(2) != str(self.tr(proc.state)):
+            item.setText(2, str(self.tr(proc.state)))
           if item.text(3) != str(proc.stateinfo):
 	    item.setText(3, str(proc.stateinfo))
 	  duration = self.procDuration(proc)
@@ -150,7 +153,7 @@ class procMB(QDialog):
 	   textWidget = QTextEdit()
 	   textWidget.setReadOnly(1)
 	   textWidget.append(proc.error_result)
-	   self.tabwidget.addTab(textWidget, 'error')
+	   self.tabwidget.addTab(textWidget, self.tr('Error'))
         if len(res) > 0:
             self.treeres = VariantTreeWidget(self)
             self.treeres.fillMap(self.treeres, res)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>About</name>
     <message>
@@ -1474,17 +1475,17 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="335"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="275"/>
         <source>Create directory</source>
         <translation>Créer un répertoire</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="336"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="276"/>
         <source>Directory creation failure</source>
         <translation>Problème lors de la création d&apos;un répertoire</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="337"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="277"/>
         <source>History file is not writable</source>
         <translation>Le fichier d&apos;historique n&apos;est pas accessible en écriture</translation>
     </message>
@@ -1623,6 +1624,24 @@
         <location filename="../../../ui/gui/widget/preview.py" line="104"/>
         <source>Preview</source>
         <translation>Prévisualisation</translation>
+    </message>
+</context>
+<context>
+    <name>Processus</name>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="45"/>
+        <source>Fail</source>
+        <translation>Echec</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="46"/>
+        <source>Finish</source>
+        <translation>Terminer</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="47"/>
+        <source>Running</source>
+        <translation>En fonctionnement</translation>
     </message>
 </context>
 <context>
@@ -2849,29 +2868,44 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
 <context>
     <name>procMB</name>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="170"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="173"/>
         <source>Results</source>
         <translation>Résultats</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="175"/>
         <source>No results</source>
         <translation>Aucun résultat</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="169"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
         <source>Provided Arguments</source>
         <translation>Arguments fournis</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="171"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="174"/>
         <source>Processus Information</source>
         <translation>Information sur le processus</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="168"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="171"/>
         <source>Output</source>
         <translation>Sortie</translation>
+    </message>
+    <message>
+        <location filename="../widget/taskmanager.py" line="106"/>
+        <source>Fail</source>
+        <translation type="obsolete">Echec</translation>
+    </message>
+    <message>
+        <location filename="../widget/taskmanager.py" line="107"/>
+        <source>Finish</source>
+        <translation type="obsolete">Terminer</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="156"/>
+        <source>Error</source>
+        <translation>Erreur</translation>
     </message>
 </context>
 <context>
@@ -2983,6 +3017,14 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
         <location filename="../../../ui/gui/resources/search_panel.ui" line="267"/>
         <source>Found</source>
         <translation>Trouvé</translation>
+    </message>
+</context>
+<context>
+    <name>sel</name>
+    <message>
+        <location filename="../widget/taskmanager.py" line="108"/>
+        <source>Running</source>
+        <translation type="obsolete">En fonctionnement</translation>
     </message>
 </context>
 <context>
