@@ -74,10 +74,6 @@ class Preferences(QDialog, Ui_PreferencesDialog):
       self.connect(self.noHistoryCheckBox, SIGNAL("stateChanged(int)"), self.historyStateChanged)
       self.connect(self.langComboBox, SIGNAL("currentIndexChanged (const QString&)"), self.langChanged)
 
-      # indexation configuration
-      if self.conf.indexEnabled:
-          self.init_index_pref()
-
       # Help configuration
       self.connect(self.docAndHelpBrowse, SIGNAL("clicked()"), self.helpDir)
 
@@ -226,62 +222,6 @@ class Preferences(QDialog, Ui_PreferencesDialog):
             self.helpNOK.setVisible(True)
             self.helpOK.setVisible(False)
 
-    def indexValid(self):
-        """
-        Set label 'path exists' or no in help tab.
-        """
-        if access(self.tIndexPath, R_OK):
-            self.indexDirWillCreate.setVisible(False)
-            self.indexDirOK.setVisible(True)
-        else:
-            self.indexDirWillCreate.setVisible(True)
-            self.indexDirOK.setVisible(False)
-
-    def init_index_pref(self):
-        """
-        Initialize the configuration of the indexation.
-        """
-        self.root_index_line.setText(self.conf.root_index)
-        self.index_name_line.setText(self.conf.index_name)
-
-        # Signal handling for browse buttons.
-        self.connect(self.root_index_button, SIGNAL("clicked()"), self.conf_root_index_dir)
-        self.connect(self.index_name_button, SIGNAL("clicked()"), self.conf_index_name_dir)
-
-    def fileDialog(self, basePath, browseType = QFileDialog.DirectoryOnly):
-        f_dialog = QFileDialog()
-        f_dialog.setDirectory(basePath)
-        if browseType == QFileDialog.DirectoryOnly:
-            f_dialog.setFileMode(QFileDialog.DirectoryOnly)
-            f_dialog.setOption(QFileDialog.ShowDirsOnly, True)
-        else:
-            f_dialog.setFileMode(QFileDialog.ExistingFile)
-        return f_dialog
-        
-    def conf_root_index_dir(self):
-        """
-        This slot is used to set the root index directory.
-        """
-        f_dialog = self.fileDialog(self.root_index_line.text())
-        if f_dialog.exec_():
-            self.root_index_line.setText(f_dialog.selectedFiles()[0])
-            self.tRootIndex = normpath(str(f_dialog.selectedFiles()[0]) + '/indexes/')
-
-    def conf_index_name_dir(self):
-        """
-        This slot is used to set the index directory.
-        """
-        f_dialog = self.fileDialog(self.index_name_line.text())
-        if f_dialog.exec_():
-            name = str(f_dialog.selectedFiles()[0])
-            pos = name.rfind("/")
-            if pos != -1:
-                name = name[pos + 1:]
-            self.index_name_line.setText(name)
-            self.tIndexName = normpath(name)
-            self.tIndexPath = normpath(self.tRootIndex + '/' + name)
-            
-
     def langPopulate(self):
         translationPath = normpath(sys.modules['dff.ui.gui'].__path__[0] + '/i18n/')
         i = 0
@@ -335,5 +275,3 @@ class Preferences(QDialog, Ui_PreferencesDialog):
         self.createDirTitle = self.tr('Create directory')
         self.createDirFail =self.tr('Directory creation failure')
         self.histWriteFail = self.tr('History file is not writable')
-        
-
