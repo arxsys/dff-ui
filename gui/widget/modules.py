@@ -63,41 +63,6 @@ class Modules(QTreeWidget, Ui_Modules):
                 parameters = arg.parameters()
                 if len(parameters):
                     itemConfKey.setText(2, str(parameters))
-	  ## for proc in self.tm.lprocessus:
-	  ##   if proc.mod.name == mod:
-	  ##    try :
-	  ##       itemListArg = self.itemListArgDic[mod]	
-	  ##    except KeyError:
-	  ##       itemListArg = QTreeWidgetItem(itemModule)
-	  ##       self.itemListArgDic[mod] = itemListArg
-	  ##       itemListArg.setText(0, "Arg")
-	  ##    for type, name, val in self.env.get_val_map(proc.args.val_m):
-          ##      try:
-	  ##        itemArgKey = self.itemArgDic[(type, name, val)]  		
-	  ##      except KeyError:
-	  ##        itemArgKey = QTreeWidgetItem(itemListArg)    
-	  ##        self.itemArgDic[(type, name, val)] = itemArgKey	
-	  ##        itemArgKey.setText(1, name)
-	  ##        itemArgKey.setText(2, val)
-	  ##        itemArgKey.setText(4, type)
-	  ##    try :
-	  ##       itemListRes = self.itemListResDic[mod]	
-	  ##    except KeyError:
-	  ##       itemListRes = QTreeWidgetItem(itemModule)
-	  ##       self.itemListResDic[mod] = itemListRes
-	  ##       itemListRes.setText(0, "Results")
-          ##    result = proc.res
-          ##    if result:
-          ##        val_map = self.env.get_val_map(result.val_m)
-          ##        for type, name, val in val_map:
-          ##            try:
-          ##                itemResKey = self.itemResDic[(type, name, val)]  		
-          ##            except KeyError:
-          ##                itemResKey = QTreeWidgetItem(itemListRes)    
-          ##                self.itemResDic[(type, name, val)] = itemResKey	
-          ##                itemResKey.setText(1, name)
-          ##                itemResKey.setText(2, val)
-          ##                itemResKey.setText(4, type)
 	          		    	 	    		
     def deleteInfoModule(self):
 	self.clear()

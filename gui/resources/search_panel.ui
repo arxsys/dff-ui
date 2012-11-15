@@ -264,7 +264,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Founded</string>
+        <string>Found</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

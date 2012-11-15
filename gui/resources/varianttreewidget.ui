@@ -37,7 +37,7 @@ Christophe Malinge cma@digital-forensic.org
   </property>
   <column>
    <property name="text">
-    <string>Key</string>
+    <string>Attribute</string>
    </property>
   </column>
   <column>

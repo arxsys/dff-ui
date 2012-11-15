@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Toolbar</string>
   </property>
   <widget class="QComboBox" name="changeView">
    <property name="geometry">
@@ -24,7 +24,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Table</string>
+     <string>Icons</string>
     </property>
     <property name="icon">
      <iconset resource="gui.qrc">
@@ -33,7 +33,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Gallery</string>
+     <string>Details</string>
     </property>
     <property name="icon">
      <iconset resource="gui.qrc">
@@ -162,7 +162,7 @@
     <string>attributes</string>
    </property>
    <property name="toolTip">
-    <string>Manage table attribute columns</string>
+    <string>Edit the columns attributes of the detailed view</string>
    </property>
   </action>
   <action name="actionBookmark">

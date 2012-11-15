@@ -50,22 +50,22 @@
       <widget class="QComboBox" name="mode">
        <item>
         <property name="text">
-         <string>Quick (wildcard)</string>
+         <string>Wildcard</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Quick (fuzzy)</string>
+         <string>Fuzzy</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Quick (reg exp)</string>
+         <string>Reg exp</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Quick (fixed)</string>
+         <string>Fixed</string>
         </property>
        </item>
        <item>

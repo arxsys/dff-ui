@@ -73,7 +73,7 @@ Christophe Malinge cma@digital-forensic.org
   </column>
   <column>
    <property name="text">
-    <string>Exec Time</string>
+    <string>Duration</string>
    </property>
   </column>
  </widget>

@@ -46,16 +46,6 @@ class Dialog(QObject):
     ret = pref.exec_()
     if ret:
       pass
-#      pref.conf.root_index = pref.root_index_line.text()
-#      pref.conf.index_name = pref.index_name_line.text()
-#      pref.conf.index_path = pref.conf.root_index + "/" + pref.conf.index_name
-
-#      root_index_dir = QDir(pref.conf.root_index)
-#      if not root_index_dir.exists():
-#        root_index_dir.mkpath(pref.conf.root_index)
-#@      default_index_dir = QDir(pref.conf.index_path)
- #     if not default_index_dir.exists():
- #       default_index_dir.mkpath(pref.conf.index_path)
 
   def addDevices(self):
        """Open a device list dialog"""
@@ -131,8 +121,8 @@ class Dialog(QObject):
 
   def messageBox(self, coretxt, detail):
     msg = QMessageBox()
-    msg.setWindowTitle("Error in configuration")
-    msg.setText("An error was detected in the configuration")
+    msg.setWindowTitle(self.tr("Error in configuration"))
+    msg.setText(self.tr("An error was detected in the configuration"))
     msg.setInformativeText(coretxt)
     msg.setIcon(QMessageBox.Critical)
     msg.setDetailedText(detail)
@@ -155,13 +145,6 @@ class Dialog(QObject):
         ir = module.exec_()
         if ir > 0:
           module.browser.execute()
-
-#class managerDialog(QDialog):
-#    def __init__(self,  mainWindow):
-#        QDialog.__init__(self, mainWindow)
-#        l = QVBoxLayout()
-#        l.addWidget(modulesManager(self))
-#        self.setLayout(l)
 
 class About(QDialog, Ui_About):
   def __init__(self):

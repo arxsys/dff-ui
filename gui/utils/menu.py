@@ -39,7 +39,7 @@ class tagMenu(QMenu):
     self.tagsmanager = TagsManager.get()
     self.setTitle(QString("Tags"))
     self.connect(self, SIGNAL("aboutToShow"), self.refreshTagMenu)
-    self.manageAction = QAction(QString("Manage Tags"), self)
+    self.manageAction = QAction(QString(self.tr("Manage tags")), self)
     self.connect(self.manageAction, SIGNAL("triggered(bool)"), self.openDialog)
     self.connect(self, SIGNAL("triggered(QAction*)"), self.tagNodes)
     self.refreshTagMenu()
@@ -86,7 +86,7 @@ class selectionMenu(QMenu, Ui_selectionActions):
     self.setupUi(self)
     self.manager = manager
     self.model = model
-    self.setTitle(QString("Selection"))
+    self.setTitle(QString(self.tr("Selection")))
 
     self.connect(self.actionSelect_all, SIGNAL("triggered()"), self.model.selectAll)
     self.connect(self.actionUnselect_all, SIGNAL("triggered()"), self.model.unselectAll)
@@ -105,10 +105,6 @@ class typeFilterMenu(QMenu):
     QMenu.__init__(self, main)
     self.model = model
     self.filters = ["Image", "Video", "Text", "Audio", "Application"]
-    # Refresh displayed tag in menu
-#    self.connect(self, SIGNAL("aboutToShow"), self.refreshTagMenu)
-#    self.manageAction = QAction(QString("Manage Tags"), self)
-#    self.connect(self.manageAction, SIGNAL("triggered(bool)"), self.openDialog)
     self.connect(self, SIGNAL("triggered(QAction*)"), self.filterModel)
     self.createBaseTypeFilters()
 
@@ -120,8 +116,6 @@ class typeFilterMenu(QMenu):
     name = action.text()
     pattern = "(( mime in[\"" + str(name.toLower()) + "\"]))"
     self.model.filter(str(name), pattern)
-
-# OBSOLETE
 
 class MenuRelevant(QMenu):
   def __init__(self, parent, mainWindow, node = None, selectItem = None):
@@ -217,7 +211,6 @@ class MenuModules(QMenu):
 class BookmarkManager(QObject):
   categories = []
   def __init__(self, model):
-    #self.categories = []
     self.model = model
     self.vfs = vfs()
     self.rootNode = self.vfs.getnode('/Bookmarks/')
@@ -233,7 +226,7 @@ class BookmarkManager(QObject):
   def launch(self):
     selected = self.getSelectedNodes()
     if len(selected) == 0:
-      QMessageBox.warning(self, "Bookmark", "You must specify at least one node.", QMessageBox.Ok)
+      QMessageBox.warning(self, self.tr("Bookmark"), self.tr("You must specify at least one node."), QMessageBox.Ok)
       return
     bookdiag = bookmarkDialog(self)
     bookdiag.exec_()
@@ -315,9 +308,9 @@ class bookmarkDialog(QDialog, Ui_AddBookmark):
     selected = self.manager.getSelectedNodes()
 
     for node in selected:
-      n = VLink(node, selectedBookmark)
-      n.__disown__()
-    #    self.manager.model.checkedNodes.clear()
+      if node:
+        n = VLink(node, selectedBookmark)
+        n.__disown__()
     e = event()
     e.thisown = False
     e.value = RCVariant(Variant(selectedBookmark))

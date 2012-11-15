@@ -81,8 +81,3 @@ class pythonHighlighter(commentHighlighter):
 
         for pattern in pythonKeywordPatterns:
             self.setRule(pattern, keywordFormat)
-
-
-
-
-

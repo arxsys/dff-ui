@@ -25,17 +25,14 @@ class RootCheckBox(QCheckBox):
         self.children = []
         self.connect(self, SIGNAL("clicked()"), self.updateChildren)
 
-
     def addChild(self, child):
         self.children.append(child)
-
 
     def updateChildren(self):
         state = self.checkState()
         for child in self.children:
             if child.isEnabled():
                 child.setCheckState(state)
-
 
     def update(self, val):
         checked = 0
@@ -54,7 +51,6 @@ class MimeTypesTree():
         self.tree = tree
         self.typeItems = []
         self.populate()
-
 
     def populate(self):
         self.tree.connect(self.tree, SIGNAL("itemClicked(QTreeWidgetItem *, int)"), self.clicked)
@@ -78,7 +74,6 @@ class MimeTypesTree():
                 self.tree.setItemWidget(filetypeItem, 1, checkBox)
         self.tree.resizeColumnToContents(0)
 
-
     def setCheckStateOfChildren(self, item, column, checked):
         children = item.childCount()
         for i in range(0, children):
@@ -88,7 +83,6 @@ class MimeTypesTree():
                 self.tree.itemWidget(item.child(i), 1).setCheckState(False)
                 self.tree.itemWidget(item.child(i), 1).setEnabled(False)
             item.child(i).setCheckState(0, checked)
-
 
     def isAllChildren(self, item, column):
         children = item.childCount()
@@ -102,7 +96,6 @@ class MimeTypesTree():
         elif item.checkState(column) == Qt.Unchecked:
             self.tree.itemWidget(item, 1).setEnabled(True)
             item.setCheckState(0, Qt.Checked)
-
 
     def clicked(self, item, column):
         if column == 0:
@@ -122,7 +115,6 @@ class MimeTypesTree():
                 else:
                     self.tree.itemWidget(item, 1).setEnabled(False)
                     self.tree.itemWidget(item, 1).setCheckState(False)
-            
 
     def createGroupBox(self, items):
         gb = QGroupBox(items["type"])
@@ -135,7 +127,6 @@ class MimeTypesTree():
         vbox.addStretch(1)
         gb.setLayout(vbox)
         return gb
-
 
     def selectedItems(self):
         selected = []

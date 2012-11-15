@@ -34,7 +34,6 @@ class browserDialog(QDialog, Ui_moduleBrowser):
         self.browser = modulesManager(self)
         self.lcontainer.addWidget(self.browser)
 
-
 class modulesManager(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)

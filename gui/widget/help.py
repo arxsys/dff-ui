@@ -20,7 +20,7 @@ from PyQt4.QtHelp import QHelpEngine
 class Help(QDockWidget):
     def __init__(self, parent=None, path=None):
         QDockWidget.__init__(self, parent)
-        self.name = "Help"
+        self.name = self.tr("Help")
         self.setFloating(False)
         self.setFeatures(QDockWidget.NoDockWidgetFeatures)
 
@@ -36,14 +36,14 @@ class Help(QDockWidget):
         if not self.__helper.setupData() is True:
             dialog = QMessageBox()
             
-            msg = QString("An error occured while setting help engine up :\n")
+            msg = QString(self.tr("An error occurred while setting help engine up :\n"))
             msg += (self.__helper.error() + "\n")
-            msg += ("It might mean that the format of your help file is not correct.\n")
-            msg += "You can check on-line help at http://wiki.digital-forensic.org"
+            msg += self.tr("It might mean that the format of your help file is not correct.\n")
+            msg += self.tr("You can check on-line help at http://wiki.digital-forensic.org")
 
             dialog.setText(msg)
             dialog.setIcon(QMessageBox.Warning)
-            dialog.setWindowTitle("Error while loading help")
+            dialog.setWindowTitle(self.tr("Error while loading help"))
             dialog.exec_()
             return
 
