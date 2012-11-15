@@ -62,8 +62,8 @@ class GUI(QApplication, UI):
         
         self.mainWindow = self.createMainWindow()
         self.mainWindow.initDockWidgets()
+        self.translator.loadLanguage()
         self.mainWindow.show()
-
         self.splash.finish(self.mainWindow)
         sys.exit(self.exec_())
 

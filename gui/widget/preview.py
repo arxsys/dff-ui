@@ -31,7 +31,7 @@ class Preview(QWidget):
         self.layout.addWidget(self.stack)
         self.setLayout(self.layout)
         self.__mainWindow = parent        
-        self.name = self.tr("Preview")
+        self.name = "Preview"# unicode(self.tr("Preview")).encode('utf-8')
         self.loader = loader()
 	self.lmodules = self.loader.modules
 	void = QWidget()

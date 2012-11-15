@@ -39,14 +39,15 @@ FORMS           += ../../../ui/gui/resources/tagedit.ui
 
 SOURCES         += ../../../ui/gui/ide/ide.py
 SOURCES         += ../../../ui/gui/ide/idewizard.py
-SOURCES         += ../../../api/gui/dialog/extractor.py
 SOURCES         += ../../../api/gui/widget/propertytable.py
-SOURCES         += ../../../ui/gui/widget/taskmanager.py
+SOURCES         += ../../../api/gui/widget/dockwidget.py
+SOURCES         += ../../../api/gui/dialog/tagmanager.py
+SOURCES         += ../../../api/gui/dialog/extractor.py
+
 SOURCES         += ../../../ui/gui/mainwindow.py
 SOURCES         += ../../../ui/gui/dialog/preferences.py
+SOURCES         += ../../../ui/gui/widget/taskmanager.py
 SOURCES         += ../../../ui/gui/widget/preview.py
-
-SOURCES         += ../../../api/gui/dialog/tagmanager.py
 
 
 TRANSLATIONS    += ../../../ui/gui/i18n/Dff_de.ts
