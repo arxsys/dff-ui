@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
 <context>
     <name>About</name>
     <message>
@@ -188,9 +187,9 @@
         <translation>Rétrécir les icônes</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
+        <location filename="../resources/browser_toolbar.ui" line="14"/>
         <source>Toolbar</source>
-        <translation>Barre d&apos;outils</translation>
+        <translation type="obsolete">Barre d&apos;outils</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="27"/>
@@ -206,6 +205,16 @@
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="165"/>
         <source>Edit the columns attributes of the detailed view</source>
         <translation>Modifier les attributs des colonnes de la vue détaillée</translation>
+    </message>
+    <message>
+        <location filename="../resources/browser_toolbar.ui" line="14"/>
+        <source>Nodes browser</source>
+        <translation type="obsolete">Navigateur</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
+        <source>Browser</source>
+        <translation type="unfinished">Navigateur</translation>
     </message>
 </context>
 <context>
