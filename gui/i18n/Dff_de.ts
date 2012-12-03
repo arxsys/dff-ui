@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="de" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="de">
 <context>
     <name>About</name>
     <message>
@@ -74,12 +75,12 @@
     <message>
         <location filename="../../../api/gui/dialog/applymodule.py" line="196"/>
         <source>Configuration error</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurationsfehler</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/applymodule.py" line="197"/>
         <source>An error was detected in the configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wurde ein Fehler in der Konfiguration gefunden</translation>
     </message>
 </context>
 <context>
@@ -87,7 +88,7 @@
     <message>
         <location filename="../../../api/gui/widget/varianttreewidget.py" line="146"/>
         <source>copy</source>
-        <translation type="unfinished"></translation>
+        <translation>kopiere</translation>
     </message>
 </context>
 <context>
@@ -95,22 +96,22 @@
     <message>
         <location filename="../../../api/gui/dialog/selectattributes.py" line="34"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswählen</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/selectattributes.py" line="36"/>
         <source>Unselect</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswahl aufheben</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/selectattributes.py" line="38"/>
         <source>Select all</source>
-        <translation type="unfinished">alle auswählen</translation>
+        <translation>alle auswählen</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/selectattributes.py" line="40"/>
         <source>Unselect all</source>
-        <translation type="unfinished"></translation>
+        <translation>gesamte Auswahl aufheben</translation>
     </message>
 </context>
 <context>
@@ -118,7 +119,7 @@
     <message>
         <location filename="../../../ui/gui/resources/attributes_selection_dialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
 </context>
 <context>
@@ -126,12 +127,12 @@
     <message>
         <location filename="../../../ui/gui/utils/menu.py" line="229"/>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Lesezeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menu.py" line="229"/>
         <source>You must specify at least one node.</source>
-        <translation type="unfinished">Mindestens ein Knoten muss ausgewählt sein.</translation>
+        <translation>Mindestens ein Knoten muss ausgewählt sein.</translation>
     </message>
 </context>
 <context>
@@ -139,72 +140,72 @@
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="54"/>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="83"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="143"/>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="162"/>
         <source>attributes</source>
-        <translation type="unfinished">Attribute</translation>
+        <translation>Attribute</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="174"/>
         <source>bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Lesezeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="177"/>
         <source>Add nodes to bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoten zum Lesezeichen hinzufügen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="186"/>
         <source>factorPlus</source>
-        <translation type="unfinished"></translation>
+        <translation>Plus</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="189"/>
         <source>Icons zoom in</source>
-        <translation type="unfinished"></translation>
+        <translation>Icons vergrößern</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="198"/>
         <source>factorMinus</source>
-        <translation type="unfinished"></translation>
+        <translation>Minus</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="201"/>
         <source>Icons zoom out</source>
-        <translation type="unfinished"></translation>
+        <translation>Icons verkleinern</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
         <source>Toolbar</source>
-        <translation type="unfinished">Symbolleiste</translation>
+        <translation>Beweismittel</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="27"/>
         <source>Icons</source>
-        <translation type="unfinished">Symbole</translation>
+        <translation>Symbole</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="36"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Details</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="165"/>
         <source>Edit the columns attributes of the detailed view</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltenattribute der Dateil-Ansicht bearbeiten</translation>
     </message>
 </context>
 <context>
@@ -348,12 +349,12 @@
     <message>
         <location filename="../../../ui/gui/dialog/dialog.py" line="124"/>
         <source>Error in configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurationsfehler</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/dialog/dialog.py" line="125"/>
         <source>An error was detected in the configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>An error was detected in the configuration</translation>
     </message>
 </context>
 <context>
@@ -361,7 +362,7 @@
     <message>
         <location filename="../../../api/gui/widget/search/dico_manager.py" line="38"/>
         <source>Select your dictionnary</source>
-        <translation type="unfinished"></translation>
+        <translation>Wörterbuch auswählen</translation>
     </message>
 </context>
 <context>
@@ -382,17 +383,17 @@
     <message>
         <location filename="../../../api/gui/widget/dockwidget.py" line="72"/>
         <source>Undock</source>
-        <translation type="unfinished"></translation>
+        <translation>abkoppeln</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/dockwidget.py" line="77"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/dockwidget.py" line="82"/>
         <source>Disable this window</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster deaktivieren</translation>
     </message>
 </context>
 <context>
@@ -428,12 +429,12 @@
     <message>
         <location filename="../../../ui/gui/resources/extractdialog.ui" line="39"/>
         <source>Preserve tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Baumstruktur beibehalten</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/extractdialog.ui" line="46"/>
         <source>Overwrite existing</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestehende Überschreiben</translation>
     </message>
 </context>
 <context>
@@ -482,12 +483,12 @@
     <message>
         <location filename="../../../api/gui/widget/search/search_widget.py" line="391"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search/search_widget.py" line="391"/>
         <source>Please, specify a query name</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte einen Abfrage-Namen angeben</translation>
     </message>
 </context>
 <context>
@@ -510,7 +511,7 @@
     <message>
         <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="59"/>
         <source>Regular expression</source>
-        <translation>Regülarer Ausdruck</translation>
+        <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="64"/>
@@ -558,62 +559,62 @@
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="26"/>
         <source>OR</source>
-        <translation type="unfinished"></translation>
+        <translation>Oder</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="31"/>
         <source>AND</source>
-        <translation type="unfinished"></translation>
+        <translation>UND</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="36"/>
         <source>NOT</source>
-        <translation type="unfinished"></translation>
+        <translation>NICHT</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="45"/>
         <source>name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="50"/>
         <source>contains</source>
-        <translation type="unfinished"></translation>
+        <translation>beinhaltet</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="55"/>
         <source>date</source>
-        <translation type="unfinished"></translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="60"/>
         <source>mime</source>
-        <translation type="unfinished"></translation>
+        <translation>MIME-Typ</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="69"/>
         <source>Wildcard</source>
-        <translation type="unfinished">Jokerzeichen</translation>
+        <translation>Jokerzeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="74"/>
         <source>Regular expression</source>
-        <translation type="unfinished">Regülarer Ausdruck</translation>
+        <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="79"/>
         <source>Fuzzy</source>
-        <translation type="unfinished"></translation>
+        <translation>unscharf</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="84"/>
         <source>Fixed string</source>
-        <translation type="unfinished">Fester Text</translation>
+        <translation>Fester Text</translation>
     </message>
 </context>
 <context>
@@ -621,29 +622,31 @@
     <message>
         <location filename="../../../ui/gui/widget/help.py" line="23"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Hilfe</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/widget/help.py" line="41"/>
         <source>It might mean that the format of your help file is not correct.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Es scheint, dass das Format der Hilfe-Dateien nicht korrekt ist.
+</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/widget/help.py" line="42"/>
         <source>You can check on-line help at http://wiki.digital-forensic.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Du kannst in der Online-Hilfe unter http://wiki.digital-forensic.org nachschlagen </translation>
     </message>
     <message>
         <location filename="../../../ui/gui/widget/help.py" line="46"/>
         <source>Error while loading help</source>
-        <translation type="unfinished">Fehler beim Laden der Hilfe</translation>
+        <translation>Fehler beim Laden der Hilfe</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/widget/help.py" line="39"/>
         <source>An error occurred while setting help engine up :
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Fehler trat beim Einrichten der Hilfe auf:
+</translation>
     </message>
 </context>
 <context>
@@ -858,17 +861,17 @@
     <message>
         <location filename="../../../api/gui/widget/varianttreewidget.py" line="164"/>
         <source>Attribute value</source>
-        <translation type="unfinished"></translation>
+        <translation>Attribut-Werte</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/varianttreewidget.py" line="177"/>
         <source>Attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Attribute</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/varianttreewidget.py" line="186"/>
         <source>Value:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert:</translation>
     </message>
 </context>
 <context>
@@ -979,7 +982,7 @@
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="185"/>
         <source>Fullscreen mode</source>
-        <translation>Vollansicht Modus</translation>
+        <translation>Vollbild Modus</translation>
     </message>
     <message>
         <location filename="../resources/mainwindow.ui" line="202"/>
@@ -1009,7 +1012,7 @@
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="88"/>
         <source>Toolbar</source>
-        <translation>Symbolleiste</translation>
+        <translation>Toolbar</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="108"/>
@@ -1054,32 +1057,32 @@
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="125"/>
         <source>Open evidence</source>
-        <translation type="unfinished"></translation>
+        <translation>Beweismittel öffnen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="137"/>
         <source>Open device</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerät öffnen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="212"/>
         <source>Console</source>
-        <translation type="unfinished"></translation>
+        <translation>Konsole</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="227"/>
         <source>Live scripting</source>
-        <translation type="unfinished"></translation>
+        <translation>Live Scripting</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="239"/>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentation</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="254"/>
         <source>Open the IDE</source>
-        <translation type="unfinished"></translation>
+        <translation>IDE öffnen</translation>
     </message>
 </context>
 <context>
@@ -1087,54 +1090,55 @@
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="246"/>
         <source>Empty files</source>
-        <translation type="unfinished">leere Dateien</translation>
+        <translation>leere Dateien</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="247"/>
         <source>the following nodes could not be opened with Hex viewer because they are either empty or folders
 </source>
-        <translation type="unfinished">Die folgenden Knoten konnten nicht mit dem Hex-Betrachter geöffnet werden, da diese entweder leer oder Verzeichnisse sind</translation>
+        <translation>Die folgenden Knoten konnten nicht mit dem Hex-Betrachter geöffnet werden, da diese entweder leer oder Verzeichnisse sind
+</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="189"/>
         <source>Extraction Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler bei der Extraktion</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="190"/>
         <source>An issue occured while extracting 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Während der Extraktion trat ein Problem auf</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="218"/>
         <source>Module already applied</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul wurde bereits ausgeführt</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="218"/>
         <source>This module was already applied with the same configuration ! Do you want to apply it again ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul wurde bereits mit dieser Einstellung ausgeführt! Möchtest Du es erneut ausführen?</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
         <source>Apply module</source>
-        <translation type="unfinished">Modul anwenden</translation>
+        <translation>Modul anwenden</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
         <source>Do you want to apply module </source>
-        <translation type="unfinished">Soll das Modul angewendet werden </translation>
+        <translation>Modul  </translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
         <source> on this node ?</source>
-        <translation type="unfinished"> auf diesen Knoten?</translation>
+        <translation> auf diesen Knoten anwenden?</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="225"/>
         <source>Always</source>
-        <translation type="unfinished">Immer</translation>
+        <translation>Immer</translation>
     </message>
 </context>
 <context>
@@ -1533,7 +1537,7 @@
     <message>
         <location filename="../../../ui/gui/resources/preferences.ui" line="284"/>
         <source>Use interface language:</source>
-        <translation>verwende Sprache für die Oberfläche:</translation>
+        <translation>verwende folgende Sprache für die Oberfläche:</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/preferences.ui" line="329"/>
@@ -1709,7 +1713,7 @@
     <message>
         <location filename="../../../api/gui/widget/propertytable.py" line="143"/>
         <source>link path</source>
-        <translation type="unfinished"></translation>
+        <translation>Verknüpfungspfad</translation>
     </message>
 </context>
 <context>
@@ -1756,12 +1760,12 @@
     <message>
         <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
         <source>Please, specify your query</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte Abfrage spezifizieren </translation>
     </message>
 </context>
 <context>
@@ -1858,12 +1862,12 @@
     <message>
         <location filename="../../../api/gui/widget/search/thread.py" line="62"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/search/thread.py" line="62"/>
         <source>Error compiling query</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler bei Erstellung der Abfrage</translation>
     </message>
 </context>
 <context>
@@ -1909,52 +1913,52 @@
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="161"/>
         <source>Select attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften auswählen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="33"/>
         <source>Attribute selection location</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften auswählen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="42"/>
         <source>Select attributes from</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften auswählen von </translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="48"/>
         <source>Current list</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuelle Liste</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="58"/>
         <source>Current selected file</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell ausgewählte Datei</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="65"/>
         <source>All selected files</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle ausgewählten Dateien</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="75"/>
         <source>Group attributes by</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften gruppieren nach</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="81"/>
         <source>Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Typen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="91"/>
         <source>Generated module</source>
-        <translation type="unfinished"></translation>
+        <translation>erstellt durch Modul</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="117"/>
         <source>Generating attribute list</source>
-        <translation type="unfinished"></translation>
+        <translation>Erzeugte Liste der Eigenschaften</translation>
     </message>
 </context>
 <context>
@@ -1983,32 +1987,32 @@
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="62"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="63"/>
         <source>No nodes was selected in the browser.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es waren keine Knoten im Browser ausgewählt.</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="64"/>
         <source>No tags was selected in the available tags list.</source>
-        <translation type="unfinished"></translation>
+        <translation>In der Liste der verfügbaren Markierungen waren keine Markierungen ausgewählt.</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="65"/>
         <source>No tags was selected in the selected nodes tags list.</source>
-        <translation type="unfinished"></translation>
+        <translation>In der Markierungs-Liste der ausgewählten Knoten waren keine Markierung ausgewählt.</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="67"/>
         <source>Are you sure ? This will delete this tag for all nodes in the VFS !</source>
-        <translation type="unfinished"></translation>
+        <translation>Bist Du sicher? Diese Markierung wird für alle Knoten im VFS entfernt!</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
         <source>This is a default tag it cannot be deleted. All tagged VFS nodes was untagged.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dies ist eine Standard-Markierung. Sie kann nicht gelöscht werden. Bei den betroffenen VFS-knoten wurde die Markierung entfernt.</translation>
     </message>
 </context>
 <context>
@@ -2017,22 +2021,23 @@
         <location filename="../../../ui/gui/resources/tags.ui" line="40"/>
         <source>Add and remove tags from selected nodes
 Add new or delete existings tags (Double-click to edit)</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungen von selektierten Knoten hinzufügen und entfernen
+Neue Markierungen hinzufügen oder bestehende entfernen (Doppleklick zum Editieren)</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tags.ui" line="68"/>
         <source>Tags management</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungs-Verwaltung</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tags.ui" line="82"/>
         <source>Selected nodes tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Selektierte Markierungen von Koten</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tags.ui" line="89"/>
         <source>Available tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Verfügbare Markierungen</translation>
     </message>
 </context>
 <context>
@@ -2070,7 +2075,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/taskmanager.ui" line="76"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Dauer</translation>
     </message>
 </context>
 <context>
@@ -2078,7 +2083,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../api/gui/model/tree.py" line="336"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
 </context>
 <context>
@@ -2134,7 +2139,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/varianttreewidget.ui" line="40"/>
         <source>Attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Attribute</translation>
     </message>
 </context>
 <context>
@@ -2180,32 +2185,32 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="32"/>
         <source>Dictionnary manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Wörterbuch-Manager</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="46"/>
         <source>Add dictionnary</source>
-        <translation type="unfinished"></translation>
+        <translation>Wörterbuch hinzufügen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="60"/>
         <source>Remove dictionnary</source>
-        <translation type="unfinished"></translation>
+        <translation>Verzeichnis entfernen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="104"/>
         <source>Location</source>
-        <translation type="unfinished">Standort</translation>
+        <translation>Ablageort</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="109"/>
         <source>Dictionnary&apos;s name</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezeichnung des Wörterbuchs</translation>
     </message>
 </context>
 <context>
@@ -2213,22 +2218,22 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/tagedit.ui" line="22"/>
         <source>Name :</source>
-        <translation type="unfinished"></translation>
+        <translation>Name :</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tagedit.ui" line="32"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tagedit.ui" line="41"/>
         <source>set color</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbe festlegen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tagedit.ui" line="14"/>
         <source>Edit tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierung bearbeiten</translation>
     </message>
 </context>
 <context>
@@ -2274,17 +2279,17 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_add.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_add.ui" line="47"/>
         <source>Create your custom filter</source>
-        <translation type="unfinished"></translation>
+        <translation>eigenen Filter erstellen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_add.ui" line="58"/>
         <source>Filter name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name des Filters</translation>
     </message>
 </context>
 <context>
@@ -2292,7 +2297,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_attributes.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -2300,7 +2305,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_bar.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -2308,27 +2313,27 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="27"/>
         <source>And</source>
-        <translation type="unfinished">Und</translation>
+        <translation>Und</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="32"/>
         <source>And not</source>
-        <translation type="unfinished"></translation>
+        <translation>UND NICHT</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="37"/>
         <source>Or</source>
-        <translation type="unfinished">Oder</translation>
+        <translation>Oder</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="42"/>
         <source>Or not</source>
-        <translation type="unfinished"></translation>
+        <translation>ODER NICHT</translation>
     </message>
 </context>
 <context>
@@ -2336,32 +2341,32 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="57"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="62"/>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Inhalt</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="77"/>
         <source>Any</source>
-        <translation type="unfinished"></translation>
+        <translation>Irgendein</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="82"/>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="87"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>keines</translation>
     </message>
 </context>
 <context>
@@ -2369,52 +2374,52 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="27"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="32"/>
         <source>Contains</source>
-        <translation type="unfinished">Beinhaltet</translation>
+        <translation>Beinhaltet</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="37"/>
         <source>Size</source>
-        <translation type="unfinished">Größe</translation>
+        <translation>Größe</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="42"/>
         <source>Date</source>
-        <translation type="unfinished">Datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="47"/>
         <source>Mime type</source>
-        <translation type="unfinished"></translation>
+        <translation>MIME-Typ</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="52"/>
         <source>Dictionnary</source>
-        <translation type="unfinished"></translation>
+        <translation>Wörterbuch</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="57"/>
         <source>Is deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>ist gelöscht</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="62"/>
         <source>Is file</source>
-        <translation type="unfinished"></translation>
+        <translation>ist eine Datei</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="67"/>
         <source>Attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Attribute</translation>
     </message>
 </context>
 <context>
@@ -2422,32 +2427,32 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="27"/>
         <source>Wildcard</source>
-        <translation type="unfinished">Jokerzeichen</translation>
+        <translation>Jokerzeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="32"/>
         <source>Reg-exp</source>
-        <translation type="unfinished"></translation>
+        <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="37"/>
         <source>Fuzzy</source>
-        <translation type="unfinished"></translation>
+        <translation>unscharf</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="42"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>fest</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="56"/>
         <source>Case sensitive</source>
-        <translation type="unfinished">Groß- und Kleinschreibung beachten</translation>
+        <translation>Groß- und Kleinschreibung beachten</translation>
     </message>
 </context>
 <context>
@@ -2455,12 +2460,12 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_mime.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mime.ui" line="36"/>
         <source>Select ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswählen ...</translation>
     </message>
 </context>
 <context>
@@ -2468,7 +2473,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_mimedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
 </context>
 <context>
@@ -2476,22 +2481,22 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="37"/>
         <source>  Filter activated</source>
-        <translation type="unfinished"></translation>
+        <translation>  Filter aktiviert</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="44"/>
         <source>11</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="54"/>
         <source>  Found</source>
-        <translation type="unfinished"></translation>
+        <translation>  gefunden</translation>
     </message>
 </context>
 <context>
@@ -2499,17 +2504,17 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_only.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_only.ui" line="27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation>Wahr</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_only.ui" line="32"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation>Falsch</translation>
     </message>
 </context>
 <context>
@@ -2517,37 +2522,37 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="27"/>
         <source>Is less than</source>
-        <translation type="unfinished"></translation>
+        <translation>ist kleiner als</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="32"/>
         <source>Is less than or equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>ist kleiner als oder gleich</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="37"/>
         <source>Is equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>ist gleich</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="42"/>
         <source>Is not equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>ist ungleich</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="47"/>
         <source>Is greater than or equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>ist größer als oder gleich</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="52"/>
         <source>Is greater than</source>
-        <translation type="unfinished"></translation>
+        <translation>ist größer als</translation>
     </message>
 </context>
 <context>
@@ -2555,12 +2560,12 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_tagwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_tagwidget.ui" line="26"/>
         <source>Exclude</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausschließen</translation>
     </message>
 </context>
 <context>
@@ -2568,67 +2573,67 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="45"/>
         <source>0</source>
-        <translation type="unfinished"></translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="38"/>
         <source> / </source>
-        <translation type="unfinished"></translation>
+        <translation> / </translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="73"/>
         <source>Custom query</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Abfrage</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="78"/>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="113"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="110"/>
         <source>Stop filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Stopp-Filter</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="124"/>
         <source>Clear filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter löschen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="127"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="53"/>
         <source>Wildcard</source>
-        <translation type="unfinished">Jokerzeichen</translation>
+        <translation>Jokerzeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="58"/>
         <source>Fuzzy</source>
-        <translation type="unfinished"></translation>
+        <translation>unscharf</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="63"/>
         <source>Reg exp</source>
-        <translation type="unfinished"></translation>
+        <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="68"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>fest</translation>
     </message>
 </context>
 <context>
@@ -2636,12 +2641,12 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
         <source>File</source>
-        <translation type="unfinished">Datei</translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/layoutmanager.py" line="352"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Verzeichnis</translation>
     </message>
 </context>
 <context>
@@ -2649,7 +2654,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/modulebrowserdialog.ui" line="14"/>
         <source>Module browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul-Browser</translation>
     </message>
 </context>
 <context>
@@ -2657,27 +2662,27 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="14"/>
         <source>Module</source>
-        <translation type="unfinished"></translation>
+        <translation>Module</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="20"/>
         <source>Informations</source>
-        <translation type="unfinished">Informationen</translation>
+        <translation>Informationen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="96"/>
         <source>Arguments</source>
-        <translation type="unfinished">Argumente</translation>
+        <translation>Argumente</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="111"/>
         <source>Activate</source>
-        <translation type="unfinished">Aktiviert</translation>
+        <translation>Aktiviert</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="118"/>
         <source>Description</source>
-        <translation type="unfinished">Beschreibung</translation>
+        <translation>Beschreibung</translation>
     </message>
 </context>
 <context>
@@ -2685,12 +2690,12 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../api/gui/widget/generateModuleShape.py" line="150"/>
         <source>Configuration error</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurationsfehler</translation>
     </message>
     <message>
         <location filename="../../../api/gui/widget/generateModuleShape.py" line="151"/>
         <source>An error was detected in the configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wurde ein Fehler in der Konfiguration gefunden</translation>
     </message>
 </context>
 <context>
@@ -2698,62 +2703,62 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="14"/>
         <source>Browser</source>
-        <translation type="unfinished">Browser</translation>
+        <translation>Browser</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="25"/>
         <source>Open in new tab</source>
-        <translation type="unfinished">In einem neuen Tab öffnen</translation>
+        <translation>In einem neuen Tab öffnen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="34"/>
         <source>Open</source>
-        <translation type="unfinished">Öffnen</translation>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="46"/>
         <source>Open with</source>
-        <translation type="unfinished">Öffnen mit</translation>
+        <translation>Öffnen mit</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="58"/>
         <source>Hex viewer</source>
-        <translation type="unfinished">Hex-Betrachter</translation>
+        <translation>Hex-Betrachter</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="70"/>
         <source>Extract</source>
-        <translation type="unfinished">Extrahiere</translation>
+        <translation>Extrahiere</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="78"/>
         <source>Relevant module</source>
-        <translation type="unfinished">relevante Module</translation>
+        <translation>relevante Module</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="87"/>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Lesezeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="90"/>
         <source>Add nodes to bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoten zum Lesezeichen hinzufügen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="98"/>
         <source>Open parent folder</source>
-        <translation type="unfinished"></translation>
+        <translation>übergeordnetes Verzeichnis öffnen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="107"/>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="110"/>
         <source>Tag nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungsknoten</translation>
     </message>
 </context>
 <context>
@@ -2789,27 +2794,27 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="136"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="156"/>
         <source>Query name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name der Abfrage</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="165"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviert</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="178"/>
         <source>Query</source>
-        <translation type="unfinished"></translation>
+        <translation>Abfrage</translation>
     </message>
 </context>
 <context>
@@ -2817,82 +2822,82 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="26"/>
         <source>Quick search</source>
-        <translation type="unfinished"></translation>
+        <translation>Schnellsuche</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="59"/>
         <source>Wildcard</source>
-        <translation type="unfinished">Jokerzeichen</translation>
+        <translation>Jokerzeichen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="64"/>
         <source>Regexp</source>
-        <translation type="unfinished"></translation>
+        <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="69"/>
         <source>Fuzzy</source>
-        <translation type="unfinished"></translation>
+        <translation>unscharf</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="74"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>fest</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="79"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>eigene</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="97"/>
         <source>Types : </source>
-        <translation type="unfinished"></translation>
+        <translation>Typen: </translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="146"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="181"/>
         <source>Advanced search</source>
-        <translation type="unfinished">Erweiterte Suche</translation>
+        <translation>Erweiterte Suche</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="217"/>
         <source>Options</source>
-        <translation type="unfinished">Optionen</translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="238"/>
         <source>Search from root</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche vom Wurzelverzeichnis starten</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="257"/>
         <source>0</source>
-        <translation type="unfinished"></translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="294"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="314"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Stopp</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="267"/>
         <source>Found</source>
-        <translation type="unfinished"></translation>
+        <translation>  gefunden</translation>
     </message>
 </context>
 <context>
@@ -2900,22 +2905,22 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/selection_actions.ui" line="14"/>
         <source>Browser</source>
-        <translation type="unfinished">Browser</translation>
+        <translation>Browser</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/selection_actions.ui" line="22"/>
         <source>Select all</source>
-        <translation type="unfinished">alle auswählen</translation>
+        <translation>alle auswählen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/selection_actions.ui" line="27"/>
         <source>Unselect all</source>
-        <translation type="unfinished"></translation>
+        <translation>gesamte Auswahl aufheben</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/selection_actions.ui" line="32"/>
         <source>Clear selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche Auswahl</translation>
     </message>
 </context>
 <context>
@@ -2923,7 +2928,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/utils/menu.py" line="89"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswahl</translation>
     </message>
 </context>
 <context>
@@ -2931,7 +2936,7 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/utils/menu.py" line="42"/>
         <source>Manage tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Markierungen verwalten</translation>
     </message>
 </context>
 </TS>
