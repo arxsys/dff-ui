@@ -125,8 +125,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         if self.last_state is not None:
             self.maximizeDockwidget()
-        dockwidget = self.createDockWidget(widget, widget.windowTitle())
-        docIndex, docTitle = self.getWidgetName(widget.windowTitle())
+        if widget.windowTitle() != "":
+          wname = widget.windowTitle()
+        else:
+          wname = widget.name
+        dockwidget = self.createDockWidget(widget, wname)
+        docIndex, docTitle = self.getWidgetName(wname)
         dockwidget.setWindowTitle(QString.fromUtf8(docTitle))
         self.connect(dockwidget, SIGNAL("resizeEvent"), widget.resize)
 
