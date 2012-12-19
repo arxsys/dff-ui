@@ -16,7 +16,6 @@ set(widget_srcs
   __init__.py
   help.py
   taskmanager.py
-  modif_index.py
   SelectMimeTypes.py
   mime_types.py
   modules.py
@@ -25,9 +24,6 @@ set(widget_srcs
   shell.py
   stdio.py
   preview.py
-  postprocessconfig.py
-  postprocessconfiganalyse.py
-  postprocessstate.py
 )
 
 install_file(widget ${widget_srcs})
