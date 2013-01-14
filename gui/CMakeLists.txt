@@ -13,13 +13,6 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Solal Jacob <sja@digital-forensic.org>
 
-add_subdirectory(resources)
-add_subdirectory(i18n)
-add_subdirectory(ide)
-add_subdirectory(utils)
-add_subdirectory(widget)
-add_subdirectory(dialog)
-
 set(gui_srcs
   __init__.py
   gui.py
@@ -30,3 +23,11 @@ set(gui_srcs
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/gui.py ${CMAKE_CURRENT_BINARY_DIR}/gui.py)
 
 install_file(gui ${gui_srcs})
+
+add_subdirectory(resources)
+add_subdirectory(i18n)
+add_subdirectory(ide)
+add_subdirectory(utils)
+add_subdirectory(widget)
+add_subdirectory(dialog)
+

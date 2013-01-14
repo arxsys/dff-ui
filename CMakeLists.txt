@@ -13,10 +13,6 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Solal Jacob <sja@digital-forensic.org>
 
-
-add_subdirectory(console)
-add_subdirectory(gui)
-
 set(ui_srcs
   __init__.py
   history.py
@@ -28,3 +24,6 @@ set(ui_srcs
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ui.py ${CMAKE_CURRENT_BINARY_DIR}/ui.py)
 
 install_file(ui ${ui_srcs})
+
+add_subdirectory(console)
+add_subdirectory(gui)
