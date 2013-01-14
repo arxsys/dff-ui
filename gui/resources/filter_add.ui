@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add custom filter queries</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,100,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,100,0">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,50">
      <item>
@@ -66,13 +66,6 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="requestLayout"/>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLineEdit" name="filterResult"/>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
