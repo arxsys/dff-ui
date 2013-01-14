@@ -13,7 +13,7 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 
 
-set(console_srcs
+install_file(
   __init__.py
   complete_raw_input.py
   completion.py
@@ -21,5 +21,3 @@ set(console_srcs
   line_to_arguments.py
   utils.py
 )
-
-install_file(console ${console_srcs})

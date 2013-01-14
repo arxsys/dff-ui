@@ -13,12 +13,10 @@
 #  Solal Jacob <sja@digital-forensic.org>
 
 
-set(utilsGui_srcs
+install_file(
   __init__.py
   action.py
   menu.py
   menumanager.py
   utils.py
 )
-
-install_file(utilsGui ${utilsGui_srcs})

@@ -13,7 +13,7 @@
 #  Jeremy Mounier <jmo@digital-forensic.org>
 
 
-set(ide_srcs
+install_file(
   editor.py
   ide.py
   highlighter.py
@@ -23,6 +23,4 @@ set(ide_srcs
   messagebox.py
   idewizard.py
 )
-
-install_file(ide ${ide_srcs})
 

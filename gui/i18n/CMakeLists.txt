@@ -30,8 +30,4 @@ foreach(LANGUAGE ${DFF_SUPPORTED_LANGUAGES})
     )
 endforeach(LANGUAGE ${DFF_SUPPORTED_LANGUAGES})
 
-set(i18n_srcs
-  ${QM_OUTPUT_FILES}
-)
-
-install_file(i18n ${i18n_srcs})
+install_file(${QM_OUTPUT_FILES})

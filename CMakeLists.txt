@@ -13,17 +13,15 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Solal Jacob <sja@digital-forensic.org>
 
-set(ui_srcs
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ui.py ${CMAKE_CURRENT_BINARY_DIR}/ui.py)
+
+install_file(
   __init__.py
   history.py
   redirect.py
   ui.py
   conf.py
 )
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ui.py ${CMAKE_CURRENT_BINARY_DIR}/ui.py)
-
-install_file(ui ${ui_srcs})
 
 add_subdirectory(console)
 add_subdirectory(gui)

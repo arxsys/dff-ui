@@ -12,7 +12,7 @@
 # Author(s):
 #  Solal Jacob <sja@digital-forensic.org>
 
-set(widget_srcs
+install_file(
   __init__.py
   help.py
   taskmanager.py
@@ -25,5 +25,3 @@ set(widget_srcs
   stdio.py
   preview.py
 )
-
-install_file(widget ${widget_srcs})

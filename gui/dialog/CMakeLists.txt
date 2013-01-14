@@ -13,11 +13,8 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Christophe Malinge <cma@digital-forensic.org>
 
-set(ui_dialog_srcs
+install_file(
   __init__.py
   dialog.py
   preferences.py
 )
-
-install_file(ui_dialog ${ui_dialog_srcs})
-

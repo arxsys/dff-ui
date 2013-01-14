@@ -13,16 +13,14 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Solal Jacob <sja@digital-forensic.org>
 
-set(gui_srcs
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/gui.py ${CMAKE_CURRENT_BINARY_DIR}/gui.py)
+
+install_file(
   __init__.py
   gui.py
   mainwindow.py
   translator.py
 )
-
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/gui.py ${CMAKE_CURRENT_BINARY_DIR}/gui.py)
-
-install_file(gui ${gui_srcs})
 
 add_subdirectory(resources)
 add_subdirectory(i18n)
