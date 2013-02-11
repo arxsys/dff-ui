@@ -13,14 +13,17 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Solal Jacob <sja@digital-forensic.org>
 
-import sys
-import os
-import getopt
+import sys, os, getopt
+from distutils.sysconfig import get_python_lib
 
 from dff.api.loader.loader import loader 
-
 from dff.ui.conf import Conf
 from dff.ui.redirect import RedirectIO
+
+# ensure dist-packages will be loaded be pyshared on Debian
+# else private modules won't be found
+if not os.path.exists(os.path.join("dff", "modules")) and os.path.exists(os.path.join(get_python_lib(), "dff")):
+    sys.path.insert(0, os.path.join(get_python_lib()))
 
 class UI():
   """This classes manage and let you launch different type of user 
@@ -34,7 +37,19 @@ interfaces"""
   def launch(self, modulesPaths = None):
      print 'This method must be overwritten by an inherited classes'
 
+  def modulesLocalPath(self, modulesPaths):
+     modulesLocalPath = []
+     for modulesPath in modulesPaths:
+        if os.name != "posix":
+          modulesPath = modulesPath.replace('/', '\\')
+        if os.path.exists(modulesPath):
+          modulesLocalPath.append(modulesPath)
+        else:
+          moduleLocalPath.append(os.path.join(get_pythonlib(), modulesPath)) 
+     return modulesLocalPath
+
   def loadModules(self, modulesPaths, displayOutput = None):
+     modulesPaths = self.modulesLocalPath(modulesPaths)
      self.loader.do_load(modulesPaths, displayOutput, reload = False)
 
 class Usage():
