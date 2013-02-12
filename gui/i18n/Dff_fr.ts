@@ -1066,7 +1066,7 @@
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="125"/>
         <source>Open evidence</source>
-        <translation>Ouvrir une conteneur</translation>
+        <translation>Ouvrir un conteneur</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="137"/>
