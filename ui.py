@@ -45,7 +45,7 @@ interfaces"""
         if os.path.exists(modulesPath):
           modulesLocalPath.append(modulesPath)
         else:
-          moduleLocalPath.append(os.path.join(get_pythonlib(), modulesPath)) 
+          modulesLocalPath.append(os.path.join(get_python_lib(), modulesPath)) 
      return modulesLocalPath
 
   def loadModules(self, modulesPaths, displayOutput = None):
