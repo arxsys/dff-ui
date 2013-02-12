@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>About</name>
     <message>
@@ -214,7 +215,7 @@
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
         <source>Browser</source>
-        <translation type="unfinished">Navigateur</translation>
+        <translation>Navigateur</translation>
     </message>
 </context>
 <context>
@@ -315,7 +316,7 @@
     <message>
         <location filename="../../../ui/gui/resources/devicesdialog.ui" line="30"/>
         <source>Select Device</source>
-        <translation>AJouter un périphérique locale</translation>
+        <translation>AJouter un périphérique local</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/devicesdialog.ui" line="84"/>
@@ -530,7 +531,7 @@
     <message>
         <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="69"/>
         <source>Wildcard</source>
-        <translation>Joker</translation>
+        <translation>Wildcard</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="77"/>
@@ -568,7 +569,7 @@
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="17"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="26"/>
@@ -618,7 +619,7 @@
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="79"/>
         <source>Fuzzy</source>
-        <translation>Fuzzy</translation>
+        <translation>Approximatif</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_requests.ui" line="84"/>
@@ -829,7 +830,7 @@
     <message>
         <location filename="../../../ui/gui/resources/idewizard.ui" line="213"/>
         <source>Author&apos;s electronic mail:</source>
-        <translation>Addresse électronique de l&apos;auteur :</translation>
+        <translation>Adresse électronique de l&apos;auteur :</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/ide/idewizard.py" line="58"/>
@@ -1065,7 +1066,7 @@
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="125"/>
         <source>Open evidence</source>
-        <translation>Ouvrir une image</translation>
+        <translation>Ouvrir une conteneur</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="137"/>
@@ -1104,7 +1105,7 @@
         <location filename="../../../ui/gui/utils/menumanager.py" line="247"/>
         <source>the following nodes could not be opened with Hex viewer because they are either empty or folders
 </source>
-        <translation>les nœuds suivants ne peuvent être ouverts avec le visualiseur hexadécimal car ce sont des répertoires ou car ils sont vides</translation>
+        <translation>les nœuds suivants ne peuvent être ouverts avec le visualiseur hexadécimal car ce sont des répertoires ou ils sont vides</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="189"/>
@@ -1125,7 +1126,7 @@
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="218"/>
         <source>This module was already applied with the same configuration ! Do you want to apply it again ?</source>
-        <translation>Ce module a déjà été appliquée avec la même configuration! Voulez-vous l&apos;appliquer à nouveau?</translation>
+        <translation>Ce module a déjà été appliquée avec la même configuration ! Voulez-vous l&apos;appliquer à nouveau?</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
@@ -1574,7 +1575,7 @@
     <message>
         <location filename="../../../ui/gui/resources/preferences.ui" line="362"/>
         <source>Please select in which directory you want to save indexes&apos; files. If those directories do not exist they will be created when the changes are applied.</source>
-        <translation>Sélectionner s&apos;il vous plaît l&apos;emplacement dans lequel vous souhaitez sauvegarder les fichier d&apos;index. Si ces répertoires n&apos;existent pas ils seront crées une fois les changements appliqués.</translation>
+        <translation>Sélectionner s&apos;il vous plaît l&apos;emplacement dans lequel vous souhaitez sauvegarder les fichier d&apos;index. Si ces répertoires n&apos;existent pas ils seront créés une fois les changements appliqués.</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/preferences.ui" line="56"/>
@@ -1645,7 +1646,7 @@
     <message>
         <location filename="../../../ui/gui/widget/taskmanager.py" line="46"/>
         <source>Finish</source>
-        <translation>Terminer</translation>
+        <translation>Terminé</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/widget/taskmanager.py" line="47"/>
@@ -2021,7 +2022,7 @@
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="75"/>
         <source>Group attributes by</source>
-        <translation>Groupper les attributes par</translation>
+        <translation>Grouper les attributes par</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="81"/>
@@ -2036,7 +2037,7 @@
     <message>
         <location filename="../../../ui/gui/resources/select_attributes.ui" line="117"/>
         <source>Generating attribute list</source>
-        <translation>Générer la list d&apos;attributs</translation>
+        <translation>Générer la liste d&apos;attributs</translation>
     </message>
 </context>
 <context>
@@ -2070,7 +2071,7 @@
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="63"/>
         <source>No nodes was selected in the browser.</source>
-        <translation>Aucun noeud n&apos;a été sélectionné dans l&apos;explorateur.</translation>
+        <translation>Aucun noeud n&apos;a été sélectionné dans le navigateur.</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="64"/>
@@ -2080,7 +2081,7 @@
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="65"/>
         <source>No tags was selected in the selected nodes tags list.</source>
-        <translation>Aucun tags n&apos;a été sélectionné dans la liste des tags disponible.</translation>
+        <translation>Aucun tags n&apos;a été sélectionné dans la liste des tags disponibles.</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
@@ -2090,7 +2091,7 @@
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="67"/>
         <source>Are you sure ? This will delete this tag for all nodes in the VFS !</source>
-        <translation>Etes-vous sûr? Ceci suprimera tous les tags pour tous les noeuds du VFS !</translation>
+        <translation>Etes-vous sûr? Ceci supprimera tous les tags pour tous les noeuds du VFS !</translation>
     </message>
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
@@ -2100,7 +2101,7 @@
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
         <source>This is a default tag it cannot be deleted. All tagged VFS nodes was untagged.</source>
-        <translation>Ceci est un tag par default il ne peut être suprimer.Toutes les tags des noeuds du VFS on était supprimer.  </translation>
+        <translation>Ceci est un tag par défaut, il ne peut être supprimé.Tous les tags des noeuds du VFS ont été supprimé.  </translation>
     </message>
 </context>
 <context>
@@ -2114,8 +2115,8 @@
         <location filename="../../../ui/gui/resources/tags.ui" line="40"/>
         <source>Add and remove tags from selected nodes
 Add new or delete existings tags (Double-click to edit)</source>
-        <translation>Ajoute et enleve des tags pour les noeuds sélectionnés 
-Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifier) </translation>
+        <translation>Ajoute et enlève des tags pour les noeuds sélectionnés 
+Créer de nouveaux tags ou supprimer ceux déjà existants. (Double-clickez pour modifier) </translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/tags.ui" line="68"/>
@@ -2130,7 +2131,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/tags.ui" line="89"/>
         <source>Available tags</source>
-        <translation>Tags disponible</translation>
+        <translation>Tags disponibles</translation>
     </message>
 </context>
 <context>
@@ -2240,7 +2241,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/applymodule.ui" line="36"/>
         <source>Apply module</source>
-        <translation>Application module</translation>
+        <translation>Appliquer un module</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/applymodule.ui" line="42"/>
@@ -2278,7 +2279,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/dico_manager.ui" line="32"/>
@@ -2326,7 +2327,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/tagedit.ui" line="14"/>
         <source>Edit tag</source>
-        <translation>Modification de la balise</translation>
+        <translation>Modifier la balise</translation>
     </message>
 </context>
 <context>
@@ -2390,7 +2391,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_attributes.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
 </context>
 <context>
@@ -2398,7 +2399,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_bar.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
 </context>
 <context>
@@ -2406,7 +2407,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_conjunction.ui" line="27"/>
@@ -2434,7 +2435,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_dico.ui" line="57"/>
@@ -2467,7 +2468,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="27"/>
@@ -2520,17 +2521,17 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="27"/>
         <source>Wildcard</source>
-        <translation>Wildcard</translation>
+        <translation>Joker</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="32"/>
         <source>Reg-exp</source>
-        <translation>Expression régulière</translation>
+        <translation>Reg-exp</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_matchmode.ui" line="37"/>
@@ -2553,7 +2554,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_mime.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mime.ui" line="36"/>
@@ -2574,12 +2575,12 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="37"/>
         <source>  Filter activated</source>
-        <translation>Filtre activer</translation>
+        <translation>Filtre activé</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_mode.ui" line="44"/>
@@ -2597,7 +2598,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_only.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_only.ui" line="27"/>
@@ -2615,22 +2616,22 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="27"/>
         <source>Is less than</source>
-        <translation>Est inférieure à</translation>
+        <translation>Est inférieur à</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="32"/>
         <source>Is less than or equal to</source>
-        <translation>Est inférieure ou égale à</translation>
+        <translation>Est inférieur ou égale à</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="37"/>
         <source>Is equal to</source>
-        <translation>Est égale à</translation>
+        <translation>Est égal à</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="42"/>
@@ -2645,7 +2646,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="52"/>
         <source>Is greater than</source>
-        <translation>Est supérieure à</translation>
+        <translation>Est supérieur à</translation>
     </message>
 </context>
 <context>
@@ -2653,7 +2654,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_tagwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_tagwidget.ui" line="26"/>
@@ -2666,7 +2667,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_widget.ui" line="45"/>
@@ -2767,7 +2768,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/modulebrowserdialog.ui" line="14"/>
         <source>Module browser</source>
-        <translation>Navigateur de module</translation>
+        <translation>Navigateur de modules</translation>
     </message>
 </context>
 <context>
@@ -2922,7 +2923,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="136"/>
@@ -2950,7 +2951,7 @@ Créée de nouveaux tags ou suprimme les existants. (Double-clickez pour modifie
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="20"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/search_panel.ui" line="26"/>
