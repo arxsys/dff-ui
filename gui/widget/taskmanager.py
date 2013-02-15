@@ -71,7 +71,7 @@ class Processus(QTreeWidget, Ui_TaskManager):
 	    item.setText(1, str(proc.name))
           if item.text(2) != self.tr(proc.state):
             item.setText(2, self.tr(proc.state))
-            if item.text(3) != str(proc.stateinfo):
+          if item.text(3) != str(proc.stateinfo):
 	    item.setText(3, str(proc.stateinfo))
 	  duration = self.procDuration(proc)
 	  item.setText(4, str(duration))
