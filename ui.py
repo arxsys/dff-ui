@@ -58,7 +58,7 @@ Usage: """ + sys.argv[0] + """ [options]
 Options:
   -v      --version                  display current version
   -g      --graphical                launch graphical interface
-  -t      --test=NAME	             start a specific test
+  -b      --batch=FILENAME	     executes batch contained in FILENAME
   -l      --language=LANG            use LANG as interface language
   -h      --help                     display this help message
   -d      --debug                    redirect IO to system console
