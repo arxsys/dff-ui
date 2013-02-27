@@ -159,11 +159,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
-        <source>Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="27"/>
         <source>Icons</source>
         <translation type="unfinished"></translation>
@@ -176,6 +171,11 @@
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="165"/>
         <source>Edit the columns attributes of the detailed view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
+        <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -346,12 +346,12 @@
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="391"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="391"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
         <source>Please, specify a query name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -820,22 +820,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="412"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
         <source>Error while loading help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="413"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="414"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
         <source>Not an help file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="415"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="419"/>
         <source>Documentation path not found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1002,17 +1002,17 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="335"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="275"/>
         <source>Create directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="336"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="276"/>
         <source>Directory creation failure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="337"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="277"/>
         <source>History file is not writable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1154,6 +1154,24 @@
     </message>
 </context>
 <context>
+    <name>Processus</name>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="45"/>
+        <source>Fail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="46"/>
+        <source>Finish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="47"/>
+        <source>Running</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PropertyTable</name>
     <message>
         <location filename="../../../api/gui/widget/propertytable.py" line="142"/>
@@ -1244,12 +1262,12 @@
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="159"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="159"/>
         <source>Please, specify your query</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1579,11 +1597,6 @@ Add new or delete existings tags (Double-click to edit)</source>
 <context>
     <name>filterAdd</name>
     <message>
-        <location filename="../../../ui/gui/resources/filter_add.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../ui/gui/resources/filter_add.ui" line="47"/>
         <source>Create your custom filter</source>
         <translation type="unfinished"></translation>
@@ -1591,6 +1604,11 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/filter_add.ui" line="58"/>
         <source>Filter name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_add.ui" line="14"/>
+        <source>Add custom filter queries</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1941,12 +1959,12 @@ Add new or delete existings tags (Double-click to edit)</source>
 <context>
     <name>layoutManager</name>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="350"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="352"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
         <source>Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2066,28 +2084,33 @@ Add new or delete existings tags (Double-click to edit)</source>
 <context>
     <name>procMB</name>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="170"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="173"/>
         <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="175"/>
         <source>No results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="169"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
         <source>Provided Arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="171"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="174"/>
         <source>Processus Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="168"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="171"/>
         <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="156"/>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

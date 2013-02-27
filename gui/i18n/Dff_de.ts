@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de">
+<!DOCTYPE TS><TS version="2.0" language="de" sourcelanguage="">
 <context>
     <name>About</name>
     <message>
@@ -1415,7 +1414,6 @@
     <message>
         <location filename="../../../api/gui/dialog/tagmanager.py" line="65"/>
         <source>No tags was selected in the selected nodes tags list.</source>
-        <translatorcomment>Hat jemand eine bessere Formulierung?</translatorcomment>
         <translation>Keine Kennzeichnung(en) aus der Liste vorhandenen Kennzeichnungen der selektierten Knoten ausgewählt.</translation>
     </message>
     <message>
@@ -2020,12 +2018,12 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
 <context>
     <name>layoutManager</name>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="350"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="352"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
         <source>Directory</source>
         <translation>Verzeichnis</translation>
     </message>
@@ -2139,7 +2137,6 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
     <message>
         <location filename="../../../ui/gui/resources/nodeactions.ui" line="110"/>
         <source>Tag nodes</source>
-        <translatorcomment>Das geht bestimmt besser?!</translatorcomment>
         <translation>Kennzeichnungsknoten</translation>
     </message>
 </context>

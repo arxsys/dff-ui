@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
 <context>
     <name>About</name>
     <message>
@@ -491,12 +490,12 @@
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="391"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="391"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
         <source>Please, specify a query name</source>
         <translation>Veuillez,spécifier un nom de requête </translation>
     </message>
@@ -1034,22 +1033,22 @@
         <translation type="obsolete">Documentation de DFF</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="412"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
         <source>Error while loading help</source>
         <translation>Erreur durant le chargement de l&apos;aide</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="413"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
         <translation>&lt;br&gt;Vous pouvez consulter l&apos;aide en ligne sur &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="414"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
         <source>Not an help file.</source>
         <translation>N&apos;est pas un fichier d&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="415"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="419"/>
         <source>Documentation path not found.</source>
         <translation>Chemin non trouvé.</translation>
     </message>
@@ -1789,12 +1788,12 @@
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="159"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="159"/>
         <source>Please, specify your query</source>
         <translation>Veuillez,spécifier un nom de requête </translation>
     </message>
@@ -2371,9 +2370,9 @@ Créer de nouveaux tags ou supprimer ceux déjà existants. (Double-clickez pour
 <context>
     <name>filterAdd</name>
     <message>
-        <location filename="../../../ui/gui/resources/filter_add.ui" line="14"/>
+        <location filename="../resources/filter_add.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="obsolete">Dialog</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_add.ui" line="47"/>
@@ -2384,6 +2383,11 @@ Créer de nouveaux tags ou supprimer ceux déjà existants. (Double-clickez pour
         <location filename="../../../ui/gui/resources/filter_add.ui" line="58"/>
         <source>Filter name</source>
         <translation>Nom du filtre</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_add.ui" line="14"/>
+        <source>Add custom filter queries</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2753,12 +2757,12 @@ Créer de nouveaux tags ou supprimer ceux déjà existants. (Double-clickez pour
 <context>
     <name>layoutManager</name>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="350"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="352"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
         <source>Directory</source>
         <translation>Dossier</translation>
     </message>
