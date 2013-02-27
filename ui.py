@@ -65,7 +65,7 @@ Options:
           --verbosity=LEVEL          set verbosity level when debugging [0-3]
   -c      --config=FILEPATH          use config file from FILEPATH
 """
-   VERSION = "1.3.1"
+   VERSION = "1.3.0"
 
    def __init__(self, argv):
      self.argv = argv
