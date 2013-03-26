@@ -83,7 +83,6 @@ class Preferences(QDialog, Ui_PreferencesDialog):
       
       if parent:
           self.app = parent.app
-          print self.app
       else:
           self.app = None
 
