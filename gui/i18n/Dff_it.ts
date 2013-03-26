@@ -1012,22 +1012,22 @@
         <translation type="obsolete">Apri</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="415"/>
         <source>Error while loading help</source>
         <translation>Errore nel caricamento della guida</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
         <translation>&lt;br&gt;Potete consultare la guida online all&apos;indirizzo &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
         <source>Not an help file.</source>
         <translation>Non è un file della guida.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="419"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
         <source>Documentation path not found.</source>
         <translation>Percorso contenente la documentazione non trovato.</translation>
     </message>
@@ -1463,17 +1463,17 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="275"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="272"/>
         <source>Create directory</source>
         <translation>Crea directory</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="276"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="273"/>
         <source>Directory creation failure</source>
         <translation>Creazione della directory fallita</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="277"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="274"/>
         <source>History file is not writable</source>
         <translation>Il file della cronologia non è accessibile in scrittura</translation>
     </message>

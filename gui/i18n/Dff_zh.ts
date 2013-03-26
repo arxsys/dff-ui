@@ -906,22 +906,22 @@
         <translation type="obsolete">DFF文档</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="415"/>
         <source>Error while loading help</source>
         <translation>加载帮助时的错误</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
         <translation>&lt;br&gt;你可以查阅在线帮助 &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
         <source>Not an help file.</source>
         <translation>不是一个帮助文件.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="419"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
         <source>Documentation path not found.</source>
         <translation>文档路径没有找到.</translation>
     </message>
@@ -1225,17 +1225,17 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="275"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="272"/>
         <source>Create directory</source>
         <translation>创建目录</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="276"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="273"/>
         <source>Directory creation failure</source>
         <translation>目录创建失败</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="277"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="274"/>
         <source>History file is not writable</source>
         <translation>历史文件不可写</translation>
     </message>

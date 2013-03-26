@@ -83,6 +83,7 @@ class Preferences(QDialog, Ui_PreferencesDialog):
       
       if parent:
           self.app = parent.app
+          print self.app
       else:
           self.app = None
 
@@ -253,11 +254,7 @@ class Preferences(QDialog, Ui_PreferencesDialog):
         Installs translator using new language.
         """
         self.conf.setLanguage(text)
-        self.app.removeTranslator(self.translator.getGeneric())
-        self.app.removeTranslator(self.translator.getDFF())
         self.translator.loadLanguage()
-        self.app.installTranslator(self.translator.getGeneric())
-        self.app.installTranslator(self.translator.getDFF())
 
     def changeEvent(self, event):
         """ Search for a language change event
