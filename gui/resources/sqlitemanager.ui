@@ -151,6 +151,16 @@
     <string>Extract Binary (BLOB)</string>
    </property>
   </action>
+  <action name="actionDecode_date_column">
+   <property name="text">
+    <string>Decode date (column)</string>
+   </property>
+  </action>
+  <action name="actionReset_column">
+   <property name="text">
+    <string>Reset column</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="gui.qrc"/>
