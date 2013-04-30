@@ -57,5 +57,6 @@ gui_resources_files(
   selection_actions.ui
   dico_manager.ui
   gui.qrc
+  pdf_toolbar.ui
   __init__.py
 )

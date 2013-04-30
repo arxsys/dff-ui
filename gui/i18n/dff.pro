@@ -61,6 +61,7 @@ FORMS           += ../../../ui/gui/resources/tagedit.ui
 FORMS           += ../../../ui/gui/resources/tags.ui
 FORMS           += ../../../ui/gui/resources/taskmanager.ui
 FORMS           += ../../../ui/gui/resources/varianttreewidget.ui
+FORMS           += ../../../ui/gui/resources/pdf_toolbar.ui
 
 SOURCES         += ../../../api/gui/widget/propertytable.py
 SOURCES         += ../../../api/gui/widget/dockwidget.py
