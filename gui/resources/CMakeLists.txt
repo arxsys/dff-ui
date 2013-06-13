@@ -56,6 +56,7 @@ gui_resources_files(
   filter_mode.ui
   selection_actions.ui
   dico_manager.ui
+  sqlitemanager.ui
   gui.qrc
   pdf_toolbar.ui
   __init__.py
