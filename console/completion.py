@@ -13,11 +13,73 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Christophe Malinge <cma@digital-forensic.org>
 #
-import sys, os, dircache, utils, re, types
+import sys, os, dircache, utils, re, types, fnmatch
 
 from dff.api.loader.loader import loader
 from dff.api.vfs.vfs import vfs
 from dff.api.types.libtypes import typeId, Argument, Parameter, ConfigManager
+
+
+if os.name == "nt":
+    SPECIAL_CHARS = '<>!&;|}*?[] '
+else:
+    SPECIAL_CHARS = '<>!&;|}\*?[] '
+
+
+def isGlobed(supplied):
+    special = 0
+    globbed = False
+    if supplied:
+        backslash = 0
+        for char in supplied:
+            if backslash:
+                backslash = 0
+            else:
+                if char == "\\":
+                    backslash = 1
+                    continue
+                elif char in "*[?":
+                    globbed = True
+    return globbed
+
+
+def removeEscape(supplied):
+    special = 0
+    result = u""
+    if supplied:
+        backslash = 0
+        for char in supplied:
+            if backslash:
+                backslash = 0
+                if char in SPECIAL_CHARS:
+                    result += char
+                else:
+                    result += "\\" + char
+            else:
+                if char == "\\":
+                    backslash = 1
+                    continue
+                else:
+                    result += char
+    return result
+
+
+def addEscape(supplied):
+    result = u""
+    for char in supplied:
+        if char in SPECIAL_CHARS:
+            result += "\\" + char
+        else:
+            result += char
+    return result
+
+
+def unistr(instr):
+    if type(instr) == types.UnicodeType:
+        return instr.encode('utf-8')
+    else:
+        return str(instr)
+
 
 class Context():
     def __init__(self, DEBUG = False, VERBOSITY = 0):
@@ -44,30 +106,57 @@ class Context():
             print dbg
 
 
+
     def __makeParameter(self, argument, parameter):
+        lret = []
         if argument.type() == typeId.Node:
-            parameter = parameter.replace("\ ", " ")
-            n = self.vfs.getnode(parameter)
-            if n:
-                return n
+            if isGlobed(parameter):
+                parameter = removeEscape(parameter)
+                if parameter.endswith("/"):
+                    path, supplied = os.path.split(parameter[:-1])
+                else:
+                    path, supplied = os.path.split(parameter)
+                root = self.vfs.getnode(path)
+                if root:
+                    children = root.children()
+                    for child in children:
+                        if fnmatch.fnmatch(child.name(), supplied):
+                            lret.append(child)
             else:
-                raise ValueError("Node " + str(parameter)  + " provided to argument < " + argument.name() + " > does not exist")
+                parameter = removeEscape(parameter)
+                n = self.vfs.getnode(unistr(parameter))
+                if n:
+                    lret.append(n)
+                else:
+                    raise ValueError("Node " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
         elif argument.type() == typeId.Path:
-            if parameter[0] != "/":
-                return str(os.getcwd() + "/" + parameter).replace("//", "/")
+            if isGlobed(parameter):
+                parameter = removeEscape(parameter)
+                if parameter.endswith(os.path.sep):
+                    path, supplied = os.path.split(parameter[:-1])
+                else:
+                    path, supplied = os.path.split(parameter)
+                try:
+                    children = dircache.listdir(path)
+                    for child in children:
+                        if fnmatch.fnmatch(child, supplied):
+                            lret.append(unistr(os.path.join(path, child)))
+                except:
+                    raise ValueError("Path " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
             else:
-                return parameter
+                lret.append(unistr(removeEscape(parameter)))
         elif argument.type() == typeId.String:
-            return parameter.replace("\ ", " ")
+            lret.append(unistr(removeEscape(parameter)))
         else:
-            return parameter
+            lret.append(parameter)
+        return lret
 
 
     def makeArguments(self):
         command = {}
         dbg = "\n ==== Context.makeCommand() ===="
         if len(self.badargs) > 0:
-            raise KeyError("cannot generate config for module < " + self.config.origin() + " > The following arguments do not exist: " + str(self.badargs)) 
+            raise KeyError("cannot generate config for module < " + self.config.origin() + " > The following arguments do not exist: " + unistr(self.badargs)) 
         for argname in self.providedArguments.keys():
             argument = self.config.argumentByName(argname)
             parameters = self.providedArguments[argname]
@@ -81,31 +170,33 @@ class Context():
                     pos = match.span()
                     parameter = parameters[previdx:pos[0]]
                     previdx = pos[1]
-                    dbg += "\n    adding parameter: < " + str(parameter) + " > to list"
+                    dbg += "\n    adding parameter: < " + unistr(parameter) + " > to list"
                     try:
                         realparam = self.__makeParameter(argument, parameter)
-                        l.append(realparam)
+                        l.extend(realparam)
                     except:
                         raise
                 if itcount == 0 or previdx != len(parameters):
-                    dbg += "\n    adding parameter: < " + parameters[previdx:] + " > to list"
+                    dbg += "\n    adding parameter: < " + unistr(parameters[previdx:]) + " > to list"
                     try:
-                        realparam = self.__makeParameter(argument, parameters[previdx:])
-                        l.append(realparam)
+                        parameter = parameters[previdx:]
+                        realparam = self.__makeParameter(argument, parameter)
+                        l.extend(realparam)
                     except:
                         raise
-                command[argname] = l
+                command[argname] = [arg for arg in l]
             else:
-                dbg += "\n    adding parameter: < " + str(parameters)
+                ret = unistr(parameters)
+                dbg += "\n    adding parameter: < " + unistr(parameters)
                 try:
-                    realparam = self.__makeParameter(argument, parameters)
+                    realparam = self.__makeParameter(argument, parameters)[0]
                     command[argname] = realparam
                 except:
                     raise
         if self.DEBUG and self.VERBOSITY > 0:
             dbg += "\n    resulting command arguments:"
             for argname in command.keys():
-                dbg += "\n      " + argname + " --> " + str(command[argname])
+                dbg += "\n      " + argname + " --> " + unistr(command[argname])
         self.debug(dbg)
         return command
 
@@ -116,25 +207,26 @@ class Context():
         if self.config != None:
             buff += self.config.origin()
             lparg = len(self.providedArguments)
-            buff += "\n    provided arguments: " + str(lparg)
+            buff += "\n    provided arguments: " + unistr(lparg)
             if lparg != 0:
                 for argname in self.providedArguments.keys():
-                    buff += "\n      " + argname + " --> " + str(self.providedArguments[argname])
+                    ret = unistr(self.providedArguments[argname])
+                    buff += "\n      " + argname + " --> " + ret
             lrarg = len(self.remainingArguments)
-            buff += "\n    remaining arguments: " + str(lrarg)
+            buff += "\n    remaining arguments: " + unistr(lrarg)
             if lrarg != 0:
                 for argname in self.remainingArguments:
                     buff += "\n      " + argname
-            buff += "\n    threaded: " + str(self.threaded)
+            buff += "\n    threaded: " + unistr(self.threaded)
         else:
             buff += " None"
         buff += "\n    currentArgumentScope: "
         if self.currentArgument != None:
-            buff += str(self.currentArgument.name())
+            buff += unistr(self.currentArgument.name())
         else:
             buff += "None"
-        buff += "\n    currentStr: " + self.currentStr
-        buff += "\n    currentStrScope: " + str(self.currentStrScope) 
+        buff += "\n    currentStr: " + unistr(self.currentStr)
+        buff += "\n    currentStrScope: " + unistr(self.currentStrScope)
         return buff
         
 
@@ -158,7 +250,7 @@ class Context():
         if opathes == 1 and onodes == 0 and rnodes == 0 and rpathes == 0:
             self.keylessarg = optionalpathes[0]
         if self.keylessarg != None:
-            dbg += "\n    keylessarg exists and has been setted to < " + str(self.keylessarg.name()) + " >"
+            dbg += "\n    keylessarg exists and has been setted to < " + unistr(self.keylessarg.name()) + " >"
         else:
             dbg += "\n    keylessarg does not exist"
         self.debug(dbg)
@@ -167,7 +259,7 @@ class Context():
     def setCurrent(self, token, pos):
         dbg = "\n ==== Context.setCurrent() ===="
         dbg += "\n    token: " + token
-        dbg += "\n    pos: " + str(pos)
+        dbg += "\n    pos: " + unistr(pos)
         dbg += "\n    currentstrscope: " + token[:pos]
         if len(token.split()) != 0:
             self.currentStr = token
@@ -178,7 +270,7 @@ class Context():
         if self.parsedArgument != None:
             dbg += "\n    parsedArgument != None"
             if self.providedArguments[self.parsedArgument.name()] in [token, None]:
-                dbg += "\n    currentArgument = self.parsedArgument --> " + str(self.parsedArgument.name())
+                dbg += "\n    currentArgument = self.parsedArgument --> " + unistr(self.parsedArgument.name())
                 self.currentArgument = self.parsedArgument
             else:
                 dbg += "\n    currentArgument = None"
@@ -197,7 +289,7 @@ class Context():
                 self.remainingArguments.remove(self.keylessarg.name())
                 self.parsedArgument = self.keylessarg
         elif self.providedArguments[self.parsedArgument.name()] == None:
-            dbg += "\n    parsedArgument exists and not setted yet. " + str(self.parsedArgument.name()) + " --> " + token
+            dbg += "\n    parsedArgument exists and not setted yet. " + unistr(self.parsedArgument.name()) + " --> " + token
             self.providedArguments[self.parsedArgument.name()] = token
             self.remainingArguments.remove(self.parsedArgument.name())
         else:
@@ -208,7 +300,7 @@ class Context():
 
     def __argumentToken(self, token):
         dbg = "\n ==== Context.__argumentToken() ===="
-        argument = self.config.argumentByName(token[2:])
+        argument = self.config.argumentByName(unistr(token[2:]))
         if argument != None:
             argname = argument.name()
             dbg += "\n      argument found: " + argname
@@ -237,7 +329,7 @@ class Context():
                 argname = self.parsedArgument.name()
                 if self.providedArguments[argname] == None:
                     if token[2:] not in self.remainingArguments:
-                        dbg += "\n    currentArgument exists and not setted yet. " + str(argname) + " --> " + token
+                        dbg += "\n    currentArgument exists and not setted yet. " + unistr(argname) + " --> " + token
                         self.remainingArguments.remove(argname)
                         self.providedArguments[argname] = token
                     else:
@@ -254,7 +346,7 @@ class Context():
 
 
     def configToken(self, token):
-        self.config = self.confmanager.configByName(token)
+        self.config = self.confmanager.configByName(unistr(token))
         if self.config != None:
             self.disambiguator()
             argsname = self.config.argumentsName()
@@ -265,7 +357,7 @@ class Context():
     def addToken(self, token, curpos = -1):
         dbg = "\n ==== Context.addToken() ===="
         dbg += "\n    token: " + token
-        dbg += "\n    curpos: " + str(curpos)
+        dbg += "\n    curpos: " + unistr(curpos)
         self.tokens.append(token)
         self.debug(dbg)
         if self.config == None:
@@ -311,8 +403,8 @@ class LineParser():
         dbg = "\n ==== LineParser.manageShellKeys() ===="
         if key == "&":
             dbg += "\n    & found"
-            dbg += "\n    begidx: " + str(self.begidx)
-            dbg += "\n    endidx: " + str(endidx)
+            dbg += "\n    begidx: " + unistr(self.begidx)
+            dbg += "\n    endidx: " + unistr(endidx)
             self.contexts[self.ctxpos].threaded = True
             dbg += "\n    incrementing ctxpos"
             ctx = Context(self.DEBUG, self.VERBOSITY - 1)
@@ -342,17 +434,17 @@ class LineParser():
                 try:
                     commands.append((context.config.origin(), context.makeArguments(), context.threaded, ""))
                 except KeyError, error:
-                    commands.append((context.config.origin(), None, context.threaded, "module < " + context.config.origin() + " >\n" + str(error)))
+                    commands.append((context.config.origin(), None, context.threaded, "module < " + context.config.origin() + " >\n" + unistr(error)))
                 except ValueError, error:
-		    commands.append((context.config.origin(), None, context.threaded, "module < " + context.config.origin() + " >\n" + str(error)))
+		    commands.append((context.config.origin(), None, context.threaded, "module < " + context.config.origin() + " >\n" + unistr(error)))
             elif len(context.tokens) != 0:
-                commands.append((None, None, None, str("module < "+ context.tokens[0] + " > does not exist")))
+                commands.append((None, None, None, str("module < "+ unistr(context.tokens[0]) + " > does not exist")))
         if self.DEBUG and self.VERBOSITY:
             dbg += "\n    stacked commands:"
             for command in commands:
-                dbg += "\n      command name: " + command[0]
-                dbg += "\n      arguments: " + str(command[1])
-                dbg += "\n      to thread: " + str(command[2]) + "\n"
+                dbg += "\n      command name: " + unistr(command[0]) if command[0] else ""
+                dbg += "\n      arguments: " + unistr(command[1]) if command[1] else ""
+                dbg += "\n      to thread: " + unistr(command[2]) if command[2] else "" + "\n"
         self.debug(dbg)
         return commands
 
@@ -369,7 +461,7 @@ class LineParser():
 
         dbg = "\n ==== LineParser.makeContext() ===="
         dbg += "\n    line: |" + line + "|"
-        dbg += "\n    begidx: " + str(begidx)
+        dbg += "\n    begidx: " + unistr(begidx)
         if len(line) != 0:
             ctx = Context(self.DEBUG, self.VERBOSITY - 1)
             self.contexts.append(ctx)
@@ -423,11 +515,11 @@ class LineParser():
             if self.DEBUG and self.VERBOSITY > 0:
                 dbg += "\n    current context: "
                 if self.contexts[self.scopeCtx].config:
-                    dbg += str(self.contexts[self.scopeCtx].config.origin())
+                    dbg += unistr(self.contexts[self.scopeCtx].config.origin())
                 else:
                     dbg += "None"
-                dbg += "\n    scopeCtx: " + str(self.scopeCtx)
-                dbg += "\n    ctxpox: " + str(self.ctxpos)
+                dbg += "\n    scopeCtx: " + unistr(self.scopeCtx)
+                dbg += "\n    ctxpox: " + unistr(self.ctxpos)
                 print dbg
                 for ctx in self.contexts:
                     print ctx.dump()
@@ -453,17 +545,17 @@ class Completion():
             resstr = self.context.currentStr[:self.context.currentStrScope]
         else:
             endidx = self.context.currentStrScope
-            dbg += "\n    cursor pos in current string " + str(endidx)
+            dbg += "\n    cursor pos in current string " + unistr(endidx)
             iterator = re.finditer('(?<!\\\)\,', self.context.currentStr)
             startidx = 0
             for match in iterator:
                 pos = match.span()
-                dbg += "\n    " + str(pos)
-                dbg += "\n    " + str(endidx)
+                dbg += "\n    " + unistr(pos)
+                dbg += "\n    " + unistr(endidx)
                 if pos[1] <= endidx:
                     startidx = pos[1]
-            dbg += "\n    startidx: " + str(startidx)
-            dbg += "\n    endidx: " + str(endidx)
+            dbg += "\n    startidx: " + unistr(startidx)
+            dbg += "\n    endidx: " + unistr(endidx)
             resstr = self.context.currentStr[startidx:endidx]
         dbg += "\n    resulting str: " + resstr
         self.debug(dbg)
@@ -474,34 +566,21 @@ class Completion():
         rpath = ""
         supplied = ""
         children = None
+        sep = os.path.sep
         path = self.currentParameter()
-        if path == "" or path[0] != "/":
-            if ctype == typeId.Node:
-                rpath = self.vfs.getcwd().absolute() + "/"
-            else:
-                rpath = os.getcwd() + "/"
-            path = path.replace("//", "/")
-            idx = path.rfind("/")
-            if idx != -1:
-                supplied = path[idx+1:]
-                rpath += path[:idx]
-            else:
-                supplied = path
-        else:
-            path = path.replace("//", "/")
-            idx = path.rfind("/")
-            if idx == -1:
-                supplied = ""
-                rpath = path
-            else:
-                supplied = path[idx+1:]
-                rpath += path[:idx+1]
-        rpath = rpath.replace("\ ", " ")
-        rpath = rpath.replace("//", "/")
-        supplied = supplied.replace("\ ", " ")
-        supplied = supplied.replace("//", "/")
         if ctype == typeId.Node:
-            node = self.vfs.getnode(rpath)
+            sep = "/"
+            if path == "" or path[0] != "/":
+                path = os.path.join(self.vfs.getcwd().absolute(), path)
+            rpath, supplied = os.path.split(path)
+        else:
+            rpath, supplied = os.path.split(path)
+        rpath = os.path.abspath(os.path.normpath(removeEscape(rpath)))
+        if path.endswith(sep) or path == "":
+            rpath = os.path.join(rpath, supplied) + sep
+            supplied = ""
+        if ctype == typeId.Node:
+            node = self.vfs.getnode(unistr(rpath))
             if node:
                 if node.hasChildren():
                     children = node.children()
@@ -509,10 +588,19 @@ class Completion():
                     children = []
         elif os.path.exists(rpath):
             if os.path.isdir(rpath):
-                children = dircache.listdir(rpath)
+                try:
+                    children = dircache.listdir(rpath)
+                except:
+                    children = []
             else:
                 children = []
         return (path, rpath, supplied, children)
+
+
+    def unicodeChild(self, child, _type):
+        child = child if _type == typeId.Path else child.name()
+        return child if type(child) == types.UnicodeType else unicode(child, 'utf-8', 'replace')
+
 
 
     def completePathes(self):
@@ -525,39 +613,57 @@ class Completion():
         ctype = self.context.currentArgument.type()
         itype = self.context.currentArgument.inputType()
         path, rpath, supplied, children = self.setPathContext(ctype)
+        out["supplied"] = supplied
 
         dbg = "\n ==== completePathes() ===="
         if children == None:
             dbg += "\n    cannot complete with provided path"
             self.debug(dbg)
             return ""
-        out["supplied"] = supplied
         dbg += "\n    path: " + path
         dbg += "\n    relative path: " + rpath
         dbg += "\n    supplied str: " + supplied
+        if ctype == typeId.Node:
+            dbg += "\n    children: " + unistr([child.name() for child in children])
+        else:
+            dbg += "\n    children: " + unistr(children)
+        if ctype == typeId.Node:
+            sep = "/"
+        else:
+            sep = os.path.sep
         if len(children) == 0:
-            if rpath == "/":
+            if rpath == sep:
                 if path == "":
-                    out["matches"].append("/")
+                    out["matches"].append(sep)
                 else:
                     out["matches"].append("")
             else:
-                if rpath[-1] != "/":
-                    out["matches"].append("/")
+                if rpath[-1] != sep:
+                    out["matches"].append(sep)
                 else:
                     out["matches"].append("")
             out["matched"] += 1
         else:
+            glob = isGlobed(supplied)
+            match = False
             for child in children:
-                if ctype == typeId.Node:
-                    name = child.name()
-                else:
-                    name = child
-                if supplied == "" or name.startswith(supplied):
-                    if (ctype == typeId.Node and child.hasChildren()) or os.path.isdir(rpath + name):
-                        if len(name + "/") > out["length"]:
-                            out["length"] = len(name + "/")
-                        out["matches"].append(name + "/")
+                name = self.unicodeChild(child, ctype)
+                if glob:
+                    if fnmatch.fnmatch(name, supplied):
+                        match = True
+                elif len(supplied) == 0:
+                    match = True
+                elif len(supplied) == 1 and supplied[0] == "\\":
+                    if name[0] in SPECIAL_CHARS:
+                        match = True
+                elif name.startswith(removeEscape(supplied)):
+                    match = True
+                if match:
+                    match = False
+                    if (ctype == typeId.Node and child.hasChildren()) or (ctype == typeId.Path and os.path.isdir(os.path.join(rpath, name))):
+                        if len(name + sep) > out["length"]:
+                            out["length"] = len(name + sep)
+                        out["matches"].append(name + sep)
                     else:
                         if len(name) > out["length"]:
                             out["length"] = len(name)
@@ -576,7 +682,7 @@ class Completion():
                "length": 1}
         predefs = self.context.currentArgument.parameters()
         for predef in predefs:
-            val = str(predef.value())
+            val = unistr(predef.value())
             if parameter == "" or val.startswith(parameter):
                 if len(val) > out["length"]:
                     out["length"] = len(val)
@@ -617,7 +723,7 @@ class Completion():
 
 
     def completeArguments(self):
-        out = {"type": "key", 
+        out = {"type": "key",
                "required": [],
                "optional": [],
                "length": 1,
@@ -661,26 +767,26 @@ class Completion():
         compfunc = None
         if self.context.currentArgument != None:
             parg = self.context.providedArguments[self.context.currentArgument.name()]
-            dbg += "\n    currentArgument exists: " + str(self.context.currentArgument.name())
-            dbg += "\n    associated parameter: " + str(parg)
+            dbg += "\n    currentArgument exists: " + unistr(self.context.currentArgument.name())
+            dbg += "\n    associated parameter: " + unistr(parg)
             if parg == None or parg == self.context.currentStr:
-                dbg += "\n    completing parameters for argument: " + str(self.context.currentArgument.name())
+                dbg += "\n    completing parameters for argument: " + unistr(self.context.currentArgument.name())
                 if self.context.currentArgument.type() in [typeId.Node, typeId.Path]:
                     compfunc = getattr(self, "completePathes")
                 else:
                     compfunc = getattr(self, "completePredefined")
             else:
-                dbg += "\n    completing argument for currentStr: " + str(self.context.currentStr) 
+                dbg += "\n    completing argument for currentStr: " + unistr(self.context.currentStr)
                 compfunc = getattr(self, "completeArguments")
         else:
             dbg += "\n    no current argument to complete"
             if len(self.context.remainingArguments) > 0:
-                dbg += "\n      remaining arguments exist --> total: " + str(len(self.context.remainingArguments))
+                dbg += "\n      remaining arguments exist --> total: " + unistr(len(self.context.remainingArguments))
                 if self.context.keylessarg != None and self.context.keylessarg.name() in self.context.remainingArguments:
                     req = 0
                     dbg += "\n      keylessarg != None and has not been provided yet"
                     if not self.context.currentStr.startswith("--"):
-                        dbg += "\n      keylessarg < " + str(self.context.keylessarg.name()) + " > can be used as default"
+                        dbg += "\n      keylessarg < " + unistr(self.context.keylessarg.name()) + " > can be used as default"
                         self.context.currentArgument = self.context.keylessarg
                         if self.context.currentArgument.type() in [typeId.Node, typeId.Path]: 
                             compfunc = getattr(self, "completePathes")
@@ -697,12 +803,14 @@ class Completion():
         #self.debug(dbg)
         if compfunc != None:
             matches = compfunc()
-        dbg += "\n    matches:" + str(matches)
+            dbg += "\n    matches:" + unistr(matches)
         self.debug(dbg)
         return matches
 
 
     def complete(self, line, begidx):
+        if type(line) == types.StringType:
+            line = unicode(line, 'utf-8', 'replace')
         self.modules = self.loader.modules
         self.lp.makeContexts(line, begidx)
         self.context = self.lp.currentContext()
@@ -785,7 +893,6 @@ class Completion():
          tag_arg = tag + " " * (max_tag + 2 - len(tag)) + ": "
          sys.stdout.write(tag_arg)
          x = 0
-         #sys.stdout.write(str(len(matches["modules"][tag])))
          for item in matches["matches"][tag]:
            if cur_mod != "":
              if prev_mod != "":
@@ -810,7 +917,7 @@ class Completion():
 
     def insert_path_comp(self, text, matches):
      max_path = matches["length"]
-     cur_path = matches["supplied"].replace("\ ", " ")
+     cur_path = removeEscape(matches["supplied"])
      col = self.get_max_col(0, max_path)
      idx = 0
      filled = 0
@@ -818,15 +925,9 @@ class Completion():
      max_ident = 0
 
      if matches["matched"] == 1:
-       res = self.strdiff(cur_path, matches["matches"][0])
-       comp = matches["matches"][0][res:]
-       i = 0
-       while i != len(comp):
-         if comp[i] == " " and comp[i - 1] != "\\":
-           comp = comp[:i] + "\\" + comp[i:] 
-         i += 1
+       res = self.strdiff(addEscape(cur_path), addEscape(matches["matches"][0]))
+       comp = addEscape(matches["matches"][0])[res:]
        return comp
-
      else:
        x = 0
        for path in matches["matches"]:
@@ -846,14 +947,8 @@ class Completion():
          x += 1
      if cur_path != "":
        comp = prev_path[len(cur_path):max_ident]
-       i = 0
-       while i != len(comp):
-         if comp[i] == " " and comp[i - 1] != "\\":
-           comp = comp[:i] + "\\" + comp[i:] 
-         i += 1
-       return comp
-       #return prev_path[len(cur_path):max_ident]
-     #  return self.get_str(cur_path, prev_path[:same])
+       return addEscape(comp)
+
 
     def get_str(self, text, matches):
      start = len(text)
@@ -870,7 +965,6 @@ class Completion():
             res = maxstr
         else:
             comp = map(lambda x: minstr.startswith(maxstr[:x]), xrange(1, len(maxstr) + 1))
-            #print comp
             idx = comp.index(False)
             res = maxstr[:idx]
         return res

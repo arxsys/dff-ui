@@ -159,7 +159,7 @@ class Console(Cmd, UI):
         self.postloop()
 
     def complete(self, line, begidx):
-	line = str(line).strip('\n')
+	line = unicode(line, 'utf-8', 'replace').strip('\n') if type(line) == types.StringType else line
         self.completion_matches = self.completion.complete(line, begidx)
         try:
             return self.completion_matches

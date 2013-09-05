@@ -34,39 +34,43 @@ class history():
             self.wfile = open(self.path, 'a')
             self.hist = self.rfile.readlines()
             self.rfile.close()
-	  self.current = len(self.hist)
         except IOError:
           if not self.conf.noHistoryFile and not self.conf.noFootPrint:
             self.wfile = open(self.path, 'a')
+        self.current = len(self.hist) - 1 if len(self.hist) != 0 else 0
         return
 
+
     def getnext(self):
-	self.current -= 1
-	if self.current < 0:
-	  self.current = 0
-        try :
-	  cmd = self.hist[self.current]
-        except IndexError:
-	  return None
-        return cmd.strip('\n')
+        cmd = None
+        if len(self.hist) and self.current != len(self.hist) - 1:
+          self.current += 1
+          cmd = self.hist[self.current]
+          return cmd.strip('\n')
+        return cmd
+
 
     def getprev(self):
-	self.current += 1
-	if self.current >= len(self.hist):
-	  self.current = len(self.hist) - 1
-	  return None
- 	cmd = self.hist[self.current]
-	return cmd.strip('\n')
+        cmd = None
+        pos = self.current
+        if len(self.hist) and pos >= 0:
+          cmd = self.hist[pos]
+          cmd.strip('\n')
+          self.current = self.current - 1 if pos != 0 else 0
+        return cmd
+
 
     def save(self):
         if not self.conf.noHistoryFile and not self.conf.noFootPrint:
           self.wfile.close()
 
+
     def add(self, cmd):
         try: 
           self.hist += [ cmd ]
+          self.current = len(self.hist) - 1
           if not self.conf.noHistoryFile and not self.conf.noFootPrint:
-            self.wfile.write(cmd + "\n")
+            self.wfile.write(cmd.encode('utf-8') + "\n")
             self.wfile.flush()
         except IOError:
           print "can't write on history" 
