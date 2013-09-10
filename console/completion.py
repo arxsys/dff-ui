@@ -13,17 +13,84 @@
 #  Frederic Baguelin <fba@digital-forensic.org>
 #  Christophe Malinge <cma@digital-forensic.org>
 #
-import sys, os, dircache, utils, re, types, fnmatch
+import sys, os, dircache, utils, re, types, fnmatch, posixpath
 
 from dff.api.loader.loader import loader
 from dff.api.vfs.vfs import vfs
 from dff.api.types.libtypes import typeId, Argument, Parameter, ConfigManager
+from dff.ui.console.utils import ColumnView, unistr, ConsoleAttributes
+
+SPECIAL_CHARS = '<>!&;|}\*?[] '
+
+def normpath(ipath, sep):
+    lsep = 0
+    ret = u""
+    for c in ipath:
+        if c == sep:
+            if not lsep:
+                 lsep = 1
+                 ret += c
+            else:
+                 continue
+        else:
+            lsep = 0
+            ret += c
+    return ret
 
 
-if os.name == "nt":
-    SPECIAL_CHARS = '<>!&;|}*?[] '
-else:
-    SPECIAL_CHARS = '<>!&;|}\*?[] '
+def unicodeChild(child, _type):
+    child = child if _type == typeId.Path else child.name()
+    return child if type(child) == types.UnicodeType else unicode(child, 'utf-8', 'replace')
+
+
+def toPosixPath(path):
+    path = os.path.expanduser(path)
+    if os.name == "nt":
+       if path == "\\":
+          return path
+       backslash = 0
+       result = u""
+       for c in path:
+          if backslash:
+             backslash = 0
+             if c in SPECIAL_CHARS:
+                result += "\\" + c
+             else:
+                result += "/" + c
+          else:
+             if c == "\\":
+                backslash = 1
+                continue
+             else:
+                result += c
+       if path[-1] == "\\":
+          result += "\\"
+       return result
+    else:
+        return path
+
+
+def splitPath(ipath, ctype):
+    if ipath == "":
+        if ctype != typeId.Node:
+            ipath = toPosixPath(os.path.abspath(""))
+            ipath = unicode(ipath, 'utf-8', 'replace') if type(ipath) != types.UnicodeType else ipath
+            return ipath, u""
+        else:
+            return unicode(vfs().getcwd().absolute(), 'utf-8', 'replace'), u""
+    if ctype == typeId.Node:
+        ipath = posixpath.join(vfs().getcwd().absolute(), ipath) if ipath[0] != "/" else ipath
+    else:
+        ipath = toPosixPath(ipath)
+        if os.name == "nt":
+            if ipath[0] != "/" and os.path.splitdrive(ipath)[0] == "":
+                ipath = posixpath.join(toPosixPath(os.path.abspath("")), ipath)
+        elif not posixpath.isabs(ipath):
+            ipath = posixpath.join(posixpath.abspath(""), ipath)
+    rpath, supplied = posixpath.split(ipath)
+    if rpath != "/":
+        rpath = posixpath.normpath(removeEscape(rpath)) + "/"
+    return rpath, supplied
 
 
 def isGlobed(supplied):
@@ -74,13 +141,6 @@ def addEscape(supplied):
     return result
 
 
-def unistr(instr):
-    if type(instr) == types.UnicodeType:
-        return instr.encode('utf-8')
-    else:
-        return str(instr)
-
-
 class Context():
     def __init__(self, DEBUG = False, VERBOSITY = 0):
         self.DEBUG = DEBUG
@@ -105,47 +165,52 @@ class Context():
         if self.DEBUG and self.VERBOSITY > 0:
             print dbg
 
-
-
     def __makeParameter(self, argument, parameter):
         lret = []
-        if argument.type() == typeId.Node:
-            if isGlobed(parameter):
-                parameter = removeEscape(parameter)
-                if parameter.endswith("/"):
-                    path, supplied = os.path.split(parameter[:-1])
-                else:
-                    path, supplied = os.path.split(parameter)
-                root = self.vfs.getnode(path)
+        ctype = argument.type()
+        if ctype == typeId.Node:
+            path, supplied = splitPath(parameter, ctype)
+            if isGlobed(supplied):
+                root = self.vfs.getnode(unistr(path))
                 if root:
                     children = root.children()
-                    for child in children:
-                        if fnmatch.fnmatch(child.name(), supplied):
-                            lret.append(child)
+                else:
+                    raise ValueError("Base node for globing " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
+                for child in children:
+                    if fnmatch.fnmatch(addEscape(child.name()), supplied):
+                        lret.append(child)
+                if len(lret) == 0:
+                    raise ValueError("Globing nodes with " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > gives no results")
             else:
-                parameter = removeEscape(parameter)
-                n = self.vfs.getnode(unistr(parameter))
+                parameter = unistr(removeEscape(parameter))
+                n = self.vfs.getnode(parameter)
                 if n:
                     lret.append(n)
                 else:
-                    raise ValueError("Node " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
-        elif argument.type() == typeId.Path:
-            if isGlobed(parameter):
-                parameter = removeEscape(parameter)
-                if parameter.endswith(os.path.sep):
-                    path, supplied = os.path.split(parameter[:-1])
-                else:
-                    path, supplied = os.path.split(parameter)
+                    raise ValueError("Node " + parameter  + " provided to argument < " + unistr(argument.name()) + " > does not exist")    
+        elif ctype == typeId.Path:
+            rpath, supplied = splitPath(parameter, ctype)
+            if os.name == "nt":
+                if rpath.startswith("/"):
+                    rpath = os.path.join("C:", rpath)
+                rpath = os.path.normpath(rpath)
+            if isGlobed(supplied):
                 try:
-                    children = dircache.listdir(path)
-                    for child in children:
-                        if fnmatch.fnmatch(child, supplied):
-                            lret.append(unistr(os.path.join(path, child)))
+                    children = dircache.listdir(rpath)
                 except:
-                    raise ValueError("Path " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
+                    raise ValueError("Base path for globing " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
+                for child in children:
+                    if fnmatch.fnmatch(addEscape(child), supplied):
+                        lret.append(unistr(os.path.join(rpath, child)))
+                if len(lret) == 0:
+                    raise ValueError("Globing paths with " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > gives no results")
             else:
-                lret.append(unistr(removeEscape(parameter)))
-        elif argument.type() == typeId.String:
+                abspath = os.path.join(rpath, removeEscape(supplied))
+                if os.path.exists(abspath):
+                    lret.append(unistr(abspath))
+                else:
+                    raise ValueError("Path " + unistr(parameter)  + " provided to argument < " + unistr(argument.name()) + " > does not exist")
+        elif ctype == typeId.String:
             lret.append(unistr(removeEscape(parameter)))
         else:
             lret.append(parameter)
@@ -535,6 +600,7 @@ class Completion():
         self.confmanager = ConfigManager.Get()
         self.loader = loader()
         self.vfs = vfs()
+        self.colview = ColumnView()
 
 
     def currentParameter(self):
@@ -568,39 +634,21 @@ class Completion():
         children = None
         sep = os.path.sep
         path = self.currentParameter()
-        if ctype == typeId.Node:
-            sep = "/"
-            if path == "" or path[0] != "/":
-                path = os.path.join(self.vfs.getcwd().absolute(), path)
-            rpath, supplied = os.path.split(path)
-        else:
-            rpath, supplied = os.path.split(path)
-        rpath = os.path.abspath(os.path.normpath(removeEscape(rpath)))
-        if path.endswith(sep) or path == "":
-            rpath = os.path.join(rpath, supplied) + sep
-            supplied = ""
+        rpath, supplied = splitPath(path, ctype)
         if ctype == typeId.Node:
             node = self.vfs.getnode(unistr(rpath))
             if node:
                 if node.hasChildren():
                     children = node.children()
-                else:
+                elif node.isDir():
                     children = []
         elif os.path.exists(rpath):
             if os.path.isdir(rpath):
                 try:
-                    children = dircache.listdir(rpath)
+                    children = dircache.listdir(unistr(rpath))
                 except:
                     children = []
-            else:
-                children = []
         return (path, rpath, supplied, children)
-
-
-    def unicodeChild(self, child, _type):
-        child = child if _type == typeId.Path else child.name()
-        return child if type(child) == types.UnicodeType else unicode(child, 'utf-8', 'replace')
-
 
 
     def completePathes(self):
@@ -614,7 +662,7 @@ class Completion():
         itype = self.context.currentArgument.inputType()
         path, rpath, supplied, children = self.setPathContext(ctype)
         out["supplied"] = supplied
-
+        sep = "/"
         dbg = "\n ==== completePathes() ===="
         if children == None:
             dbg += "\n    cannot complete with provided path"
@@ -627,29 +675,19 @@ class Completion():
             dbg += "\n    children: " + unistr([child.name() for child in children])
         else:
             dbg += "\n    children: " + unistr(children)
-        if ctype == typeId.Node:
-            sep = "/"
-        else:
-            sep = os.path.sep
         if len(children) == 0:
-            if rpath == sep:
-                if path == "":
-                    out["matches"].append(sep)
-                else:
-                    out["matches"].append("")
+            if rpath[-1] != sep:
+                out["matches"].append(sep)
             else:
-                if rpath[-1] != sep:
-                    out["matches"].append(sep)
-                else:
-                    out["matches"].append("")
+                out["matches"].append("")
             out["matched"] += 1
         else:
             glob = isGlobed(supplied)
             match = False
             for child in children:
-                name = self.unicodeChild(child, ctype)
+                name = unicodeChild(child, ctype)
                 if glob:
-                    if fnmatch.fnmatch(name, supplied):
+                    if fnmatch.fnmatch(addEscape(name), supplied):
                         match = True
                 elif len(supplied) == 0:
                     match = True
@@ -849,7 +887,7 @@ class Completion():
 
 
     def get_max_col(self, start, max):
-     displaywidth = self.console.get_term_size() - start
+     displaywidth = ConsoleAttributes().terminalSize() - start
      col = (displaywidth - (displaywidth / 6)) / max
      return col
 
@@ -915,39 +953,32 @@ class Completion():
      if max_ident > 0:
        return prev_mod[len(text):max_ident]
 
-    def insert_path_comp(self, text, matches):
-     max_path = matches["length"]
-     cur_path = removeEscape(matches["supplied"])
-     col = self.get_max_col(0, max_path)
-     idx = 0
-     filled = 0
-     prev_path = ""
-     max_ident = 0
 
+    def insert_path_comp(self, text, matches):
+     supplied = matches["supplied"]
      if matches["matched"] == 1:
-       res = self.strdiff(addEscape(cur_path), addEscape(matches["matches"][0]))
-       comp = addEscape(matches["matches"][0])[res:]
-       return comp
+       if isGlobed(supplied):
+           sys.stdout.write(matches["matches"][0])
+       else:
+           res = self.strdiff(supplied, addEscape(matches["matches"][0]))
+           comp = addEscape(matches["matches"][0])[res:]
+           return comp
      else:
-       x = 0
-       for path in matches["matches"]:
-         if cur_path != "":
-           if prev_path != "":
-             res = self.strdiff(prev_path, path)
-             if max_ident > res:
-               max_ident = res
+       items = [addEscape(item) for item in matches["matches"]]
+       common = posixpath.commonprefix(items)
+       crow = 0
+       for row in self.colview.iterRows(matches["matches"]):
+           crow += 1
+           if crow < self.colview.rows:
+               print row
            else:
-             max_ident = len(path)
-           prev_path = path[:max_ident]
-         if x == col:
-           sys.stdout.write("\n")
-           x = 0
-         path_arg = path + " " * (max_path + 2 - len(path))
-         sys.stdout.write(path_arg)
-         x += 1
-     if cur_path != "":
-       comp = prev_path[len(cur_path):max_ident]
-       return addEscape(comp)
+               sys.stdout.write(row)
+     if supplied != "":
+         if not isGlobed(supplied):
+             comp = common[len(supplied):]
+             return comp
+     elif common != "":
+         return common
 
 
     def get_str(self, text, matches):

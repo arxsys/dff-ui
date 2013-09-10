@@ -30,11 +30,11 @@ from dff.ui.gui.resources.ui_shell import Ui_Shell
 class ShellView(QTextEdit, Console, Ui_Shell):
     def __init__(self, parent=None, log=''):
         QTextEdit.__init__(self, parent)
-        Console.__init__(self, sigstp=False)
         self.setupUi(self)
         self.name = self.windowTitle()
-	self.completion = completion.Completion(self)
         self.hookTermSize()
+        Console.__init__(self, sigstp=False)
+	self.completion = completion.Completion(self)
 	taskmanager = TaskManager()
         self.vfs = vfs.vfs()
         self.log = log or ''
