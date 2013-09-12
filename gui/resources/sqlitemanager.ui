@@ -124,6 +124,50 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="tab_5">
+         <attribute name="title">
+          <string>Schema</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QTableWidget" name="schemaTable">
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>ID</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Type</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Not Null</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Default</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>PK</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
      </item>
