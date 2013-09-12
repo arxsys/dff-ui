@@ -47,6 +47,17 @@
            </column>
           </widget>
          </item>
+         <item>
+          <widget class="QPushButton" name="refreshButton">
+           <property name="text">
+            <string>Refresh</string>
+           </property>
+           <property name="icon">
+            <iconset resource="gui.qrc">
+             <normaloff>:/reload.png</normaloff>:/reload.png</iconset>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="QTabWidget" name="tabWidget">
