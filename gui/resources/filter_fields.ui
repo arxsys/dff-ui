@@ -67,6 +67,21 @@
      <string>Attribute</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Path</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Extension</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Expression</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>
