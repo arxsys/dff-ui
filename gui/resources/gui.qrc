@@ -130,6 +130,8 @@ Jeremy Mounier jmo@digital-forensic.org
     <file alias="unlock">icons/actions/unlock.png</file>
     <file alias="zip">icons/mime/zip.png</file>
 
+    <file alias="winexec">icons/mime/exec_wine.png</file>
+    <file alias="binary">icons/mime/binary.png</file>
 
     <file alias="green_configure.png">icons/app/agt_utilities.png</file>
     <file alias="autostart.png">icons/app/autostart.png</file>
