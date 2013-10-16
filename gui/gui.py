@@ -19,6 +19,7 @@ from PyQt4.QtCore import Qt
 
 from dff.api.loader.loader import loader
 
+import dff
 from dff.ui.gui.mainwindow import MainWindow
 from dff.ui.gui.translator import Translator
 from dff.ui.gui.resources import gui_rc
@@ -45,7 +46,7 @@ class GUI(QApplication, UI):
         # Below are macros replaced by CMake using configure_file please don't
         # commit this file with macros replaced, view those macros definition
         # in the top level CMakeLists.txt
-        self.setApplicationVersion("1.3.0")
+        self.setApplicationVersion(dff.VERSION)
         pixmap = QPixmap(":splash.png")
         self.splash = SplashScreen(pixmap, Qt.WindowStaysOnTopHint, self.applicationVersion())
         self.splash.setMask(pixmap.mask()) 

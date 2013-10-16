@@ -16,6 +16,7 @@
 import sys, os, getopt
 from distutils.sysconfig import get_python_lib
 
+import dff
 from dff.api.loader.loader import loader 
 from dff.ui.conf import Conf
 from dff.ui.redirect import RedirectIO
@@ -65,7 +66,6 @@ Options:
           --verbosity=LEVEL          set verbosity level when debugging [0-3]
   -c      --config=FILEPATH          use config file from FILEPATH
 """
-   VERSION = "1.3.0"
 
    def __init__(self, argv):
      self.argv = argv
@@ -96,7 +96,7 @@ Options:
         elif opt in ("-l", "--language"):
           self.conf.setLanguage(arg[:2])
         elif opt in ("-v", "--version"):
-          print "dff version " + self.VERSION
+          print "dff version " + dff.VERSION
           sys.exit(1)
         elif opt in ("-d", "--debug"):
           self.debug = True
