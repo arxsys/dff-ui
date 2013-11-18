@@ -88,7 +88,7 @@ class complete_raw_input():
        #sys.stdout.write(" ".join([hex(ord(c)) for c in ch]))
        if ch == self.CLL:
          self.clear_line()
-       elif ch == self.BACKSPACE:
+       elif ch == self.BACKSPACE or ch == '\b':
          self.delchar(self.MOVE_LEFT)
        elif ch == self.DEL:
          #sys.stdout.write(" ".join([hex(ord(c)) for c in ch]))
