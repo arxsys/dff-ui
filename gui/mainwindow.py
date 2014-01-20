@@ -27,6 +27,7 @@ from dff.api.gui.widget.textedit import TextEdit
 from dff.api.gui.widget.dockwidget import DockWidget 
 from dff.api.gui.widget.nodelistwidgets import NodeListWidgets
 from dff.api.gui.dialog.applymodule import ApplyModule
+from dff.api.gui.widget.statusbar import StatusBarWidget
 
 from dff.ui.conf import Conf
 from dff.ui.gui.ide.ide import Ide
@@ -61,6 +62,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.translation()
         self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.resize(QtCore.QSize(QtCore.QRect(0,0,1014,693).size()).expandedTo(self.minimumSizeHint()))
+        self.statusWidget = StatusBarWidget(self)
+        self.statusBar().addWidget(self.statusWidget)
 	self.shellActions = ShellActions(self)
 	self.interpreterActions = InterpreterActions(self)
         self.setCentralWidget(None)
@@ -422,7 +425,6 @@ class deviceNode(Node):
     def __init__(self, parent, name):
         Node.__init__(self, name, 0, parent, None)
         self.__disown__()
-        self.setDir()
 
     def icon(self):
         return (":dev_hd.png")
@@ -431,7 +433,6 @@ class logicalNode(Node):
     def __init__(self, parent, name):
         Node.__init__(self, name, 0, parent, None)
         self.__disown__()
-        self.setDir()
 
     def icon(self):
         return (":folder_documents_128.png")
@@ -440,7 +441,6 @@ class bookNode(Node):
     def __init__(self, parent, name):
         Node.__init__(self, name, 0, parent, None)
         self.__disown__()
-        self.setDir()
 
     def icon(self):
         return (":bookmark.png")

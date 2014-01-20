@@ -31,6 +31,7 @@ gui_resources_files(
   output.ui
   preferences.ui
   varianttreewidget.ui
+  status.ui
   shell.ui
   taskmanager.ui
   attributes_selection_dialog.ui
