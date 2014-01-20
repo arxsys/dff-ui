@@ -54,7 +54,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.debug = debug
         self.sched = scheduler.sched
         self.vfs = vfs.vfs()
-	self.allTabs = None
         self.createRootNodes()
         self.dialog = Dialog(self)
 	self.initCallback()
@@ -62,12 +61,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.translation()
         self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.resize(QtCore.QSize(QtCore.QRect(0,0,1014,693).size()).expandedTo(self.minimumSizeHint()))
-        self.statusWidget = StatusBarWidget(self)
-        self.statusBar().addWidget(self.statusWidget)
 	self.shellActions = ShellActions(self)
 	self.interpreterActions = InterpreterActions(self)
         self.setCentralWidget(None)
+        self.setDockNestingEnabled(True)
         self.init() 
+        # the following variable is a triplet as follow: (QTabBar, new_index, new_dockwidget_order)
+        self.__tabAreaInformation = (None, 0, [])
+        self.statusWidget = StatusBarWidget(self)
+        self.statusBar().addWidget(self.statusWidget)
+        self.__tabMoved = False
+
 
     def init(self):
         self.initConnection()
@@ -120,7 +124,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 #############  DOCKWIDGETS FUNCTIONS ###############
     def createDockWidget(self, widget, widgetName):
-        return DockWidget(self, widget, widgetName)
+        dockwidget = DockWidget(self, widget, widgetName)
+        dockwidget.setAllowedAreas(Qt.AllDockWidgetAreas)
+        return dockwidget
 
     def addDockWidgets(self, widget, internalName, master=True):
         if widget is None:
@@ -325,14 +331,107 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.dockWidget["modules"].visibility():
           self.wmodules.LoadInfoModules()
 
+
+    def event(self, event):
+        if event.type() == QEvent.LayoutRequest:
+            if self.__tabMoved:
+                self.updateTabBar()
+        return QMainWindow.event(self, event)
+
+
+    def printTabAreaLayout(self, siblings):
+        for sibling in siblings:
+            for key in self.dockWidget:
+                if self.dockWidget[key] == sibling:
+                    print idx, key
+                idx += 1
+
+
+    def updateTabBar(self):
+        idx = 0
+        tab, index, siblings = self.__tabAreaInformation
+        if tab is not None and index != -1 and len(siblings) >= 1:
+            debug = False
+            if debug:
+                self.printTabAreaLayout(siblings)
+            master = siblings.pop(0)
+            for sibling in siblings:
+                self.tabifyDockWidget(master, sibling)
+            tab.setCurrentIndex(index)
+        self.__tabMoved = False
+        self.refreshTabifiedDockWidgets()
+
+
     def refreshTabifiedDockWidgets(self):
-	if not self.allTabs:
-	  self.allTabs = self.findChildren(QTabBar) #FIX bug in PyQt ? Qt ?
-        for tabGroup in self.allTabs:
-            for i in range(tabGroup.count()):
-                for v in self.dockWidget.values():
-                    if v.widget() and tabGroup.tabText(i).startsWith(v.windowTitle()) and not v.widget().windowIcon().isNull():
-                        tabGroup.setTabIcon(i, v.widget().windowIcon()) 
+        children = self.children()
+        for child in children:
+            if child.inherits("QTabBar"):
+                tabCount = child.count()
+                child.setMovable(True)
+                self.connect(child, SIGNAL("tabMoved(int, int)"), self.tabMoved)
+                self.connect(child, SIGNAL("currentChanged(int)"), self.tabChanged)
+                for idx in xrange(0, tabCount):
+                    for v in self.dockWidget.values():
+                        if v.widget() and child.tabText(idx).startsWith(v.windowTitle()) and not v.widget().windowIcon().isNull():
+                            child.setTabIcon(idx, v.widget().windowIcon())
+
+
+    # to and _from are volontary swapped here compared to the sent signal.
+    def tabMoved(self, to, _from):
+        tab = self.sender()
+        dockwidget, tabname = self.findDockWidgetsFromTabBar(tab)
+        siblings = self.tabifiedDockWidgets(dockwidget)
+        if not len(siblings):
+            self.__tabAreaInformation = (None, 0, [])
+            self.__tabMoved = False
+            return
+        self.__tabMoved = True
+        debug = False
+        if debug:
+            self.printTabAreaLayout(siblings)
+        update_siblings = []
+        if to == 0:
+            update_siblings.append(dockwidget)
+            for sibling in siblings:
+                update_siblings.append(sibling)
+        else:
+            master = siblings.pop(0)
+            update_siblings.append(master)
+            siblings.insert(to-1, dockwidget)
+            update_siblings += siblings
+        self.__tabAreaInformation = (tab, to, update_siblings)
+
+
+    def tabChanged(self, index):
+        if self.__tabMoved:
+            tab, old_index, siblings = self.__tabAreaInformation
+            self.__tabAreaInformation = (tab, index, siblings)
+            self.updateTabBar()
+
+
+    def findDockWidgetsFromTabBar(self, tab):
+        tabwidget = None
+        tabname = ""
+        if not isinstance(tab, QTabBar):
+            return None
+        y_tab = tab.geometry().bottomLeft().y()
+        y_max = self.geometry().bottomLeft().y()
+        children = self.children()
+        for child in children:
+            if child.inherits("QTabBar"):
+                y_child = child.geometry().topLeft().y()
+                if y_child > y_tab and y_child < y_max:
+                    y_max = y_child
+        for key in self.dockWidget:
+            widget = self.dockWidget[key]
+            if widget.geometry().topLeft().x() >= tab.geometry().topLeft().x() and \
+               widget.geometry().topRight().x() <= tab.geometry().topRight().x() and \
+               widget.geometry().topLeft().y() >= y_tab and \
+               widget.geometry().bottomLeft().y() <= y_max:
+                tabwidget = widget
+                tabname = key
+        return tabwidget, tabname
+
 
 #############  END OF DOCKWIDGETS FUNCTIONS ###############
 
