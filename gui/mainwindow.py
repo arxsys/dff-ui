@@ -47,9 +47,15 @@ from dff.ui.gui.resources.ui_mainwindow import Ui_MainWindow
 
 from dff.ui.gui.widget.help import Help
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self,  app, debug = False):
         super(MainWindow,  self).__init__()
+        # Tab management private attributes, modify at own risk
+        self.__tabMoved = False
+        self.__tabAreaInformation = (-1, -1, [])
+        self.__tabConnections = set()
+
         self.app = app
         self.debug = debug
         self.sched = scheduler.sched
@@ -67,10 +73,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setDockNestingEnabled(True)
         self.init() 
         # the following variable is a triplet as follow: (QTabBar, new_index, new_dockwidget_order)
-        self.__tabAreaInformation = (None, 0, [])
         self.statusWidget = StatusBarWidget(self)
         self.statusBar().addWidget(self.statusWidget)
-        self.__tabMoved = False
 
 
     def init(self):
@@ -100,11 +104,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionFullscreen_mode, SIGNAL("triggered()"), self.fullscreenMode)
         self.connect(self.actionNodeBrowser, SIGNAL("triggered()"), self.addNodeBrowser)
         self.connect(self.actionShell, SIGNAL("triggered()"), self.shellActions.create)
-        self.connect(self.actionPython_interpreter, SIGNAL("triggered()"), self.interpreterActions.create)        ## About menu
- 
+        self.connect(self.actionPython_interpreter, SIGNAL("triggered()"), self.interpreterActions.create)        ## About menu 
 
         self.connect(self.actionHelp, SIGNAL("triggered()"), self.addHelpWidget)
         self.connect(self.actionAbout, SIGNAL("triggered()"), self.dialog.about)       
+
 
     def initToolbarList(self):
         self.toolbarList = [
@@ -137,6 +141,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
           wname = widget.windowTitle()
         else:
           wname = widget.name
+        new_master = self.getMasterDockWidget()
+        if new_master != None:
+            self.master = new_master
         dockwidget = self.createDockWidget(widget, wname)
         docIndex, docTitle = self.getWidgetName(wname)
         dockwidget.setWindowTitle(QString.fromUtf8(docTitle))
@@ -332,34 +339,100 @@ class MainWindow(QMainWindow, Ui_MainWindow):
           self.wmodules.LoadInfoModules()
 
 
+    #
+    # Following methods are in charge of tab management
+    # By default tabified dock widgets are not movable.
+    # And juste setting setMovable(True) is not enough.
+    # All the magic is done in private class of Qt and
+    # can't be overloaded. The last chance is to play
+    # with signal and children management.
+    #
+
+    def updateTabConnections(self):
+        children = self.children()
+        for child in children:
+            if child.inherits("QTabBar"):
+                tabCount = child.count()
+                child.setMovable(True)
+                if child not in self.__tabConnections:
+                    child.tabMoved.connect(self.tabMoved, type=Qt.UniqueConnection)
+                    self.__tabConnections.add(child)
+
+
+    # overloaded to add connections on new tabbar item
+    def tabifyDockWidget(self, first, second):
+        QMainWindow.tabifyDockWidget(self, first, second)
+        self.updateTabConnections()
+
+
+    # overloaded to connect to dockwidget location update
+    def addDockWidget(self, area, dockwidget):
+        dockwidget.dockLocationChanged.connect(self.updateTabConnections)
+        return QMainWindow.addDockWidget(self, area, dockwidget)
+
+
     def event(self, event):
-        if event.type() == QEvent.LayoutRequest:
-            if self.__tabMoved:
-                self.updateTabBar()
+        mouse_status = int(QApplication.mouseButtons())
+        # if updating tabbar while mouse pressed, behaviour can be weird
+        if mouse_status & 0x00000001 == 0 and self.__tabMoved:
+            self.__tabMoved = False
+            self.updateTabBar()
         return QMainWindow.event(self, event)
 
 
-    def printTabAreaLayout(self, siblings):
-        for sibling in siblings:
-            for key in self.dockWidget:
-                if self.dockWidget[key] == sibling:
-                    print idx, key
-                idx += 1
-
-
     def updateTabBar(self):
-        idx = 0
-        tab, index, siblings = self.__tabAreaInformation
-        if tab is not None and index != -1 and len(siblings) >= 1:
-            debug = False
-            if debug:
-                self.printTabAreaLayout(siblings)
-            master = siblings.pop(0)
-            for sibling in siblings:
+        tab, to, _from = self.__tabAreaInformation
+        dockwidget, siblings = self.findDockWidgetsFromTabBar(tab)
+        updated_siblings = []
+        visible = []
+        hidden = []
+        for sibling in siblings:
+            if sibling.isVisible():
+                visible.append(sibling)
+            else:
+                hidden.append(sibling)
+        if to == 0:
+            updated_siblings.append(dockwidget)
+            updated_siblings += visible + hidden
+        else:
+            master = visible.pop(0)
+            updated_siblings.append(master)
+            visible.insert(to-1, dockwidget)
+            updated_siblings += visible + hidden
+        master = updated_siblings.pop(0)
+        for sibling in updated_siblings:
+            # always check if sibling != None or result in segfault if happens
+            if sibling is not None:
                 self.tabifyDockWidget(master, sibling)
-            tab.setCurrentIndex(index)
-        self.__tabMoved = False
+        tab.setCurrentIndex(to)
         self.refreshTabifiedDockWidgets()
+
+
+    # returns the location of the master dock widget (first created browser)
+    def getMasterDockWidget(self):
+        x_max = self.geometry().bottomRight().x()
+        y_max = self.geometry().bottomRight().y()
+        children = self.children()
+        item = None
+        for child in children:
+            if child.inherits("QTabBar") or (child.inherits("QDockWidget") and child.isVisible()):
+                child_x = child.geometry().topLeft().x()
+                child_y = child.geometry().topLeft().y()
+                if child_x >= 0 and child_y >= 0 and child_x <= x_max and child_y <= y_max:
+                    x_max = child_x
+                    y_max = child_y
+                    item = child
+        if item is not None:
+            if item.inherits("QDockWidget"):
+                return item
+            else:
+                title = item.tabText(0)
+                for dockwidget in self.dockWidget.values():
+                    if title.startsWith(dockwidget.windowTitle()):
+                        return dockwidget
+        else:
+            # at init, there's no information, return None and keep self.master as is
+            return None
 
 
     def refreshTabifiedDockWidgets(self):
@@ -367,9 +440,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for child in children:
             if child.inherits("QTabBar"):
                 tabCount = child.count()
-                child.setMovable(True)
-                self.connect(child, SIGNAL("tabMoved(int, int)"), self.tabMoved)
-                self.connect(child, SIGNAL("currentChanged(int)"), self.tabChanged)
                 for idx in xrange(0, tabCount):
                     for v in self.dockWidget.values():
                         if v.widget() and child.tabText(idx).startsWith(v.windowTitle()) and not v.widget().windowIcon().isNull():
@@ -379,58 +449,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # to and _from are volontary swapped here compared to the sent signal.
     def tabMoved(self, to, _from):
         tab = self.sender()
-        dockwidget, tabname = self.findDockWidgetsFromTabBar(tab)
-        siblings = self.tabifiedDockWidgets(dockwidget)
-        if not len(siblings):
-            self.__tabAreaInformation = (None, 0, [])
-            self.__tabMoved = False
-            return
+        self.__tabAreaInformation = (tab, to, _from)
         self.__tabMoved = True
-        debug = False
-        if debug:
-            self.printTabAreaLayout(siblings)
-        update_siblings = []
-        if to == 0:
-            update_siblings.append(dockwidget)
-            for sibling in siblings:
-                update_siblings.append(sibling)
-        else:
-            master = siblings.pop(0)
-            update_siblings.append(master)
-            siblings.insert(to-1, dockwidget)
-            update_siblings += siblings
-        self.__tabAreaInformation = (tab, to, update_siblings)
 
 
-    def tabChanged(self, index):
-        if self.__tabMoved:
-            tab, old_index, siblings = self.__tabAreaInformation
-            self.__tabAreaInformation = (tab, index, siblings)
-            self.updateTabBar()
-
-
+    # gather all widgets associated to a tabbar
+    # returns a tuple with first element being the
+    # widget associated to currentIndex and the second
+    # elements being its siblings
     def findDockWidgetsFromTabBar(self, tab):
         tabwidget = None
         tabname = ""
         if not isinstance(tab, QTabBar):
             return None
-        y_tab = tab.geometry().bottomLeft().y()
-        y_max = self.geometry().bottomLeft().y()
-        children = self.children()
-        for child in children:
-            if child.inherits("QTabBar"):
-                y_child = child.geometry().topLeft().y()
-                if y_child > y_tab and y_child < y_max:
-                    y_max = y_child
-        for key in self.dockWidget:
-            widget = self.dockWidget[key]
-            if widget.geometry().topLeft().x() >= tab.geometry().topLeft().x() and \
-               widget.geometry().topRight().x() <= tab.geometry().topRight().x() and \
-               widget.geometry().topLeft().y() >= y_tab and \
-               widget.geometry().bottomLeft().y() <= y_max:
-                tabwidget = widget
-                tabname = key
-        return tabwidget, tabname
+        siblings = []
+        current_widget = None
+        for i in xrange(0, tab.count()):
+            title = tab.tabText(i)
+            for dockwidget in self.dockWidget.values():
+                if title == dockwidget.windowTitle():
+                    if i == tab.currentIndex():
+                        current_widget = dockwidget
+                    else:
+                        siblings.append(dockwidget)
+        return (current_widget, siblings)
 
 
 #############  END OF DOCKWIDGETS FUNCTIONS ###############
