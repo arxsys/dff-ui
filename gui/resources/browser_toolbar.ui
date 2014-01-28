@@ -24,7 +24,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Icons</string>
+     <string>Details</string>
     </property>
     <property name="icon">
      <iconset resource="gui.qrc">
@@ -33,7 +33,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Details</string>
+     <string>Icons</string>
     </property>
     <property name="icon">
      <iconset resource="gui.qrc">
