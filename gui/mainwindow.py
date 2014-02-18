@@ -23,11 +23,12 @@ from dff.api.vfs import vfs
 from dff.api.vfs.libvfs import VFS, Node, ModulesRootNode 
 from dff.api.taskmanager import scheduler
 
+from dff.api.gui.widget.status import StatusBarWidget
+
 from dff.api.gui.widget.textedit import TextEdit
 from dff.api.gui.widget.dockwidget import DockWidget 
 from dff.api.gui.widget.nodelistwidgets import NodeListWidgets
 from dff.api.gui.dialog.applymodule import ApplyModule
-from dff.api.gui.widget.statusbar import StatusBarWidget
 
 from dff.ui.conf import Conf
 from dff.ui.gui.ide.ide import Ide
@@ -55,7 +56,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.__tabMoved = False
         self.__tabAreaInformation = (-1, -1, [])
         self.__tabConnections = set()
-
         self.app = app
         self.debug = debug
         self.sched = scheduler.sched
@@ -71,10 +71,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 	self.interpreterActions = InterpreterActions(self)
         self.setCentralWidget(None)
         self.setDockNestingEnabled(True)
-        self.init() 
+        self.init()
+        self.status = StatusBarWidget()
+        self.statusBar().addWidget(self.status)
         # the following variable is a triplet as follow: (QTabBar, new_index, new_dockwidget_order)
-        self.statusWidget = StatusBarWidget(self)
-        self.statusBar().addWidget(self.statusWidget)
 
 
     def init(self):
@@ -347,7 +347,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # can't be overloaded. The last chance is to play
     # with signal and children management.
     #
-
     def updateTabConnections(self):
         children = self.children()
         for child in children:
