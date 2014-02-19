@@ -142,8 +142,8 @@ class MenuManager(QWidget, Ui_nodeActions):
     self.mainwindow.addNodeBrowser(node)
 
   def openParentFolder(self):
-    node = self.model.currentNode().parent()
-    self.mainwindow.addNodeBrowser(node)
+    node = self.model.currentNode()
+    self.mainwindow.addNodeBrowser(node.parent(), node)
 
   def launchHexedit(self):
      node = self.model.currentNode()

@@ -15,15 +15,13 @@
 # 
 from Queue import Empty 
 
-from PyQt4.QtGui import QAction,  QApplication, QDockWidget, QFileDialog, QIcon, QMainWindow, QMessageBox, QMenu, QTabWidget, QTextEdit, QTabBar, QPushButton, QCheckBox, QHBoxLayout, QVBoxLayout, QWidget
+from PyQt4.QtGui import QAction,  QApplication, QDockWidget, QFileDialog, QIcon, QMainWindow, QMessageBox, QMenu, QTabWidget, QTextEdit, QTabBar, QPushButton, QCheckBox, QHBoxLayout, QVBoxLayout, QWidget, QStackedWidget, QSizePolicy
 from PyQt4.QtCore import QEvent, Qt,  SIGNAL, QModelIndex, QSettings, QFile, QString, QTimer
 from PyQt4 import QtCore, QtGui
 
 from dff.api.vfs import vfs
 from dff.api.vfs.libvfs import VFS, Node, ModulesRootNode 
 from dff.api.taskmanager import scheduler
-
-from dff.api.gui.widget.status import StatusBarWidget
 
 from dff.api.gui.widget.textedit import TextEdit
 from dff.api.gui.widget.dockwidget import DockWidget 
@@ -72,9 +70,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setCentralWidget(None)
         self.setDockNestingEnabled(True)
         self.init()
-        self.status = StatusBarWidget()
+        self.status = QStackedWidget()
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(1)
+        self.status.setSizePolicy(sizePolicy)
         self.statusBar().addWidget(self.status)
-        # the following variable is a triplet as follow: (QTabBar, new_index, new_dockwidget_order)
 
 
     def init(self):
@@ -179,22 +180,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.addDockWidgets(w, name, master)
            
 
-    def getNodeBrowser(self, rootpath=None):
+    def getNodeBrowser(self):
         nb = self.nodeListWidgets()
-        if rootpath == None:
-            root = self.vfs.getnode('/')
-            nb.navigation.rootpathchanged(root)
-            children = root.children()
-        else:
-            children = rootpath.children()
-            nb.navigation.rootpathchanged(rootpath)
-            nb.treeview.expandToNode(rootpath)
-        nb.changeList(children)
         return nb
 
-    def addNodeBrowser(self, rootpath=None):
-        nb = self.getNodeBrowser(rootpath)
+    def addNodeBrowser(self, rootpath=None, selectedNode=None):
+        nb = self.getNodeBrowser()
         self.addDockWidgets(nb, 'nodeBrowser')
+        nb.setCurrentContext(rootpath, selected=selectedNode)
+
 
     def addSearchTab(self, search):
         self.addDockWidgets(search, 'Searchr')
@@ -260,8 +254,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def createFirstWidgets(self):
         self.nodeBrowser = self.nodeListWidgets(parent=self)
         root = self.vfs.getnode('/')
-        children = root.children()
-        self.nodeBrowser.changeList(children)
+        self.nodeBrowser.setCurrentContext(root)
 
         self.master = self.createDockWidget(self.nodeBrowser, self.nodeBrowser.name)
         self.master.setAllowedAreas(Qt.AllDockWidgetAreas)
