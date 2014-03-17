@@ -29,7 +29,7 @@
        </property>
        <property name="icon">
         <iconset resource="gui.qrc">
-         <normaloff>:/top.png</normaloff>:/top.png</iconset>
+         <normaloff>:/down.png</normaloff>:/down.png</iconset>
        </property>
       </widget>
      </item>
@@ -40,7 +40,7 @@
        </property>
        <property name="icon">
         <iconset resource="gui.qrc">
-         <normaloff>:/down.png</normaloff>:/down.png</iconset>
+         <normaloff>:/top.png</normaloff>:/top.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
