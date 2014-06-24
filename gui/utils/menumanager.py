@@ -12,7 +12,7 @@
 # Author(s):
 #  Jeremy Mounier <jmo@arxsys.fr>
 # 
-from PyQt4.QtGui import QMenu, QIcon, QWidget, QCursor, QApplication, QAction, QMessageBox, QImage
+from PyQt4.QtGui import QMenu, QIcon, QWidget, QCursor, QApplication, QAction, QMessageBox, QImage, QIcon
 from PyQt4.QtCore import SIGNAL, SLOT, QObject, QEvent, QString, QBuffer, QByteArray
 
 from dff.api.loader import loader
@@ -85,12 +85,21 @@ class MenuManager(QWidget, Ui_nodeActions):
     self.actionTags.setMenu(tags)
     self.mainmenu.addAction(self.actionTags)
     self.mainmenu.addAction(self.actionBookmark)
+    if nodeclicked.path().find('/Bookmarks/') != -1:
+      self.mainmenu.addAction(QIcon(":trash"), self.tr("Delete bookmark"), self.deleteBookmark)
     self.bookseparator = self.mainmenu.addSeparator()
     self.mainmenu.addAction(self.actionHex_viewer)
     self.mainmenu.addAction(self.actionExtract)
 
     self.mainmenu.popup(QCursor.pos())
     self.mainmenu.show()
+
+  def deleteBookmark(self):
+    vfs = VFS.Get()
+    try :
+      vfs.unregister(self.model.currentNode())
+    except Exception as e:
+      print 'TreeMenu.deleteNode exceptions : ', str(e)
 
   def setOpenRelevant(self):
     if self.selection != None:

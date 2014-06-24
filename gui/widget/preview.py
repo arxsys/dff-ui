@@ -57,12 +57,12 @@ class Preview(QWidget):
 
     def update(self, node):
        if self.isVisible() and self.mustUpdate and node and node.size():
-         if self.previousNode == node.this:
+         if self.previousNode == node.uid():
 	   return
          else:
 	   self.toolBar.clear()
 	   self.toolBar.addAction("hexadecimal")
-	   self.previousNode = node.this 
+	   self.previousNode = node.uid()
 	   self.currentNode = node
            previewModules = [] 
            compat = node.compatibleModules()

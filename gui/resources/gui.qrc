@@ -220,5 +220,7 @@ Jeremy Mounier jmo@digital-forensic.org
 
     <file alias="root">icons/actions/root.png</file>
     <file alias="vlink">icons/filesystem/vlink.png</file>
+
+    <file alias="trash">icons/actions/trash.png</file>
 </qresource>
 </RCC>

@@ -15,7 +15,7 @@
 from PyQt4.QtGui import  QIcon, QHBoxLayout, QPushButton, QWidget, QGridLayout, QVBoxLayout, QTextBrowser, QSplitter, QSizePolicy, QDockWidget, QMessageBox
 from PyQt4.QtCore import QRect, QSize, Qt, SIGNAL, QTimer, QThread, QString, QUrl, QVariant, QStringList, QFile
 from PyQt4.QtWebKit import QWebView, QWebPage, QWebFrame
-from PyQt4.QtHelp import QHelpEngine
+#from PyQt4.QtHelp import QHelpEngine
 
 class Help(QDockWidget):
     def __init__(self, parent=None, path=None):

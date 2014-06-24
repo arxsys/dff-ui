@@ -44,12 +44,12 @@
 <context>
     <name>ApplyModule</name>
     <message>
-        <location filename="../../../api/gui/dialog/applymodule.py" line="196"/>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="198"/>
         <source>Configuration error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/applymodule.py" line="197"/>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="199"/>
         <source>An error was detected in the configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -96,12 +96,12 @@
 <context>
     <name>BookmarkManager</name>
     <message>
-        <location filename="../../../ui/gui/utils/menu.py" line="229"/>
+        <location filename="../../../ui/gui/utils/menu.py" line="195"/>
         <source>Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menu.py" line="229"/>
+        <location filename="../../../ui/gui/utils/menu.py" line="195"/>
         <source>You must specify at least one node.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -164,12 +164,12 @@
         <translation type="obsolete">工具栏</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="27"/>
+        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="36"/>
         <source>Icons</source>
         <translation type="unfinished">图标</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="36"/>
+        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="27"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -264,17 +264,17 @@
 <context>
     <name>DockWidgetTitleBar</name>
     <message>
-        <location filename="../../../api/gui/widget/dockwidget.py" line="72"/>
+        <location filename="../../../api/gui/widget/dockwidget.py" line="74"/>
         <source>Undock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/dockwidget.py" line="77"/>
+        <location filename="../../../api/gui/widget/dockwidget.py" line="79"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/dockwidget.py" line="82"/>
+        <location filename="../../../api/gui/widget/dockwidget.py" line="84"/>
         <source>Disable this window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -364,12 +364,12 @@
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="412"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="412"/>
         <source>Please, specify a query name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -906,22 +906,22 @@
         <translation type="obsolete">DFF文档</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="415"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="551"/>
         <source>Error while loading help</source>
         <translation>加载帮助时的错误</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="416"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="552"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
         <translation>&lt;br&gt;你可以查阅在线帮助 &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="417"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="553"/>
         <source>Not an help file.</source>
         <translation>不是一个帮助文件.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="418"/>
+        <location filename="../../../ui/gui/mainwindow.py" line="554"/>
         <source>Documentation path not found.</source>
         <translation>文档路径没有找到.</translation>
     </message>
@@ -964,56 +964,61 @@
 <context>
     <name>MenuManager</name>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="246"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="255"/>
         <source>Empty files</source>
         <translation type="unfinished">空文件</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="247"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="256"/>
         <source>the following nodes could not be opened with Hex viewer because they are either empty or folders
 </source>
         <translation type="unfinished">下面节点不能用十六进制打开，因为它们是空的或是文件夹</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="189"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="198"/>
         <source>Extraction Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="190"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="199"/>
         <source>An issue occured while extracting 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="218"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="227"/>
         <source>Module already applied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="218"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="227"/>
         <source>This module was already applied with the same configuration ! Do you want to apply it again ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="233"/>
         <source>Apply module</source>
         <translation type="unfinished">应用模块</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="233"/>
         <source>Do you want to apply module </source>
         <translation type="unfinished">你希望应用模块</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="224"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="233"/>
         <source> on this node ?</source>
         <translation type="unfinished">在这个节点上 ？</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="225"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="234"/>
         <source>Always</source>
         <translation type="unfinished">通常</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="89"/>
+        <source>Delete bookmark</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1225,17 +1230,17 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="272"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="271"/>
         <source>Create directory</source>
         <translation>创建目录</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="273"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="272"/>
         <source>Directory creation failure</source>
         <translation>目录创建失败</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="274"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="273"/>
         <source>History file is not writable</source>
         <translation>历史文件不可写</translation>
     </message>
@@ -1402,95 +1407,193 @@
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="147"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="148"/>
         <source>folder</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="145"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="146"/>
         <source>file</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="150"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="151"/>
         <source>generated by</source>
         <translation>产生于</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="151"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="152"/>
         <source>size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="152"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="153"/>
         <source>relevant module(s)</source>
         <translation>关联的模块</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="144"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="145"/>
         <source>node type</source>
         <translation>节点类型</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="158"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="159"/>
         <source>attributes</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="153"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="154"/>
         <source>children</source>
         <translation>子节点</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="154"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="155"/>
         <source>file(s)</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="156"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="157"/>
         <source> bytes</source>
         <translation>字节</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="157"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="158"/>
         <source>folder(s)</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="155"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="156"/>
         <source> totalizing </source>
         <translation>总计</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="146"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="147"/>
         <source> with module(s) applied on it</source>
         <translation>有模块应用于它</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="148"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="149"/>
         <source> empty</source>
         <translation>空的</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="149"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="150"/>
         <source> deleted</source>
         <translation>删除的</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="143"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="144"/>
         <source>link path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/widget/propertytable.py" line="143"/>
+        <source>path</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SQLiteManager</name>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="45"/>
+        <source>Database(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="53"/>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="69"/>
+        <source>Browse table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="79"/>
+        <source>Custom query</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="90"/>
+        <source>Run</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="140"/>
+        <source>Schema</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="150"/>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="155"/>
+        <source>Name</source>
+        <translation type="unfinished">名称</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="160"/>
+        <source>Type</source>
+        <translation type="unfinished">类型</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="165"/>
+        <source>Not Null</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="170"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="175"/>
+        <source>PK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="194"/>
+        <source>Export selection (CSV)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="197"/>
+        <source>Export selection to CSV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="206"/>
+        <source>Extract Binary (BLOB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="211"/>
+        <source>Decode date (column)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/sqlitemanager.ui" line="216"/>
+        <source>Reset column</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="159"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="157"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="159"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="157"/>
         <source>Please, specify your query</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1678,9 +1781,17 @@ Add new or delete existings tags (Double-click to edit)</source>
     </message>
 </context>
 <context>
+    <name>TreeMenu</name>
+    <message>
+        <location filename="../../../ui/gui/utils/menu.py" line="307"/>
+        <source>Delete bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TreeModel</name>
     <message>
-        <location filename="../../../api/gui/model/tree.py" line="336"/>
+        <location filename="../../../api/gui/model/tree.py" line="373"/>
         <source>Name</source>
         <translation type="unfinished">名称</translation>
     </message>
@@ -2020,6 +2131,21 @@ Add new or delete existings tags (Double-click to edit)</source>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="72"/>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="77"/>
+        <source>Extension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="82"/>
+        <source>Expression</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>filterMatchMode</name>
@@ -2238,12 +2364,12 @@ Add new or delete existings tags (Double-click to edit)</source>
 <context>
     <name>layoutManager</name>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="350"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="358"/>
         <source>File</source>
         <translation type="unfinished">文件</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="351"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="359"/>
         <source>Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2361,6 +2487,84 @@ Add new or delete existings tags (Double-click to edit)</source>
     </message>
 </context>
 <context>
+    <name>pdfToolbar</name>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="59"/>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="69"/>
+        <source> / </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="83"/>
+        <source>    Scale resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="91"/>
+        <source>72</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="96"/>
+        <source>96</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="101"/>
+        <source>120</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="106"/>
+        <source>300</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="146"/>
+        <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="170"/>
+        <source>Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="196"/>
+        <source>Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="248"/>
+        <source>Document is Password protected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="255"/>
+        <source>Owner password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="265"/>
+        <source>User password (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="290"/>
+        <source>Unlock</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>procMB</name>
     <message>
         <location filename="../../../ui/gui/widget/taskmanager.py" line="173"/>
@@ -2413,11 +2617,6 @@ Add new or delete existings tags (Double-click to edit)</source>
     <message>
         <location filename="../../../ui/gui/resources/search_customtable.ui" line="165"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../ui/gui/resources/search_customtable.ui" line="178"/>
-        <source>Query</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

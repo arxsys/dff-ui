@@ -117,41 +117,6 @@ class typeFilterMenu(QMenu):
     pattern = "(( mime in[\"" + str(name.toLower()) + "\"]))"
     self.model.filter(str(name), pattern)
 
-class MenuRelevant(QMenu):
-  def __init__(self, parent, mainWindow, node = None, selectItem = None):
-       QMenu.__init__(self, mainWindow)
-       self.loader = loader.loader()
-       self.callbackSelected = self.selectNode
-       self.parent = parent
-       self.mainWindow = mainWindow
-       self.node = node
-       self.Load()
-       actions = []
- 
-  def selectNode(self):
-     return [self.node]
-
-  def Load(self):   
-       self.listMenuAction = []
-       actions = []
-       self.parent.submenuRelevant.clear()
-       if self.node:      
-	 modules = self.node.compatibleModules()
-	 if len(modules):
-	   self.parent.submenuRelevant.setEnabled(True)
-	   for modname in modules:
-		module = self.loader.modules[modname]
-                self.parent.submenuRelevant.addAction(Action(self, self.mainWindow,  modname, module.tags, module.icon))
-           for i in range(0,  len(actions)) :
-              if actions[i].hasOneArg :
-                self.addAction(actions[i])
-           self.addSeparator()
-           for i in range(0,  len(actions)) :
-              if not actions[i].hasOneArg :
-                self.addAction(actions[i])
-           return 
-       self.parent.submenuRelevant.setEnabled(False)
-
 class MenuTags():
    def __init__(self, parent, mainWindow, selectItem = None):
        """ Init menus"""
@@ -175,7 +140,8 @@ class MenuTags():
 	for menu in self.listMenuAction:
 	   self.parent.menuModule.removeAction(menu)
 	self.Load()
-   
+  
+ 
 class MenuModules(QMenu):
     def __init__(self, parent, mainWindow, tags, selectItem = None):
         QMenu.__init__(self, tags,  parent)
@@ -239,6 +205,11 @@ class BookmarkManager(QObject):
       return True
     else:
       return False
+
+  def removeCategory(self, root):
+    categoryName = root.name()
+    if categoryName in BookmarkManager.categories:
+      BookmarkManager.categories.remove(categoryName)
 
 class bookmarkDialog(QDialog, Ui_AddBookmark):
   def __init__(self, manager):
@@ -304,7 +275,9 @@ class bookmarkDialog(QDialog, Ui_AddBookmark):
         return
     selectedBookName = selectedCategory
     selectedBookmark = self.vfs.getnode('/Bookmarks/' + str(selectedBookName.toUtf8()))
-
+    if selectedBookmark == None:
+      print 'Error selected bookmark category was deleted '
+      return 
     selected = self.manager.getSelectedNodes()
 
     for node in selected:
@@ -325,3 +298,19 @@ class BookNode(Node):
     def icon(self):
         return (":bookmark.png")
 
+class TreeMenu(QMenu):
+  """ Menu for the tree in the node browser
+      Only one action : delete bookmark 
+  """
+  def __init__(self, treeView, node):
+    QMenu.__init__(self, treeView)
+    self.addAction(QIcon(":trash"), self.tr("Delete bookmark"), self.deleteBookmark)
+    self.treeView = treeView
+    self.node = node
+
+  def deleteBookmark(self):
+    vfs = VFS.Get()
+    try :
+      vfs.unregister(self.node)
+    except Exception as e:
+      print 'TreeMenu.deleteNode exceptions : ', str(e)
