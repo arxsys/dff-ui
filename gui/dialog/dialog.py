@@ -187,7 +187,7 @@ class evidenceDialog(QDialog, Ui_evidenceDialog):
 
     self.manager = layoutManager()
 
-    self.manager.addPathList("local", typeId.Path, [], [])    
+    self.manager.addPathList("local", [])
 
     self.pathlayout.addWidget(self.manager)
 
