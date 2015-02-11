@@ -13,6 +13,9 @@
 #  Solal Jacob <sja@arxsys.fr>
 #  Jeremy MOUNIER <jmo@arxsys.fr>
 # 
+
+import sys, os
+
 from Queue import Empty 
 
 from PyQt4.QtGui import QAction,  QApplication, QDockWidget, QFileDialog, QIcon, QMainWindow, QMessageBox, QMenu, QTabWidget, QTextEdit, QTabBar, QPushButton, QCheckBox, QHBoxLayout, QVBoxLayout, QWidget, QStackedWidget, QSizePolicy
@@ -194,8 +197,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.addDockWidgets(search, 'Searchr')
 
     def addHelpWidget(self):
-        conf = Conf()
-        path = conf.docPath
+        if hasattr(sys, "frozen"):
+           path = os.path.abspath(os.path.join(os.path.dirname(sys.executable), "resources/docs/dff_doc.qhc"))
+        else:
+           conf = Conf()
+           path = conf.docPath
         file = QFile(path)
         if not file.exists(path):
             if path:

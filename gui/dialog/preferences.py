@@ -12,7 +12,7 @@
 # Author(s):
 #  Christophe Malinge <cma@digital-forensic.org>
 #
-import sys
+import sys, os
 
 from os import listdir, access, makedirs, R_OK, W_OK
 from os.path import normpath, dirname
@@ -223,7 +223,10 @@ class Preferences(QDialog, Ui_PreferencesDialog):
             self.helpOK.setVisible(False)
 
     def langPopulate(self):
-        translationPath = normpath(sys.modules['dff.ui.gui'].__path__[0] + '/i18n/')
+        if hasattr(sys, "frozen"):
+           translationPath = os.path.abspath(os.path.join(os.path.dirname(sys.executable), "resources/i18n"))
+        else:
+		   translationPath = normpath(sys.modules['dff.ui.gui'].__path__[0] + '/i18n/')
         i = 0
         selected = 0
         for oneFile in listdir(translationPath):
