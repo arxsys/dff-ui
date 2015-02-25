@@ -15,7 +15,7 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import QWidget, QLabel, QPushButton, QDialog, QTableWidget, QTableWidgetItem, QAbstractItemView, QIcon, QTreeWidgetItem, QCheckBox
 
-from dff.api.datatype.mimetree import MimeTree
+from dff.api.vfs.mimetree import MimeTree
 
 from dff.ui.gui.widget.mime_types import IndexMimeTypes
 

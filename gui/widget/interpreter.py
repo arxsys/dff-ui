@@ -62,7 +62,6 @@ class InterpreterView(QTextEdit, InteractiveInterpreter, Ui_Interpreter):
                        "from dff.api.filters.libfilters import Filter",
                        "from dff.api.search.libsearch import Search",
                        "from dff.api.events.libevents import EventHandler, event",
-                       "from dff.api.datatype.libdatatype import DataTypeManager, DataTypeHandler",
                        "from dff.api.loader.loader import loader",
                        "from dff.api.module.module import Module, Script",
                        "from dff.api.taskmanager.taskmanager import TaskManager"]

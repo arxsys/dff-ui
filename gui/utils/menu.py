@@ -177,9 +177,28 @@ class MenuModules(QMenu):
 class BookmarkManager(QObject):
   categories = []
   def __init__(self, model):
+    QObject.__init__(self)
     self.model = model
     self.vfs = vfs()
-    self.rootNode = self.vfs.getnode('/Bookmarks/')
+    self.__rootNode = None
+    self.__rootNode = self.findRootBookmarkNode()
+
+  def findRootBookmarkNode(self):
+    if self.__rootNode:
+      return self.__rootNode
+    root = self.vfs.getnode('/')
+    children = root.children()
+    for node in children:
+      if node.fsobj() and node.fsobj().name == "Bookmarks":
+        self.__rootNode = node 
+        return self.__rootNode
+    for child in children:
+      childrens = child.children()
+      for node in childrens:
+        if node.fsobj() and node.fsobj().name == "Bookmarks":
+          self.__rootNode = node 
+          return self.__rootNode
+    return self.__rootNode
 
   def getSelectedNodes(self):
     checked = self.model.selection.get()
@@ -199,7 +218,11 @@ class BookmarkManager(QObject):
 
   def createCategory(self, category):
     if category != "":
-      newNodeBook = BookNode(self.rootNode, str(category.toUtf8()))
+      rootNode = self.findRootBookmarkNode()
+      if type(category) == str:
+        newNodeBook = BookNode(rootNode, category, rootNode.fsobj()) #add fso
+      else:
+        newNodeBook = BookNode(rootNode, str(category.toUtf8()), rootNode.fsobj()) #add fso
       newNodeBook.__disown__()
       BookmarkManager.categories.append(category)
       return True
@@ -254,6 +277,18 @@ class bookmarkDialog(QDialog, Ui_AddBookmark):
     else:
       self.existBox.setChecked(True)
 
+  def findRootBookmarkNode(self):
+    root = self.vfs.getnode('/')
+    children = root.children()
+    for node in children:
+      if node.fsobj() and node.fsobj().name == "Bookmarks":
+        return node 
+    for child in children:
+      childrens = child.children()
+      for node in childrens:
+        if node.fsobj() and node.fsobj().name == "Bookmarks":
+          return node 
+
   def changeEvent(self, event):
     """ Search for a language change event
     
@@ -274,7 +309,8 @@ class bookmarkDialog(QDialog, Ui_AddBookmark):
       if not self.manager.createCategory(selectedCategory):
         return
     selectedBookName = selectedCategory
-    selectedBookmark = self.vfs.getnode('/Bookmarks/' + str(selectedBookName.toUtf8()))
+    bookmarkPath = self.findRootBookmarkNode().absolute()
+    selectedBookmark = self.vfs.getnode(bookmarkPath + '/' + str(selectedBookName.toUtf8()))
     if selectedBookmark == None:
       print 'Error selected bookmark category was deleted '
       return 
@@ -290,8 +326,8 @@ class bookmarkDialog(QDialog, Ui_AddBookmark):
     self.VFS.notify(e)
 
 class BookNode(Node):
-    def __init__(self, parent, name):
-        Node.__init__(self, name, 0, parent, None)
+    def __init__(self, parent, name, fsobj):
+        Node.__init__(self, name, 0, parent, fsobj)
         self.__disown__()
         self.setDir()
 

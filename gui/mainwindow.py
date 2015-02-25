@@ -15,12 +15,12 @@
 # 
 from Queue import Empty 
 
-from PyQt4.QtGui import QAction,  QApplication, QDockWidget, QFileDialog, QIcon, QMainWindow, QMessageBox, QMenu, QTabWidget, QTextEdit, QTabBar, QPushButton, QCheckBox, QHBoxLayout, QVBoxLayout, QWidget, QStackedWidget, QSizePolicy
+from PyQt4.QtGui import QAction,  QApplication, QDockWidget, QFileDialog, QIcon, QMainWindow, QMessageBox, QMenu, QTabWidget, QTextEdit, QTabBar, QPushButton, QCheckBox, QHBoxLayout, QVBoxLayout, QWidget, QStackedWidget, QSizePolicy, QPushButton
 from PyQt4.QtCore import QEvent, Qt,  SIGNAL, QModelIndex, QSettings, QFile, QString, QTimer
 from PyQt4 import QtCore, QtGui
 
 from dff.api.vfs import vfs
-from dff.api.vfs.libvfs import VFS, Node, ModulesRootNode 
+from dff.api.vfs.libvfs import VFS, Node, ModulesRootNode, IconNode
 from dff.api.taskmanager import scheduler
 
 from dff.api.gui.widget.textedit import TextEdit
@@ -47,9 +47,9 @@ from dff.ui.gui.resources.ui_mainwindow import Ui_MainWindow
 from dff.ui.gui.widget.help import Help
 
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+class MainWindowBase(QMainWindow, Ui_MainWindow):
     def __init__(self,  app, debug = False):
-        super(MainWindow,  self).__init__()
+        super(MainWindowBase,  self).__init__()
         # Tab management private attributes, modify at own risk
         self.__tabMoved = False
         self.__tabAreaInformation = (-1, -1, [])
@@ -90,8 +90,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def initConnection(self):
         ## File menu
-        self.connect(self.actionOpen_evidence, SIGNAL("triggered()"), self.dialog.addFiles)
-        self.connect(self.actionOpen_device, SIGNAL("triggered()"), self.dialog.addDevices)
         self.connect(self.actionExit, SIGNAL("triggered()"), self.close)
         ## Edit menu
         self.connect(self.actionPreferences, SIGNAL("triggered()"), self.dialog.preferences)
@@ -99,7 +97,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionLoadModule, SIGNAL("triggered()"), self.dialog.loadDriver)
         self.connect(self.actionBrowse_modules, SIGNAL("triggered()"), self.dialog.manager)
         ## Ide menu
-        self.connect(self.actionIdeOpen, SIGNAL("triggered()"), self.addIde)
+        #self.connect(self.actionIdeOpen, SIGNAL("triggered()"), self.addIde)
         ## View menu
         self.connect(self.actionMaximize, SIGNAL("triggered()"), self.maximizeDockwidget)
         self.connect(self.actionFullscreen_mode, SIGNAL("triggered()"), self.fullscreenMode)
@@ -113,13 +111,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def initToolbarList(self):
         self.toolbarList = [
-			    self.actionOpen_evidence,
-                            self.actionOpen_device,
+			    #self.actionOpen_evidence,
+                            #self.actionOpen_device,
                             None,
                             self.actionNodeBrowser,
                             self.actionShell,
                             self.actionPython_interpreter,
-                            self.actionIdeOpen,
+                            #self.actionIdeOpen,
 #                            self.actionHelp,
 #                            None,
 #                            self.actionMaximize,
@@ -530,10 +528,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def createRootNodes(self):
         root = self.vfs.getnode('/')
-        self.devicenode = deviceNode(root, str('Local devices'))
-        self.logicalenode = logicalNode(root, str('Logical files'))
+        self.devicenode = IconNode(root, str('Local devices'), ":dev_hd.png", 'Local devices')
+        self.logicalenode = IconNode(root, str('Logical files'), ":folder_documents_128.png", 'Logical files')
         self.modulesrootnode = ModulesRootNode(VFS.Get(), root)
-        self.booknode = bookNode(root, str('Bookmarks'))
+        self.booknode = IconNode(root, str('Bookmarks'), ":bookmark.png", 'Bookmarks')
 
     def changeEvent(self, event):
         """ Search for a language change event
@@ -554,26 +552,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.noSuchHelpFile = self.tr('Documentation path not found.') + self.onlineHelp
 
 
-class deviceNode(Node):
-    def __init__(self, parent, name):
-        Node.__init__(self, name, 0, parent, None)
-        self.__disown__()
+class MainWindow(MainWindowBase):
+  def __init__(self, app, debug = False):
+    MainWindowBase.__init__(self, app, debug)
 
-    def icon(self):
-        return (":dev_hd.png")
+  def initConnection(self):
+    MainWindowBase.initConnection(self)
+    self.connect(self.actionOpen_evidence, SIGNAL("triggered()"), self.dialog.addFiles)
+    self.connect(self.actionOpen_device, SIGNAL("triggered()"), self.dialog.addDevices)
 
-class logicalNode(Node):
-    def __init__(self, parent, name):
-        Node.__init__(self, name, 0, parent, None)
-        self.__disown__()
-
-    def icon(self):
-        return (":folder_documents_128.png")
-    
-class bookNode(Node):
-    def __init__(self, parent, name):
-        Node.__init__(self, name, 0, parent, None)
-        self.__disown__()
-
-    def icon(self):
-        return (":bookmark.png")
+  def initToolbarList(self):
+     MainWindowBase.initToolbarList(self)
+     self.toolbarList.insert(0, self.actionOpen_evidence)#change dynamiclly
+     self.toolbarList.insert(1, self.actionOpen_device)   
+     #self.toolbarList.insert(2, self.actionCaseSave)  
+     #self.toolbarList.insert(3, self.actionCaseSaveAs)
+     #self.toolbarList.insert(4, self.actionWizard)   
+     #self.toolbarList.insert(len(self.toolbarList) - 3, self.actionReport)

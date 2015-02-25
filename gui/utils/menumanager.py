@@ -85,7 +85,9 @@ class MenuManager(QWidget, Ui_nodeActions):
     self.actionTags.setMenu(tags)
     self.mainmenu.addAction(self.actionTags)
     self.mainmenu.addAction(self.actionBookmark)
-    if nodeclicked.path().find('/Bookmarks/') != -1:
+    parentFsobj = nodeclicked.parent().fsobj()
+    grandParentFsobj = nodeclicked.parent().parent().fsobj()
+    if (parentFsobj and parentFsobj.name == "Bookmarks") or (grandParentFsobj and grandParentFsobj.name == "Bookmarks"):
       self.mainmenu.addAction(QIcon(":trash"), self.tr("Delete bookmark"), self.deleteBookmark)
     self.bookseparator = self.mainmenu.addSeparator()
     self.mainmenu.addAction(self.actionHex_viewer)
