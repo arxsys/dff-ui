@@ -24,12 +24,12 @@
    </property>
    <item>
     <property name="text">
-     <string>Is less than</string>
+     <string>Is lesser than</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Is less than or equal to</string>
+     <string>Is lesser than or equal to</string>
     </property>
    </item>
    <item>

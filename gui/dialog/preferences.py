@@ -269,5 +269,5 @@ class Preferences(QDialog, Ui_PreferencesDialog):
 
     def translation(self):
         self.createDirTitle = self.tr('Create directory')
-        self.createDirFail =self.tr('Directory creation failure')
+        self.createDirFail =self.tr('Failed to create directory')
         self.histWriteFail = self.tr('History file is not writable')

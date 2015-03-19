@@ -162,7 +162,7 @@
     <string>attributes</string>
    </property>
    <property name="toolTip">
-    <string>Edit the columns attributes of the detailed view</string>
+    <string>Edit attributes to display as column in the detailed view</string>
    </property>
   </action>
   <action name="actionBookmark">

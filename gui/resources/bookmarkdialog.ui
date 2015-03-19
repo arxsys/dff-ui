@@ -88,7 +88,7 @@ Christophe Malinge cma@digital-forensic.org
    <item>
     <widget class="QGroupBox" name="existBox">
      <property name="title">
-      <string>Add in an existing category</string>
+      <string>Add to existing category</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

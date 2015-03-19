@@ -38,7 +38,7 @@
         <widget class="QLabel" name="label_12">
          <property name="text">
           <string>Add and remove tags from selected nodes
-Add new or delete existings tags (Double-click to edit)</string>
+Add new tag or delete existing ones (Double-click to edit)</string>
          </property>
         </widget>
        </item>

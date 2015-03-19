@@ -245,7 +245,7 @@
           <item>
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Document is Password protected</string>
+             <string>Document is password protected</string>
             </property>
            </widget>
           </item>

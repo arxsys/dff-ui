@@ -42,8 +42,8 @@ class Processus(QTreeWidget, Ui_TaskManager):
     def __init__(self, parent):
         super(QTreeWidget, self).__init__()
         self.setupUi(self)
-        self.tr("Fail")
-        self.tr("Finish")
+        self.tr("Failed")
+        self.tr("Finished")
         self.tr("Running")
         self.__mainWindow = parent        
         self.name = "Task manager"

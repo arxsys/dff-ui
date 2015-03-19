@@ -21,7 +21,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Quick search:</string>
+      <string>Quick search</string>
      </property>
     </widget>
    </item>
