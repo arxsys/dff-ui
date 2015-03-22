@@ -114,7 +114,7 @@
       <item>
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Generating attribute list</string>
+         <string>Gathering list of attributes</string>
         </property>
        </widget>
       </item>

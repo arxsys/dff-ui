@@ -121,7 +121,7 @@ Christophe Malinge cma@digital-forensic.org
      <item>
       <widget class="QCheckBox" name="sortCaseSensitivityCheckBox">
        <property name="text">
-        <string>Case sensitive sorting</string>
+        <string>Case sensitive sort</string>
        </property>
       </widget>
      </item>

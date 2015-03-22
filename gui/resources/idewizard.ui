@@ -35,7 +35,7 @@ Christophe Malinge cma@digital-forensic.org
   </property>
   <widget class="QWizardPage" name="introPage">
    <property name="title">
-    <string>General Informations</string>
+    <string>General Information</string>
    </property>
    <property name="subTitle">
     <string>Fill all script information such as name, type and saving location.</string>

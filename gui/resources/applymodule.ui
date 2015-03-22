@@ -39,7 +39,7 @@ Christophe Malinge cma@digital-forensic.org
    <item>
     <widget class="QGroupBox" name="infoContainer">
      <property name="title">
-      <string>Informations</string>
+      <string>Information</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>

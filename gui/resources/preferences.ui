@@ -68,7 +68,7 @@ Christophe Malinge cma@digital-forensic.org
             <item row="1" column="0">
              <widget class="QLabel" name="workingDirLabel">
               <property name="text">
-               <string>DFF user directory:</string>
+               <string>DFF user's directory:</string>
               </property>
              </widget>
             </item>
@@ -137,7 +137,7 @@ Christophe Malinge cma@digital-forensic.org
              </palette>
             </property>
             <property name="text">
-             <string>Provided path does not exists, will ask for creation on submit.</string>
+             <string>Provided path does not exist. You will be asked for creation on submit.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -359,7 +359,7 @@ Christophe Malinge cma@digital-forensic.org
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Please select in which directory you want to save indexes' files. If those directories do not exist they will be created when the changes are applied.</string>
+            <string>Please select in which directory you want to save indexed files. If those directories do not exist they will be created when changes will be applied.</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
