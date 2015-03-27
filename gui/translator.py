@@ -25,8 +25,13 @@ class Translator():
         def __init__(self):
             self.translators = {}
             self.conf = Conf()
-            self.addTranslationPath(os.path.join(unicode(QLibraryInfo.location(QLibraryInfo.TranslationsPath)), "qt_"))
-            self.addTranslationPath("dff/ui/gui/i18n/Dff_")
+            if hasattr(sys, "frozen"):
+                translationPath = os.path.abspath(os.path.join(os.path.dirname(sys.executable), "resources/i18n"))
+                self.addTranslationPath(os.path.join(translationPath, "qt_"))
+                self.addTranslationPath(os.path.join(translationPath, "Dff_"))
+            else:
+               self.addTranslationPath(os.path.join(unicode(QLibraryInfo.location(QLibraryInfo.TranslationsPath)), "qt_"))
+               self.addTranslationPath("dff/ui/gui/i18n/Dff_")
             self.loadLanguage()
 
         def addTranslationPath(self, path):
