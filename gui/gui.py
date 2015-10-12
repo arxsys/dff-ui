@@ -37,10 +37,11 @@ class SplashScreen(QSplashScreen):
 
 
 class GUI(QApplication, UI):
-    def __init__(self, debug = False, verbosity = 0):
+    def __init__(self, arguments):
         """Launch GUI"""
+        self.arguments = arguments
 	QApplication.__init__(self, sys.argv)
-        UI.__init__(self, debug, verbosity)
+        UI.__init__(self, arguments)
         self.translator = Translator()
         self.setApplicationName("Digital Forensics Framework")
         # Below are macros replaced by CMake using configure_file please don't
@@ -52,7 +53,7 @@ class GUI(QApplication, UI):
         self.splash.setMask(pixmap.mask()) 
 
     def createMainWindow(self):
-        return MainWindow(self, self.debug)
+        return MainWindow(self, self.arguments.debug)
 
     def launch(self, modulesPaths = None):
         self.splash.show()
