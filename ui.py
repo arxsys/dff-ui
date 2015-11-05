@@ -22,6 +22,7 @@ from dff.ui.conf import Conf
 from dff.ui.redirect import RedirectIO
 from dff.api.exceptions.libexceptions import CrashHandler
 from dff import VERSION
+from dff.api.taskmanager.taskmanager import TaskManager
 
 # ensure dist-packages will be loaded be pyshared on Debian
 # else private modules won't be found
@@ -69,9 +70,19 @@ interfaces"""
           modulesLocalPath.append(os.path.join(get_python_lib(), modulesPath)) 
      return modulesLocalPath
 
-  def loadModules(self, modulesPaths, displayOutput = None):
+  def loadModules(self, modulesPaths, displayOutput = None, defaultConfig=None):
      modulesPaths = self.modulesLocalPath(modulesPaths)
      self.loader.do_load(modulesPaths, displayOutput, reload = False)
+     if defaultConfig is not None:
+         for module in defaultConfig:
+             TaskManager().ppModules.add(module)
+             flags = []
+             arguments = {}
+             if defaultConfig[module].has_key("flags"):
+                 flags = defaultConfig[module]["flags"]
+             if defaultConfig[module].has_key("arguments"):
+                 arguments = defaultConfig[module]["arguments"]
+             TaskManager().ppModules.add(module, arguments, flags)
 
 
 def parseArguments():

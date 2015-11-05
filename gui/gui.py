@@ -55,10 +55,10 @@ class GUI(QApplication, UI):
     def createMainWindow(self):
         return MainWindow(self, self.arguments.debug)
 
-    def launch(self, modulesPaths = None):
+    def launch(self, modulesPaths = None, defaultConfig=None):
         self.splash.show()
         if modulesPaths:
-          self.loadModules(modulesPaths, self.splash.showMessage)
+          self.loadModules(modulesPaths, self.splash.showMessage, defaultConfig)
         
         self.mainWindow = self.createMainWindow()
         self.mainWindow.initDockWidgets()

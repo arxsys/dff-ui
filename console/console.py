@@ -61,9 +61,9 @@ class Console(Cmd, UI):
 
 
 
-    def launch(self, modulesPaths = None):
+    def launch(self, modulesPaths = None, defaultConfig = None):
        if modulesPaths:
-         self.loadModules(modulesPaths)
+         self.loadModules(modulesPaths, defaultConfig=defaultConfig)
        self.cmdloop()
 
 
