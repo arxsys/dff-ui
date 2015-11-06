@@ -57,7 +57,7 @@ class GUI(QApplication, UI):
 
     def launch(self, modulesPaths = None, defaultConfig=None):
         self.splash.show()
-        if modulesPaths:
+        if modulesPaths or defaultConfig:
           self.loadModules(modulesPaths, self.splash.showMessage, defaultConfig)
         
         self.mainWindow = self.createMainWindow()
