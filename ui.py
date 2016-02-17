@@ -21,7 +21,7 @@ from dff.api.loader.loader import loader
 from dff.ui.conf import Conf
 from dff.ui.redirect import RedirectIO
 try:
-    from dff.api.crashreporter.libcrashreporter import CrashHandler
+    from dff.api.crashreporter.libcrashhandler import CrashHandler
     CrashHandlerEnabled = True
 except ImportError:
     CrashHandlerEnabled = False
