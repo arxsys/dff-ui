@@ -97,6 +97,7 @@ class listWidget(QListWidget):
         self.setViewMode(QListView.IconMode)
 
         self.connect(self, SIGNAL("itemPressed(QListWidgetItem *)"), self.GMShape)
+        self.previousw = None
 
     def generator(self, name, tags):
        return moduleShapeGenerator(name, tags) 
