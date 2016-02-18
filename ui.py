@@ -20,7 +20,11 @@ import dff
 from dff.api.loader.loader import loader 
 from dff.ui.conf import Conf
 from dff.ui.redirect import RedirectIO
-from dff.api.exceptions.libexceptions import CrashHandler
+try:
+    from dff.api.crashreporter.libcrashhandler import CrashHandler
+    CrashHandlerEnabled = True
+except ImportError:
+    CrashHandlerEnabled = False
 from dff import VERSION
 from dff.api.taskmanager.taskmanager import TaskManager
 
@@ -43,17 +47,13 @@ interfaces"""
    RedirectIO(None, self.debug)
    # When UI is initialized from main, arguments are provided
    # When UI is initialized from shell widget, there are no arguments
-   if self.arguments and not self.arguments.no_exception_handler:
+   if CrashHandlerEnabled and self.arguments and not self.arguments.no_exception_handler:
        self.handler = CrashHandler()
        self.handler.setVersion(VERSION)
        if self.arguments.silent_report:
            self.handler.setSilentReport(True)
        self.handler.setHandler()
    self.loader = loader()
-
-
-  def enableCrashHandler(self):
-      argv = Usage(sys.argv[1:])
 
 
   def launch(self, modulesPaths = None):
