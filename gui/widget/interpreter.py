@@ -56,7 +56,7 @@ class InterpreterView(QTextEdit, InteractiveInterpreter, Ui_Interpreter):
         self.ps1 = ">>> "
         self.ps2 = "... "
         self.writePrompt()
-        api_imports = ["from dff.api.types.libtypes import Variant, VList, VMap, vtime, typeId, Argument, Parameter, ConfigManager, Constant, Config, Path",
+        api_imports = ["from dff.api.types.libtypes import Variant, VList, VMap, DateTime, typeId, Argument, Parameter, ConfigManager, Constant, Config, Path",
                        "from dff.api.vfs.vfs import vfs",
                        "from dff.api.vfs.libvfs import VFS, FileMapping, ABSOLUTE_ATTR_NAME, RELATIVE_ATTR_NAME",
                        "from dff.api.filters.libfilters import Filter",
