@@ -36,28 +36,63 @@
         <translation>Kategoriename:</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/bookmarkdialog.ui" line="91"/>
+        <location filename="../resources/bookmarkdialog.ui" line="91"/>
         <source>Add in an existing category</source>
-        <translation>einer vorhandenen Kategorie hinzufügen</translation>
+        <translation type="obsolete">einer vorhandenen Kategorie hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/bookmarkdialog.ui" line="91"/>
+        <source>Add to existing category</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ApplyModule</name>
     <message>
-        <location filename="../../../api/gui/dialog/applymodule.py" line="198"/>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="208"/>
         <source>Configuration error</source>
         <translation>Konfigurationsfehler</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/applymodule.py" line="199"/>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="209"/>
         <source>An error was detected in the configuration</source>
         <translation>Es wurde ein Fehler in der Konfiguration gefunden</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="104"/>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="106"/>
+        <source>String</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="108"/>
+        <source>Boolean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="110"/>
+        <source>File or folder stored on the local system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="112"/>
+        <source>Node from the virtual filesystem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/dialog/applymodule.py" line="116"/>
+        <source>Input type:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AttributeCopyMenu</name>
     <message>
-        <location filename="../../../api/gui/widget/varianttreewidget.py" line="146"/>
+        <location filename="../../../api/gui/widget/varianttreewidget.py" line="151"/>
         <source>copy</source>
         <translation>kopiere</translation>
     </message>
@@ -96,12 +131,12 @@
 <context>
     <name>BookmarkManager</name>
     <message>
-        <location filename="../../../ui/gui/utils/menu.py" line="195"/>
+        <location filename="../../../ui/gui/utils/menu.py" line="214"/>
         <source>Bookmark</source>
         <translation>Lesezeichen</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menu.py" line="195"/>
+        <location filename="../../../ui/gui/utils/menu.py" line="214"/>
         <source>You must specify at least one node.</source>
         <translation>Mindestens ein Knoten muss ausgewählt sein.</translation>
     </message>
@@ -174,14 +209,19 @@
         <translation>Details</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="165"/>
+        <location filename="../resources/browser_toolbar.ui" line="165"/>
         <source>Edit the columns attributes of the detailed view</source>
-        <translation>Spaltenattribute der Dateil-Ansicht bearbeiten</translation>
+        <translation type="obsolete">Spaltenattribute der Dateil-Ansicht bearbeiten</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="14"/>
         <source>Browser</source>
         <translation>Browser</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/browser_toolbar.ui" line="165"/>
+        <source>Edit attributes to display as column in the detailed view</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -310,27 +350,27 @@
 <context>
     <name>Extractor</name>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="112"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="113"/>
         <source>Extraction path is mandatory</source>
         <translation>Extraktions-Pfad ist erforderlich</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="113"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="114"/>
         <source>Choose the destination folder for extraction</source>
         <translation>Zielverzeichnis für die Extraktion wählen</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="114"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="115"/>
         <source>Overwrite attempt</source>
         <translation>Überschreibversuch</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="115"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="116"/>
         <source>Some selected files or folders already exist in the destination folder</source>
         <translation>Einige der ausgewählten Dateien oder Verzeichnisse existieren bereits im Zielverzeichnis</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/extractor.py" line="116"/>
+        <location filename="../../../api/gui/dialog/extractor.py" line="117"/>
         <source>Overwrite with selected ones ?</source>
         <translation>Mit den ausgewählten überschreiben?</translation>
     </message>
@@ -351,12 +391,12 @@
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="412"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="415"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="412"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="415"/>
         <source>Please, specify a query name</source>
         <translation>Bitte einen Abfrage-Namen angeben</translation>
     </message>
@@ -414,14 +454,19 @@
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="124"/>
+        <location filename="../resources/nodefilterbox.ui" line="124"/>
         <source>Case sensitive sorting</source>
-        <translation>Groß-/Kleinschreibungs abhängiges Sortieren</translation>
+        <translation type="obsolete">Groß-/Kleinschreibungs abhängiges Sortieren</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="131"/>
         <source>Case sensitive filter</source>
         <translation>Groß- und Kleinschreibung beachtendes Filtern</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/nodefilterbox.ui" line="124"/>
+        <source>Case sensitive sort</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -605,9 +650,9 @@
         <translation>Assistent für die Intergrierte Entwicklungsumgebung</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/idewizard.ui" line="38"/>
+        <location filename="../resources/idewizard.ui" line="38"/>
         <source>General Informations</source>
-        <translation>Allgemeine Informationen</translation>
+        <translation type="obsolete">Allgemeine Informationen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/idewizard.ui" line="41"/>
@@ -699,6 +744,11 @@
         <source>Location</source>
         <translation>Standort</translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/resources/idewizard.ui" line="38"/>
+        <source>General Information</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Interpreter</name>
@@ -729,17 +779,17 @@
 <context>
     <name>ItemValueDialog</name>
     <message>
-        <location filename="../../../api/gui/widget/varianttreewidget.py" line="164"/>
+        <location filename="../../../api/gui/widget/varianttreewidget.py" line="169"/>
         <source>Attribute value</source>
         <translation>Attribut-Werte</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/varianttreewidget.py" line="177"/>
+        <location filename="../../../api/gui/widget/varianttreewidget.py" line="182"/>
         <source>Attribute</source>
         <translation>Attribute</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/varianttreewidget.py" line="186"/>
+        <location filename="../../../api/gui/widget/varianttreewidget.py" line="191"/>
         <source>Value:</source>
         <translation>Wert:</translation>
     </message>
@@ -857,24 +907,24 @@
         <translation type="obsolete">DFF Dokumentation</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="551"/>
+        <location filename="../mainwindow.py" line="551"/>
         <source>Error while loading help</source>
-        <translation>Fehler beim Laden der Hilfe</translation>
+        <translation type="obsolete">Fehler beim Laden der Hilfe</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="552"/>
+        <location filename="../mainwindow.py" line="552"/>
         <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
-        <translation>&lt;br&gt;Du kannst die Online-Hilfe auf &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt; aufsuchen.</translation>
+        <translation type="obsolete">&lt;br&gt;Du kannst die Online-Hilfe auf &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt; aufsuchen.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="553"/>
+        <location filename="../mainwindow.py" line="553"/>
         <source>Not an help file.</source>
-        <translation>keine Hilfedatei.</translation>
+        <translation type="obsolete">keine Hilfedatei.</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/mainwindow.py" line="554"/>
+        <location filename="../mainwindow.py" line="554"/>
         <source>Documentation path not found.</source>
-        <translation>Pfad zur Dokumentation nicht gefunden.</translation>
+        <translation type="obsolete">Pfad zur Dokumentation nicht gefunden.</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/mainwindow.ui" line="266"/>
@@ -918,62 +968,85 @@
     </message>
 </context>
 <context>
+    <name>MainWindowBase</name>
+    <message>
+        <location filename="../../../ui/gui/mainwindow.py" line="557"/>
+        <source>Error while loading help</source>
+        <translation type="unfinished">Fehler beim Laden der Hilfe</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/mainwindow.py" line="558"/>
+        <source>&lt;br&gt;You can check on-line help at &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt;.</source>
+        <translation type="unfinished">&lt;br&gt;Du kannst die Online-Hilfe auf &lt;a href=&quot;http://wiki.digital-forensic.org/&quot;&gt;http://wiki.digital-forensic.org&lt;/a&gt; aufsuchen.</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/mainwindow.py" line="559"/>
+        <source>Not an help file.</source>
+        <translation type="unfinished">keine Hilfedatei.</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/mainwindow.py" line="560"/>
+        <source>Documentation path not found.</source>
+        <translation type="unfinished">Pfad zur Dokumentation nicht gefunden.</translation>
+    </message>
+</context>
+<context>
     <name>MenuManager</name>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="255"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="259"/>
         <source>Empty files</source>
         <translation>leere Dateien</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="256"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="260"/>
         <source>the following nodes could not be opened with Hex viewer because they are either empty or folders
 </source>
         <translation>Die folgenden Knoten konnten nicht mit dem Hex-Betrachter geöffnet werden, da diese entweder leer oder Verzeichnisse sind
 </translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="198"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="201"/>
         <source>Extraction Error</source>
         <translation>Fehler bei der Extraktion</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="199"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="202"/>
         <source>An issue occured while extracting 
 </source>
         <translation>Während der Extraktion trat ein Problem auf</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="227"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="230"/>
         <source>Module already applied</source>
         <translation>Dieses Modul wurde bereits ausgeführt</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="227"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="230"/>
         <source>This module was already applied with the same configuration ! Do you want to apply it again ?</source>
         <translation>Dieses Modul wurde bereits mit dieser Einstellung ausgeführt! Möchtest Du es erneut ausführen?</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="233"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="236"/>
         <source>Apply module</source>
         <translation>Modul anwenden</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="233"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="236"/>
         <source>Do you want to apply module </source>
         <translation>Modul  </translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="233"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="236"/>
         <source> on this node ?</source>
         <translation> auf diesen Knoten anwenden?</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="234"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="237"/>
         <source>Always</source>
         <translation>Immer</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/utils/menumanager.py" line="89"/>
+        <location filename="../../../ui/gui/utils/menumanager.py" line="91"/>
         <source>Delete bookmark</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1014,9 +1087,9 @@
 <context>
     <name>NodeFBox</name>
     <message>
-        <location filename="../../../ui/gui/resources/node_f_box.ui" line="24"/>
+        <location filename="../resources/node_f_box.ui" line="24"/>
         <source>Quick search:</source>
-        <translation>Schnellsuche:</translation>
+        <translation type="obsolete">Schnellsuche:</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/node_f_box.ui" line="34"/>
@@ -1038,6 +1111,19 @@
         <source>Launch quick search</source>
         <translation>Starte Schnellsuche</translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/resources/node_f_box.ui" line="24"/>
+        <source>Quick search</source>
+        <translation type="unfinished">Schnellsuche</translation>
+    </message>
+</context>
+<context>
+    <name>NodeSelectionButton</name>
+    <message>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="581"/>
+        <source>Load</source>
+        <translation type="unfinished">Laden</translation>
+    </message>
 </context>
 <context>
     <name>Output</name>
@@ -1048,21 +1134,34 @@
     </message>
 </context>
 <context>
+    <name>PathSelectionButton</name>
+    <message>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="618"/>
+        <source>Load</source>
+        <translation type="unfinished">Laden</translation>
+    </message>
+</context>
+<context>
     <name>Preferences</name>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="271"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="274"/>
         <source>Create directory</source>
         <translation>Erstelle Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="272"/>
+        <location filename="../dialog/preferences.py" line="272"/>
         <source>Directory creation failure</source>
-        <translation>Erstellung des Verzeichnisses fehlgeschlagen</translation>
+        <translation type="obsolete">Erstellung des Verzeichnisses fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/dialog/preferences.py" line="273"/>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="276"/>
         <source>History file is not writable</source>
         <translation>History-Datei ist nicht schreibbar</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/dialog/preferences.py" line="275"/>
+        <source>Failed to create directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1138,9 +1237,9 @@
         <translation>Indexname</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/preferences.ui" line="362"/>
+        <location filename="../resources/preferences.ui" line="362"/>
         <source>Please select in which directory you want to save indexes&apos; files. If those directories do not exist they will be created when the changes are applied.</source>
-        <translation>Bitte Verzeichnis für die Speicherung der Index-Dateien auswählen. Falls das Verzeichnis nicht existiert wird es erstellt, wenn die Änderungen angewandt werden.</translation>
+        <translation type="obsolete">Bitte Verzeichnis für die Speicherung der Index-Dateien auswählen. Falls das Verzeichnis nicht existiert wird es erstellt, wenn die Änderungen angewandt werden.</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/preferences.ui" line="56"/>
@@ -1148,9 +1247,9 @@
         <translation>Arbeitsumgebung</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/preferences.ui" line="71"/>
+        <location filename="../resources/preferences.ui" line="71"/>
         <source>DFF user directory:</source>
-        <translation>DFF Benutzerverzeichnis:</translation>
+        <translation type="obsolete">DFF Benutzerverzeichnis:</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/preferences.ui" line="526"/>
@@ -1192,6 +1291,21 @@
         <source>Provided path is a readable file.</source>
         <translation>Das angegebene Verzeichnis ist ein lesbares Verzeichnis.</translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/resources/preferences.ui" line="71"/>
+        <source>DFF user&apos;s directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/preferences.ui" line="140"/>
+        <source>Provided path does not exist. You will be asked for creation on submit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/preferences.ui" line="362"/>
+        <source>Please select in which directory you want to save indexed files. If those directories do not exist they will be created when changes will be applied.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Preview</name>
@@ -1204,110 +1318,120 @@
 <context>
     <name>Processus</name>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="45"/>
+        <location filename="../widget/taskmanager.py" line="45"/>
         <source>Fail</source>
-        <translation>Fehlgeschlaggen</translation>
+        <translation type="obsolete">Fehlgeschlaggen</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="46"/>
+        <location filename="../widget/taskmanager.py" line="46"/>
         <source>Finish</source>
-        <translation>Beendet</translation>
+        <translation type="obsolete">Beendet</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/widget/taskmanager.py" line="47"/>
         <source>Running</source>
         <translation>In Arbeit</translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="45"/>
+        <source>Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="46"/>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PropertyTable</name>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="142"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="145"/>
         <source>name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="148"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="151"/>
         <source>folder</source>
         <translation>Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="146"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="149"/>
         <source>file</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="151"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="154"/>
         <source>generated by</source>
         <translation>erstellt von</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="152"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="155"/>
         <source>size</source>
         <translation>Größe</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="153"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="156"/>
         <source>relevant module(s)</source>
         <translation>relevante(s) Modul(e)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="145"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="148"/>
         <source>node type</source>
         <translation>Knotentyp</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="159"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="162"/>
         <source>attributes</source>
         <translation>Attribute</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="154"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="157"/>
         <source>children</source>
         <translation>kind-knoten</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="155"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="158"/>
         <source>file(s)</source>
         <translation>Datei(en)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="157"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="160"/>
         <source> bytes</source>
         <translation> Bytes</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="158"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="161"/>
         <source>folder(s)</source>
         <translation>Verzeichnis(se)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="156"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="159"/>
         <source> totalizing </source>
         <translation> summiert </translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="147"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="150"/>
         <source> with module(s) applied on it</source>
         <translation> mit darauf angewanden Modul(en)</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="149"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="152"/>
         <source> empty</source>
         <translation> leer</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="150"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="153"/>
         <source> deleted</source>
         <translation> gelöscht</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="144"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="147"/>
         <source>link path</source>
         <translation>Verknüpfungspfad</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/propertytable.py" line="143"/>
+        <location filename="../../../api/gui/widget/propertytable.py" line="146"/>
         <source>path</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1408,12 +1532,12 @@
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="157"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="157"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
         <source>Please, specify your query</source>
         <translation>Bitte Abfrage spezifizieren </translation>
     </message>
@@ -1479,9 +1603,14 @@
         <translation>erstellt durch Modul</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/select_attributes.ui" line="117"/>
+        <location filename="../resources/select_attributes.ui" line="117"/>
         <source>Generating attribute list</source>
-        <translation>Erzeugte Liste der Eigenschaften</translation>
+        <translation type="obsolete">Erzeugte Liste der Eigenschaften</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/select_attributes.ui" line="117"/>
+        <source>Gathering list of attributes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1533,10 +1662,10 @@
 <context>
     <name>Tags</name>
     <message>
-        <location filename="../../../ui/gui/resources/tags.ui" line="40"/>
+        <location filename="../resources/tags.ui" line="40"/>
         <source>Add and remove tags from selected nodes
 Add new or delete existings tags (Double-click to edit)</source>
-        <translation>Kennzeichnungen von selektierten Knoten hinzufügen und entfernen
+        <translation type="obsolete">Kennzeichnungen von selektierten Knoten hinzufügen und entfernen
 Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Editieren)</translation>
     </message>
     <message>
@@ -1553,6 +1682,12 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <location filename="../../../ui/gui/resources/tags.ui" line="89"/>
         <source>Available tags</source>
         <translation>Verfügbare Kennzeichnungen</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/tags.ui" line="40"/>
+        <source>Add and remove tags from selected nodes
+Add new tag or delete existing ones (Double-click to edit)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1596,7 +1731,7 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
 <context>
     <name>TreeMenu</name>
     <message>
-        <location filename="../../../ui/gui/utils/menu.py" line="307"/>
+        <location filename="../../../ui/gui/utils/menu.py" line="343"/>
         <source>Delete bookmark</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1604,7 +1739,7 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
 <context>
     <name>TreeModel</name>
     <message>
-        <location filename="../../../api/gui/model/tree.py" line="373"/>
+        <location filename="../../../api/gui/model/tree.py" line="380"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
@@ -1635,9 +1770,9 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <translation>Modul anwenden</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/applymodule.ui" line="42"/>
+        <location filename="../resources/applymodule.ui" line="42"/>
         <source>Informations</source>
-        <translation>Informationen</translation>
+        <translation type="obsolete">Informationen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/applymodule.ui" line="110"/>
@@ -1663,6 +1798,11 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <location filename="../../../ui/gui/resources/applymodule.ui" line="172"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/applymodule.ui" line="42"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1739,9 +1879,9 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <translation>Füge Beweismitteldateien hinzu</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/evidencedialog.ui" line="60"/>
+        <location filename="../resources/evidencedialog.ui" line="60"/>
         <source>Open local files or directory</source>
-        <translation>Öffne lokale Dateien oder Verzeichnisse</translation>
+        <translation type="obsolete">Öffne lokale Dateien oder Verzeichnisse</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/evidencedialog.ui" line="77"/>
@@ -1757,6 +1897,11 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <location filename="../../../ui/gui/resources/evidencedialog.ui" line="103"/>
         <source>AFF Format</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/evidencedialog.ui" line="60"/>
+        <source>Open local files or folders</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2030,14 +2175,14 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/filter_operators.ui" line="27"/>
+        <location filename="../resources/filter_operators.ui" line="27"/>
         <source>Is less than</source>
-        <translation>ist kleiner als</translation>
+        <translation type="obsolete">ist kleiner als</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/filter_operators.ui" line="32"/>
+        <location filename="../resources/filter_operators.ui" line="32"/>
         <source>Is less than or equal to</source>
-        <translation>ist kleiner als oder gleich</translation>
+        <translation type="obsolete">ist kleiner als oder gleich</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="37"/>
@@ -2058,6 +2203,16 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <location filename="../../../ui/gui/resources/filter_operators.ui" line="52"/>
         <source>Is greater than</source>
         <translation>ist größer als</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_operators.ui" line="27"/>
+        <source>Is lesser than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_operators.ui" line="32"/>
+        <source>Is lesser than or equal to</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2144,14 +2299,24 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
 <context>
     <name>layoutManager</name>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="358"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="431"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/layoutmanager.py" line="359"/>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="432"/>
         <source>Directory</source>
         <translation>Verzeichnis</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="310"/>
+        <source>Predefined parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/widget/layoutmanager.py" line="239"/>
+        <source>Selected nodes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2170,9 +2335,9 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <translation>Module</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="20"/>
+        <location filename="../resources/modulegeneratorwidget.ui" line="20"/>
         <source>Informations</source>
-        <translation>Informationen</translation>
+        <translation type="obsolete">Informationen</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="96"/>
@@ -2189,16 +2354,21 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <source>Description</source>
         <translation>Beschreibung</translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/resources/modulegeneratorwidget.ui" line="20"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>moduleShapeGenerator</name>
     <message>
-        <location filename="../../../api/gui/widget/generateModuleShape.py" line="150"/>
+        <location filename="../../../api/gui/widget/generateModuleShape.py" line="154"/>
         <source>Configuration error</source>
         <translation>Konfigurationsfehler</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/generateModuleShape.py" line="151"/>
+        <location filename="../../../api/gui/widget/generateModuleShape.py" line="155"/>
         <source>An error was detected in the configuration</source>
         <translation>Es wurde ein Fehler in der Konfiguration gefunden</translation>
     </message>
@@ -2324,11 +2494,6 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="248"/>
-        <source>Document is Password protected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="255"/>
         <source>Owner password</source>
         <translation type="unfinished"></translation>
@@ -2343,36 +2508,41 @@ Neue Kennzeichnungen hinzufügen oder bestehende entfernen (Doppleklick zum Edit
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../ui/gui/resources/pdf_toolbar.ui" line="248"/>
+        <source>Document is password protected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>procMB</name>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="173"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="174"/>
         <source>Results</source>
         <translation>Ergebnisse</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="175"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="176"/>
         <source>No results</source>
         <translation>keine Ergebnisse</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="173"/>
         <source>Provided Arguments</source>
         <translation>übergebene Argumente</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="174"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="175"/>
         <source>Processus Information</source>
         <translation>Prozess Information</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="171"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="172"/>
         <source>Output</source>
         <translation>Ausgabe</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/widget/taskmanager.py" line="156"/>
+        <location filename="../../../ui/gui/widget/taskmanager.py" line="157"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>

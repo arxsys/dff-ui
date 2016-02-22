@@ -231,9 +231,9 @@ class VariantTreePrinter():
                 res += ": total items (" + str(size) + ")\n"
                 res += self.fillList(spacer+1, vlist)
             else:
-                if vval.type() == typeId.VTime:
-                    vtime = vval.value()
-                    res += ": " + str(vtime.get_time())
+                if vval.type() == typeId.DateTime:
+                    dateTime = vval.value()
+                    res += ": " + str(dateTime)
                 elif vval.type() in [typeId.Char, typeId.Int16, typeId.UInt16, typeId.Int32, typeId.UInt32, typeId.Int64, typeId.UInt64]:                
                     res += ": " + str(vval.toString() + " - " + vval.toHexString())
                 elif vval.type() == typeId.Node:
@@ -268,9 +268,9 @@ class VariantTreePrinter():
             else:
                 vstr = ""
                 if not crop:
-                    if vval.type == typeId.VTime:
-                        vtime = vval.value()
-                        vstr = str(vtime.get_time())
+                    if vval.type == typeId.DateTime:
+                        dateTime = vval.value()
+                        vstr = str(dateTime)
                     elif vval.type() == typeId.Node:
                         vstr = str(vval.value().absolute())
                     elif vval.type() in [typeId.Path, typeId.String]:

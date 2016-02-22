@@ -44,7 +44,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Mime type</string>
+     <string>Type</string>
     </property>
    </item>
    <item>
@@ -75,6 +75,16 @@
    <item>
     <property name="text">
      <string>Extension</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tags</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Module</string>
     </property>
    </item>
    <item>

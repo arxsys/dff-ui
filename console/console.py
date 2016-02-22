@@ -32,9 +32,10 @@ INTRO = "\nWelcome to the Digital Forensic Framework\n"
 IDENTCHARS = string.ascii_letters + string.digits + '\ _='
 
 class Console(Cmd, UI):
-    def __init__(self, completekey='tab', stdin=None, stdout=None, sigstp=True, debug  = False, verbosity = 0):
+    def __init__(self, completekey='tab', stdin=None, stdout=None, sigstp=True, arguments=None):
         Cmd.__init__(self, completekey, stdin, stdout)
-        UI.__init__(self, debug, verbosity)
+        UI.__init__(self, arguments)
+        self.arguments = arguments
         self.cm = ConfigManager.Get()
         self.history = history()
         self.api = ApiManager()
@@ -49,15 +50,22 @@ class Console(Cmd, UI):
 	self.stdin = self
 	self.completekey = '\t'
 	self.comp_raw = complete_raw_input(self)
-        self.completion = completion.Completion(self.comp_raw, self.debug, self.verbosity)
+        if self.arguments:
+            print arguments.verbosity
+            self.completion = completion.Completion(self.comp_raw, arguments.debug, arguments.verbosity)
+        else:
+            self.completion = completion.Completion(self.comp_raw, False, 0)
 	self.proc = None
 	if os.name == 'posix' and sigstp:
   	  signal.signal(signal.SIGTSTP, self.bg)
 
-    def launch(self, modulesPaths = None):
-       if modulesPaths:
-         self.loadModules(modulesPaths)
+
+
+    def launch(self, modulesPaths = None, defaultConfig = None):
+       if modulesPaths or defaultConfig:
+         self.loadModules(modulesPaths, defaultConfig=defaultConfig)
        self.cmdloop()
+
 
     def bg(self, signum, trace):
 	if self.proc:
@@ -66,6 +74,7 @@ class Console(Cmd, UI):
   	   proc.exec_flags += ["thread"]
 	   print "\n\n[" + str(proc.pid) + "]" + " background " + proc.name
 	   return None
+
 
     def precmd(self, line):
         return line
