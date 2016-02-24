@@ -102,7 +102,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionLoadModule, SIGNAL("triggered()"), self.dialog.loadDriver)
         self.connect(self.actionBrowse_modules, SIGNAL("triggered()"), self.dialog.manager)
         ## Ide menu
-        self.connect(self.actionIdeOpen, SIGNAL("triggered()"), self.addIde)
+        #self.connect(self.actionIdeOpen, SIGNAL("triggered()"), self.addIde)
         ## View menu
         self.connect(self.actionMaximize, SIGNAL("triggered()"), self.maximizeDockwidget)
         self.connect(self.actionFullscreen_mode, SIGNAL("triggered()"), self.fullscreenMode)
@@ -122,7 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             self.actionNodeBrowser,
                             self.actionShell,
                             self.actionPython_interpreter,
-                            self.actionIdeOpen,
+#                            self.actionIdeOpen,
 #                            self.actionHelp,
 #                            None,
 #                            self.actionMaximize,
@@ -214,8 +214,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def addInterpreter(self):
        self.addSingleDock("Interpreter", Interpreter)
 
-    def addIde(self):
-       self.addSingleDock("IDE", Ide, master=True)
+#    def addIde(self):
+#       self.addSingleDock("IDE", Ide, master=True)
  
 
     def initDockWidgets(self):
@@ -305,7 +305,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.actionNodeBrowser.setEnabled(False)
                 self.actionShell.setEnabled(False)
                 self.actionPython_interpreter.setEnabled(False)
-                self.actionIdeOpen.setEnabled(False)
+                #self.actionIdeOpen.setEnabled(False)
                 self.actionHelp.setEnabled(False)
             else:
                 self.last_state = None
@@ -322,7 +322,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionNodeBrowser.setEnabled(True)
             self.actionShell.setEnabled(True)
             self.actionPython_interpreter.setEnabled(True)
-            self.actionIdeOpen.setEnabled(True)
+            #self.actionIdeOpen.setEnabled(True)
             self.actionHelp.setEnabled(True)
 
     def fullscreenMode(self):
