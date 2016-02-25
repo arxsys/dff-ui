@@ -391,12 +391,12 @@
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="415"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="415"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="409"/>
         <source>Please, specify a query name</source>
         <translation>Bitte einen Abfrage-Namen angeben</translation>
     </message>
@@ -1052,6 +1052,27 @@
     </message>
 </context>
 <context>
+    <name>MimeDialog</name>
+    <message>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="877"/>
+        <source>Select types to look for</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModuleRequest</name>
+    <message>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="801"/>
+        <source>Select ...</source>
+        <translation type="unfinished">Auswählen ...</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="823"/>
+        <source>Select modules to look for</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Modules</name>
     <message>
         <location filename="../../../ui/gui/resources/modules.ui" line="36"/>
@@ -1532,12 +1553,12 @@
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="152"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/widget/search/search_widget.py" line="158"/>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="152"/>
         <source>Please, specify your query</source>
         <translation>Bitte Abfrage spezifizieren </translation>
     </message>
@@ -1629,34 +1650,47 @@
 <context>
     <name>TagManagerDialog</name>
     <message>
-        <location filename="../../../api/gui/dialog/tagmanager.py" line="62"/>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="65"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/tagmanager.py" line="63"/>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
         <source>No nodes was selected in the browser.</source>
         <translation>Es waren keine Knoten im Browser ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/tagmanager.py" line="64"/>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="67"/>
         <source>No tags was selected in the available tags list.</source>
         <translation>Keine Auswahl aus der Liste der verfügbaren Kennzeichnungen getroffen.</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/tagmanager.py" line="65"/>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="68"/>
         <source>No tags was selected in the selected nodes tags list.</source>
         <translation>Keine Kennzeichnung(en) aus der Liste vorhandenen Kennzeichnungen der selektierten Knoten ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/tagmanager.py" line="67"/>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="70"/>
         <source>Are you sure ? This will delete this tag for all nodes in the VFS !</source>
         <translation>Bist Du sicher? Diese Kennzeichnungen wird für alle Knoten im VFS entfernt!</translation>
     </message>
     <message>
-        <location filename="../../../api/gui/dialog/tagmanager.py" line="66"/>
+        <location filename="../../../api/gui/dialog/tagmanager.py" line="69"/>
         <source>This is a default tag it cannot be deleted. All tagged VFS nodes was untagged.</source>
         <translation>Dies ist eine Standard-Kennzeichnung. Sie kann nicht gelöscht werden. Bei den betroffenen VFS-knoten wurde die Kennzeichnung entfernt.</translation>
+    </message>
+</context>
+<context>
+    <name>TagRequest</name>
+    <message>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="759"/>
+        <source>Select ...</source>
+        <translation type="unfinished">Auswählen ...</translation>
+    </message>
+    <message>
+        <location filename="../../../api/gui/widget/search/search_widget.py" line="770"/>
+        <source>Select tags to look for</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2032,9 +2066,9 @@ Add new tag or delete existing ones (Double-click to edit)</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/filter_fields.ui" line="47"/>
+        <location filename="../resources/filter_fields.ui" line="47"/>
         <source>Mime type</source>
-        <translation>MIME-Typ</translation>
+        <translation type="obsolete">MIME-Typ</translation>
     </message>
     <message>
         <location filename="../../../ui/gui/resources/filter_fields.ui" line="52"/>
@@ -2067,8 +2101,23 @@ Add new tag or delete existing ones (Double-click to edit)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../ui/gui/resources/filter_fields.ui" line="82"/>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="92"/>
         <source>Expression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="47"/>
+        <source>Type</source>
+        <translation type="unfinished">Typ</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="82"/>
+        <source>Tags</source>
+        <translation type="unfinished">Kennzeichnungen</translation>
+    </message>
+    <message>
+        <location filename="../../../ui/gui/resources/filter_fields.ui" line="87"/>
+        <source>Module</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

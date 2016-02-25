@@ -212,8 +212,8 @@ class MainWindowBase(QMainWindow, Ui_MainWindow):
     def addInterpreter(self):
        self.addSingleDock("Interpreter", Interpreter)
 
-    def addIde(self):
-       self.addSingleDock("IDE", Ide, master=True)
+#    def addIde(self):
+#       self.addSingleDock("IDE", Ide, master=True)
  
 
     def initDockWidgets(self):
@@ -303,7 +303,7 @@ class MainWindowBase(QMainWindow, Ui_MainWindow):
                 self.actionNodeBrowser.setEnabled(False)
                 self.actionShell.setEnabled(False)
                 self.actionPython_interpreter.setEnabled(False)
-                self.actionIdeOpen.setEnabled(False)
+                #self.actionIdeOpen.setEnabled(False)
                 self.actionHelp.setEnabled(False)
             else:
                 self.last_state = None
@@ -320,7 +320,7 @@ class MainWindowBase(QMainWindow, Ui_MainWindow):
             self.actionNodeBrowser.setEnabled(True)
             self.actionShell.setEnabled(True)
             self.actionPython_interpreter.setEnabled(True)
-            self.actionIdeOpen.setEnabled(True)
+            #self.actionIdeOpen.setEnabled(True)
             self.actionHelp.setEnabled(True)
 
     def fullscreenMode(self):
