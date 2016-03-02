@@ -150,7 +150,7 @@ class TreeModel(QStandardItemModel, EventHandler):
           nfsobj = node.fsobj().this
         except AttributeError:
 	  nfsobj = None
-        if pfsobj != nfsobj:
+        if pfsobj and pfsobj != nfsobj:
           pixmap = pixmap.scaled(QSize(128, 128), Qt.KeepAspectRatio)
           painter = QPainter(pixmap)
           rootPixmap = QPixmap(":root")
