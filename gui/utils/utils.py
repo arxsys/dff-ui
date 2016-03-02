@@ -104,7 +104,10 @@ class Utils():
         if len(argsnode) == 1:
             return argsnode[0].name()
         return None
-        
+
+    # this code is called from actio.sendSignal in a particular case
+    # when Open with is called with a module taking only one argument of type Node
+    # such as metaexif. The module is directly applied and no popup will be shown
     @staticmethod
     def execModule(name, type, nameArg, listNode):
         tm = TaskManager()

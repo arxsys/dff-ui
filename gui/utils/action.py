@@ -34,9 +34,12 @@ class newAction(QAction):
         self.connect(self, SIGNAL("execModule"), Utils.execModule)
     
     def sendSignal(self):
+        # this code is called in Open with when module has only one argument of type Node
+        # such as metaexif. The module is directly applied and no popup will be shown
         if self.hasOneArg and (self.parent.model.currentNode() != None) :
             selection = [self.parent.model.currentNode()]
             self.emit(SIGNAL("execModule"), self.text(), self.type, self.hasOneArg, selection)
+        # else module has other arguments and a popup is shown to configure them
         else :
             selection = self.parent.model.selection.getNodes()
             if len(selection) == 0:

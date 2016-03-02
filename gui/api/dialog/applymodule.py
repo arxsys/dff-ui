@@ -21,7 +21,7 @@ from dff.api.loader import loader
 from dff.api.vfs.vfs import vfs 
 from dff.api.taskmanager.taskmanager import TaskManager
 from dff.api.types.libtypes import Argument, Parameter, Variant, VMap, VList, typeId
-from dff.api.gui.widget.layoutmanager import layoutManager 
+from dff.ui.gui.api.widget.layoutmanager import layoutManager 
 
 from dff.ui.gui.utils.utils import Utils
 from dff.ui.gui.resources.ui_applymodule import Ui_applyModule 

@@ -22,6 +22,7 @@ install_file(
   translator.py
 )
 
+add_subdirectory(api)
 add_subdirectory(resources)
 add_subdirectory(i18n)
 add_subdirectory(ide)

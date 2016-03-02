@@ -22,8 +22,8 @@ from PyQt4.QtGui import QAction, QApplication, QDockWidget, QIcon,  QHBoxLayout,
 
 from dff.api.taskmanager.processus import ProcessusManager 
 
-from dff.api.gui.widget.textedit import TextEdit
-from dff.api.gui.widget.varianttreewidget import VariantTreeWidget
+from dff.ui.gui.api.widget.textedit import TextEdit
+from dff.ui.gui.api.widget.varianttreewidget import VariantTreeWidget
 
 from dff.ui.gui.resources.ui_taskmanager import Ui_TaskManager
 

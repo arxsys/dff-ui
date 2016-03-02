@@ -26,10 +26,10 @@ from dff.api.vfs import vfs
 from dff.api.vfs.libvfs import VFS, Node, ModulesRootNode 
 from dff.api.taskmanager import scheduler
 
-from dff.api.gui.widget.textedit import TextEdit
-from dff.api.gui.widget.dockwidget import DockWidget 
-from dff.api.gui.widget.nodelistwidgets import NodeListWidgets
-from dff.api.gui.dialog.applymodule import ApplyModule
+from dff.ui.gui.api.widget.textedit import TextEdit
+from dff.ui.gui.api.widget.dockwidget import DockWidget 
+from dff.ui.gui.api.widget.nodelistwidgets import NodeListWidgets
+from dff.ui.gui.api.dialog.applymodule import ApplyModule
 
 from dff.ui.conf import Conf
 from dff.ui.gui.ide.ide import Ide

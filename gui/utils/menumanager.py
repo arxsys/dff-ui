@@ -21,7 +21,7 @@ from dff.api.types.libtypes import typeId, Variant
 from dff.api.taskmanager.taskmanager import TaskManager 
 from dff.api.taskmanager.processus import ProcessusManager
 
-from dff.api.gui.dialog.extractor import Extractor
+from dff.ui.gui.api.dialog.extractor import Extractor
 
 from dff.ui.gui.utils.utils import Utils
 from dff.ui.gui.utils.action import newAction, Action

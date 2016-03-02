@@ -24,16 +24,16 @@ from dff.api.types.libtypes import typeId, Variant, RCVariant
 from dff.api.filters.libfilters import Filter, TimeLine
 from dff.api.events.libevents import event, EventHandler
 
-from dff.api.gui.widget.propertytable import PropertyTable
-from dff.api.gui.model.node_list import NodeListModel
-from dff.api.gui.model.tree import TreeModel
-from dff.api.gui.model.selection import SelectionManager
-from dff.api.gui.view.tree import NodeTreeView
-from dff.api.gui.widget.nodewidget import NodeWidget, TimeLineNodeWidget
-from dff.api.gui.widget.search.thread import SearchThread
-from dff.api.gui.widget.search.search_widget import SearchPanel
-from dff.api.gui.widget.search.filter import FilterBar
-from dff.api.gui.dialog.selectattributes import SelectAttributesWizard
+from dff.ui.gui.api.widget.propertytable import PropertyTable
+from dff.ui.gui.api.model.node_list import NodeListModel
+from dff.ui.gui.api.model.tree import TreeModel
+from dff.ui.gui.api.model.selection import SelectionManager
+from dff.ui.gui.api.view.tree import NodeTreeView
+from dff.ui.gui.api.widget.nodewidget import NodeWidget, TimeLineNodeWidget
+from dff.ui.gui.api.widget.search.thread import SearchThread
+from dff.ui.gui.api.widget.search.search_widget import SearchPanel
+from dff.ui.gui.api.widget.search.filter import FilterBar
+from dff.ui.gui.api.dialog.selectattributes import SelectAttributesWizard
 
 from dff.ui.gui.utils.menu import tagMenu, typeFilterMenu, BookmarkManager
 from dff.ui.gui.resources.ui_browser_toolbar import Ui_BrowserToolBar
