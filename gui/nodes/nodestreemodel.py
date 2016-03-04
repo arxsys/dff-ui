@@ -61,7 +61,7 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     self.VFS = VFS.Get()
     self.connect(self, QtCore.SIGNAL("insertTree"), self.insertTree)
     self.VFS.connection(self)
-    self.__rootNode = None
+    self.__rootUid = -1
     self.__rootItem = NodeTreeItem(-1, None)
     self.__items = {}
     self.__columns = ["name", "uid", "size", "type"]
@@ -73,11 +73,20 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     self.VFS.deconnection(self)
 
     
-  def setRootPath(self, node):
-    if node is not None:
-      self.__rootNode = node
+  def setRootNode(self, node):
+    if node is None:
+      return
+    self.__rootUid = node.uid()
     self.__populate()
 
+
+  def setRootUid(self, uid):
+    node = VFS.Get().getNodeById(uid)
+    if node is None:
+      return
+    self.__rootUid = uid
+    self.__populate()
+   
 
   def setFilesCreation(self, create):
     self.__createFiles = create
@@ -85,9 +94,10 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     
     
   def setDisplayChildrenCount(self, count):
-    self.emit(QtCore.SIGNAL("layoutAboutToChanged()"))
     self.__displayChildrenCount = count
-    self.emit(QtCore.SIGNAL("layoutChanged()"))
+    topLeft = self.createIndex(self.__rootItem.row(), 0, self.__rootItem)
+    bottomRight = self.createIndex(self.__rootItem.row(), 1, self.__rootItem)
+    self.dataChanged.emit(topLeft, bottomRight)
 
 
   def Event(self, event):
@@ -95,20 +105,20 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     if value is None:
       return
     node = value.value()
-    if node == None:
+    if node is None:
       return
     self.emit(QtCore.SIGNAL("insertTree"), node.uid())
 
 
   def insertTree(self, uid):
-    if uid == -1:
-      return
     node = VFS.Get().getNodeById(uid)
+    if node is None:
+      return
     parent = node.parent()
     # Should not happen but have to find a way
     # to trigger this case
-    if parent == None:
-      print "Parent is Nonde"
+    if parent is None:
+      return
     puid = parent.uid()
     if not self.__items.has_key(puid):
       # Special case in DFF when. Parent was previously a file and becomes a
@@ -138,8 +148,11 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
       self.beginInsertRows(index, parentItem.childCount(), 1)
       self.__createTreeItems(node, childItem)
       self.endInsertRows()
+    topLeft = self.createIndex(self.__rootItem.row(), 0, self.__rootItem)
+    bottomRight = self.createIndex(self.__rootItem.row(), 1, self.__rootItem)
+    self.dataChanged.emit(topLeft, bottomRight)
 
-
+      
   def setData(self, index, value, role):
     print "setData:", role
     return QtGui.QAbstractModel.setData(index, role)
@@ -174,6 +187,8 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
   def index(self, row, column, parent):
     if not self.hasIndex(row, column, parent):
       return QtCore.QModelIndex()
+    if parent is None:
+      return QtCore.QModelIndex()
     if not parent.isValid():
       parentItem = self.__rootItem
     else:
@@ -189,15 +204,17 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     if not index.isValid():
       return QtCore.QModelIndex()
     childItem = index.internalPointer()
+    if childItem is None:
+      return QtCore.QModelIndex()
     parentItem = childItem.parent()
+    if parentItem is None:
+      return QtCore.QModelIndex()
     if parentItem == self.__rootItem:
       return QtCore.QModelIndex()
     return self.createIndex(parentItem.row(), 0, parentItem)
       
   
   def rowCount(self, parent):
-    if parent.column() > 0:
-      return 0
     if not parent.isValid():
       parentItem = self.__rootItem
     else:
@@ -210,6 +227,8 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
 
 
   def __createTreeItems(self, node, parent):
+    if node is None or parent is None:
+      return
     children = node.children()
     for child in children:
       if child.hasChildren() or child.isDir():
@@ -224,15 +243,16 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     
 
   def __populate(self):
-    self.__rootItem = NodeTreeItem(-1, None)
     self.__items = {}
-    if self.__rootNode is not None:
-      self.__rootItem = NodeTreeItem(-1, None)
-      self.__items = {}
-      self.beginInsertRows(QtCore.QModelIndex(), 0, 0)
-      childItem = NodeTreeItem(self.__rootNode.uid(), self.__rootItem)
-      self.__items[self.__rootNode.uid()] = childItem
-      self.__rootItem.appendChild(childItem)
-      self.__createTreeItems(self.__rootNode, childItem)
-      self.endInsertRows()
-      self.emit(QtCore.SIGNAL("insertedFoldersCount(int)"), len(self.__items))
+    rootNode = VFS.Get().getNodeById(self.__rootUid)
+    if rootNode is None:
+      return
+    self.__items = {}
+    self.beginInsertRows(QtCore.QModelIndex(), 0, 0)
+    self.__rootItem = NodeTreeItem(-1, None)
+    childItem = NodeTreeItem(self.__rootUid, self.__rootItem)
+    self.__items[self.__rootUid] = childItem
+    self.__rootItem.appendChild(childItem)
+    self.__createTreeItems(rootNode, childItem)
+    self.endInsertRows()
+    self.emit(QtCore.SIGNAL("insertedFoldersCount(int)"), len(self.__items))

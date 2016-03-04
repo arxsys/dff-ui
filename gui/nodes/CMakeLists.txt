@@ -19,6 +19,7 @@ install_file(
   nodeslistmodel.py
   nodeslistview.py
   nodestableview.py
+  nodestablemodel.py
   nodestreemodel.py
   nodestreeview.py
   test.py
