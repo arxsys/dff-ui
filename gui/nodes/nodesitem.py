@@ -12,28 +12,108 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
+
+import locale
+
 from PyQt4 import QtCore, QtGui
 
 from dff.api.vfs.libvfs import VFS
 
 class NodeItem():
-  def __init__(self, uid):
-    self.__uid = uid
-    self.__checked = False
 
+  UidRole = QtCore.Qt.UserRole
+  SortRole = UidRole + 1
+  RecursionRole = SortRole + 1
+  
+  def __init__(self, uid, parent):
+    self.__uid = uid
+    self.__parent = parent
+    self.__children = []
+    self.__checkState = QtCore.Qt.Unchecked
+    self.__isRecursive = False
+    # XXX cachedAttribute is removed when setData
+    # appendChild and insertChild are called.
+    self.__cachedAttributeName = ""
+    self.__cachedAttributeValue = None
+    
 
   def uid(self):
     return self.__uid
   
 
-  #def setData(self, role):
-  #  pass
+  def setData(self, attribute, value, role):
+    self.__cachedAttributeName = ""
+    if role == NodeItem.RecursionRole:
+      if attribute == "name":
+        self.__isRecursive = value
+        if self.__isRecursive:
+          return (True, "recursionEnabled")
+        else:
+          return (True, "recursionDisabled")
+    if role == QtCore.Qt.CheckStateRole:
+      if attribute == "name":
+        return (self.__setCheckState(), None)
+    return (False, None)
+  
+
+  def parent(self):
+    return self.__parent
 
   
+  def appendChild(self, child):
+    self.__cachedAttributeName = ""
+    self.__children.append(child)
+
+
+  # ToDo : instead of list and sorted() calls, test with the following container
+  # http://code.activestate.com/recipes/577197-sortedcollection/
+  # http://www.grantjenks.com/docs/sortedcontainers/sortedlistwithkey.html#SortedListWithKey
+  # 
+  def insertChild(self, idx, child):
+    self.__cachedAttributeName = ""
+    self.__children.insert(idx, child)
+    
+
+  def child(self, row):
+    if row < len(self.__children):
+      return self.__children[row]
+    else:
+      return None
+
+
+  def childCount(self):
+    return len(self.__children)
+
+
+  def row(self):
+    if self.__parent is not None:
+      return self.__parent.indexOf(self)
+    return 0
+  
+
+  def indexOf(self, item):
+    return self.__children.index(item)
+
+
+  def sort(self, attribute, order):
+    if attribute == "name":
+      self.__children.sort(cmp=locale.strcoll, key=lambda item: item.rawData(attribute), reverse=order)
+    else:
+      self.__children.sort(key=lambda item: item.rawData(attribute), reverse=order)
+
+    
   def data(self, role, attribute, childrenCount=False):
     if self.__uid == -1:
       return QtCore.QVariant()
+    if role == NodeItem.RecursionRole:
+      return QtCore.QVariant(self.__isRecursive)
+    if role == NodeItem.UidRole:
+      return QtCore.QVariant(self.__uid)
+    if role == NodeItem.SortRole:
+      return self.__sortRole(attribute)
     if role == QtCore.Qt.DisplayRole:
+      if attribute == "row":
+        return QtCore.QVariant(self.row())
       if attribute == "name":
         return self.__displayName(childrenCount)
       if attribute == "uid":
@@ -42,18 +122,41 @@ class NodeItem():
         return self.__displaySize()
       else:
         return self.__displayAttribute(attribute)
-    if role == QtCore.Qt.DecorationRole:
+    if role == QtCore.Qt.DecorationRole and attribute == "name":
       return self.__createIconPixmap()
     if role == QtCore.Qt.ForegroundRole:
       return self.__foregroundRole()
-    if role == QtCore.Qt.CheckStateRole:
-      if attribute == "name":
-        return self.__checkStateRole()
-      else:
-        return QtCore.QVariant()
+    if role == QtCore.Qt.CheckStateRole and attribute == "name":
+      return QtCore.QVariant(self.__checkState)
     if role == QtCore.Qt.ToolTipRole:
       return self.__toolTip()
     return QtCore.QVariant()
+
+
+  def rawData(self, attribute):
+    value = None
+    if attribute == self.__cachedAttributeName:
+      return self.__cachedAttributeValue
+    if attribute == "row":
+      value = self.row()
+    elif attribute == "uid":
+      value = self.__uid
+    else:
+      try:
+        node = VFS.Get().getNodeById(self.__uid)
+      except:
+        node = None
+      if node is None:
+        return None
+      if attribute == "size":
+        value = long(node.size())
+      if attribute == "name":
+        return node.name()
+      if attribute == "type":
+        value = node.dataType()
+    self.__cachedAttributeName = attribute
+    self.__cachedAttributeValue = value
+    return value
 
 
   def __toolTip(self):
@@ -91,6 +194,8 @@ class NodeItem():
   def __displaySize(self):
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
+      return QtCore.QVariant()
+    if node.hasChildren() or node.isDir():
       return QtCore.QVariant()
     kb = 1024
     mb = 1024 * kb
@@ -160,9 +265,14 @@ class NodeItem():
     return QtCore.QVariant()
 
 
-  def __checkStateRole(self):
-    # update selection
-    if self.__checked:
-      return QtCore.Qt.Checked
-    else:
-      return QtCore.Qt.Unchecked
+  def __setCheckState(self):
+    if self.__checkState == QtCore.Qt.Unchecked:
+      self.__checkState = QtCore.Qt.PartiallyChecked
+      return True
+    if self.__checkState == QtCore.Qt.PartiallyChecked:
+      self.__checkState = QtCore.Qt.Checked
+      return True
+    if self.__checkState == QtCore.Qt.Checked:
+      self.__checkState = QtCore.Qt.Unchecked
+      return True
+    

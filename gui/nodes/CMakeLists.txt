@@ -22,5 +22,6 @@ install_file(
   nodestablemodel.py
   nodestreemodel.py
   nodestreeview.py
+  nodestreedelegate.py
   test.py
 )

@@ -12,46 +12,13 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
+import locale
+
 from PyQt4 import QtCore, QtGui
 
 from dff.api.events.libevents import EventHandler
 from dff.api.vfs.libvfs import VFS
 from dff.ui.gui.nodes.nodesitem import NodeItem
-
-class NodeTreeItem(NodeItem):
-  def __init__(self, uid, parent):
-    NodeItem.__init__(self, uid)
-    self.__children = []
-    self.__parent = parent
-
-
-  def parent(self):
-    return self.__parent
-
-
-  def appendChild(self, child):
-    self.__children.append(child)
-
-
-  def child(self, row):
-    if row < len(self.__children):
-      return self.__children[row]
-    else:
-      return None
-
-    
-  def childCount(self):
-    return len(self.__children)
-
-
-  def row(self):
-    if self.__parent is not None:
-      return self.__parent.indexOf(self)
-    return 0
-  
-
-  def indexOf(self, item):
-    return self.__children.index(item)
 
 
 class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
@@ -59,15 +26,15 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     QtCore.QAbstractItemModel.__init__(self, parent)
     EventHandler.__init__(self)
     self.VFS = VFS.Get()
-    self.connect(self, QtCore.SIGNAL("insertTree"), self.insertTree)
     self.VFS.connection(self)
+    self.connect(self, QtCore.SIGNAL("registerTree"), self.insertTree)
     self.__rootUid = -1
-    self.__rootItem = NodeTreeItem(-1, None)
+    self.__rootItem = NodeItem(-1, None)
     self.__items = {}
-    self.__columns = ["name", "uid", "size", "type"]
+    self.__columns = ["name", "uid", "size", "type", "row"]
     self.__displayChildrenCount = displayChildrenCount
     self.__createFiles = createFiles
-
+    
 
   def __del__(self):
     self.VFS.deconnection(self)
@@ -107,7 +74,7 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     node = value.value()
     if node is None:
       return
-    self.emit(QtCore.SIGNAL("insertTree"), node.uid())
+    self.emit(QtCore.SIGNAL("registerTree"), node.uid())
 
 
   def insertTree(self, uid):
@@ -124,54 +91,68 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
       # Special case in DFF when. Parent was previously a file and becomes a
       # virtual Folder (module applied on it).
       # While populating tree, parent had neither children nor was a isDir, so
-      # NodeTreeItem was not created for it. We need, to create NodeTreeItem for
+      # NodeItem was not created for it. We need, to create NodeItem for
       # this parent and add it to its ancestor.
       # Ancestor must exist otherwise something has been done completly
       # wrong somewhere. Meaning that parent was not a folder so what was it ?!
       ancestor = parent.parent()
       ancestorItem = self.__items[ancestor.uid()]
-      parentItem = NodeTreeItem(parent.uid(), ancestorItem)
-      ancestorItem.appendChild(parentItem)
-      nodeItem = NodeTreeItem(node.uid(), parentItem)
+      index = self.createIndex(ancestorItem.row(), 0, ancestorItem)
+      insertIdx = self.__findIndexToInsert(ancestorItem, parent.name(), 0, ancestorItem.childCount()-1)
+      self.beginInsertRows(index, insertIdx, 1)
+      parentItem = NodeItem(parent.uid(), ancestorItem)
+      self.__items[parent.uid()] = parentItem
+      ancestorItem.insertChild(insertIdx, parentItem)
+      nodeItem = NodeItem(node.uid(), parentItem)
+      self.__items[node.uid()] = nodeItem
       parentItem.appendChild(nodeItem)
       self.__createTreeItems(node, nodeItem)
-      index = self.createIndex(ancestorItem.row(), 0, ancestorItem)
-      self.beginInsertRows(index, ancestorItem.childCount(), 1)
       self.endInsertRows()
+      changedItem = ancestorItem
     else:
       # Just add our new tree to the parent.
       parentItem = self.__items[puid]
-      childItem = NodeTreeItem(node.uid(), parentItem)
-      self.__items[node.uid()] = childItem
-      parentItem.appendChild(childItem)
       index = self.createIndex(parentItem.row(), 0, parentItem)
-      self.beginInsertRows(index, parentItem.childCount(), 1)
+      insertIdx = self.__findIndexToInsert(parentItem, node.name(), 0, parentItem.childCount()-1)
+      self.beginInsertRows(index, insertIdx, 1)
+      childItem = NodeItem(node.uid(), parentItem)
+      self.__items[node.uid()] = childItem
+      parentItem.insertChild(insertIdx, childItem)
       self.__createTreeItems(node, childItem)
       self.endInsertRows()
-    topLeft = self.createIndex(self.__rootItem.row(), 0, self.__rootItem)
-    bottomRight = self.createIndex(self.__rootItem.row(), 1, self.__rootItem)
+      changedItem = parentItem
+    topLeft = self.createIndex(changedItem.row(), 0, changedItem)
+    bottomRight = self.createIndex(changedItem.row(), 1, changedItem)
     self.dataChanged.emit(topLeft, bottomRight)
-
+    
       
   def setData(self, index, value, role):
-    print "setData:", role
-    return QtGui.QAbstractModel.setData(index, role)
+    if not index.isValid():
+      return QtCore.QVariant()
+    item = index.internalPointer()
+    if index.column() < len(self.__columns) and item is not None:
+      attribute = self.__columns[index.column()]
+      success, signal = item.setData(attribute, value, role)
+      if signal is not None:
+        self.emit(QtCore.SIGNAL(signal))
+      return success
+    return QtGui.QAbstractModel.setData(index, value, role)
       
       
   def data(self, index, role):
     if not index.isValid():
       return QtCore.QVariant()
     item = index.internalPointer()
-    if item is not None:
-      if index.column() < len(self.__columns):
-        attribute = self.__columns[index.column()]
-        return item.data(role, attribute, self.__displayChildrenCount)
+    if index.column() < len(self.__columns) and item is not None:
+      attribute = self.__columns[index.column()]
+      return item.data(role, attribute, self.__displayChildrenCount)
     return QtCore.QVariant()
-  
-  
+
+    
   def flags(self, index):
     if not index.isValid():
       return 0
+    # QtCore.Qt.ItemIsUserCheckable is disabled and is managed by delegate
     return QtCore.Qt.ItemIsEnabled
 
 
@@ -230,29 +211,59 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     if node is None or parent is None:
       return
     children = node.children()
+    #XXX check behaviour of strcoll on unicode
+    #children = sorted(children, locale.strcoll, lambda node: node.name())
     for child in children:
       if child.hasChildren() or child.isDir():
-        childItem = NodeTreeItem(child.uid(), parent)
+        childItem = NodeItem(child.uid(), parent)
         self.__items[child.uid()] = childItem
         self.__createTreeItems(child, childItem)
         parent.appendChild(childItem)
       elif self.__createFiles:
-        childItem = NodeTreeItem(child.uid(), parent)
+        childItem = NodeItem(child.uid(), parent)
         self.__items[child.uid()] = childItem
         parent.appendChild(childItem)        
-    
+    parent.sort("name", False)
+
 
   def __populate(self):
-    self.__items = {}
     rootNode = VFS.Get().getNodeById(self.__rootUid)
     if rootNode is None:
       return
+    self.beginResetModel()
     self.__items = {}
-    self.beginInsertRows(QtCore.QModelIndex(), 0, 0)
-    self.__rootItem = NodeTreeItem(-1, None)
-    childItem = NodeTreeItem(self.__rootUid, self.__rootItem)
+    self.__rootItem = NodeItem(-1, None)
+    childItem = NodeItem(self.__rootUid, self.__rootItem)
     self.__items[self.__rootUid] = childItem
     self.__rootItem.appendChild(childItem)
     self.__createTreeItems(rootNode, childItem)
-    self.endInsertRows()
+    self.endResetModel()
     self.emit(QtCore.SIGNAL("insertedFoldersCount(int)"), len(self.__items))
+
+
+  # TreeModel only sorts based on nodes' name
+  def __findIndexToInsert(self, item, key, imin, imax):
+    if item is None or item.childCount() == 0:
+      return 0
+    if imax < imin:
+      return imin
+    imid = (imin + imax) / 2
+    node = VFS.Get().getNodeById(item.child(imid).uid())
+    #XXX check behaviour of strcoll on unicode
+    position = locale.strcoll(key, node.name())
+    if imax == imin:
+      if position <= 0:
+        return imax
+      else:
+        return imax+1
+    # key is before node.name()
+    if position < 0:
+      return self.__findIndexToInsert(item, key, imin, imid-1)
+    # key is after node.name()
+    elif position > 0:
+      return self.__findIndexToInsert(item, key, imid+1, imax)
+    else:
+      return imid
+
+      
+                              
