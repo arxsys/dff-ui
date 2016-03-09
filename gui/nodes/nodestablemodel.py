@@ -12,9 +12,6 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
-import locale
-import functools
-
 from PyQt4 import QtCore, QtGui
 
 from dff.api.events.libevents import EventHandler
@@ -75,7 +72,6 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
       nuid = node.uid()
       # if node already exists, just emit dataChanged. It means that node now
       # has children.
-      print "sdfll;sdkflksdlfkl;sdkfl;ksdl;fkksdf"
       if self.__items.has_key(nuid):
         item = self.__items[nuid]
         topLeft = self.createIndex(item.row(), 0, item)
@@ -88,7 +84,6 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
 
       
   def setData(self, index, value, role):
-    print "setData:", role
     return QtGui.QAbstractModel.setData(index, role)
       
       

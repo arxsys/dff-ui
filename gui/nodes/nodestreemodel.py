@@ -211,8 +211,6 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     if node is None or parent is None:
       return
     children = node.children()
-    #XXX check behaviour of strcoll on unicode
-    #children = sorted(children, locale.strcoll, lambda node: node.name())
     for child in children:
       if child.hasChildren() or child.isDir():
         childItem = NodeItem(child.uid(), parent)

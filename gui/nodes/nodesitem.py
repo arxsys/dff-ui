@@ -97,6 +97,7 @@ class NodeItem():
 
   def sort(self, attribute, order):
     if attribute == "name":
+      #XXX check behaviour of strcoll on unicode
       self.__children.sort(cmp=locale.strcoll, key=lambda item: item.rawData(attribute), reverse=order)
     else:
       self.__children.sort(key=lambda item: item.rawData(attribute), reverse=order)

@@ -157,7 +157,6 @@ class NodesTreeBrowser(QtGui.QWidget):
   def currentTreeItemChanged(self, index):
     uid, success = self.__treeModel.data(index, NodeItem.UidRole).toULongLong()
     isRecursive = self.__treeModel.data(index, NodeItem.RecursionRole).toBool()
-    print "CurrentTreeItemChanged", uid, isRecursive
     if success and uid >= 0:
       self.emit(QtCore.SIGNAL("currentTreeItemClicked(int, bool)"), uid, isRecursive)
 
@@ -230,7 +229,6 @@ class NodesTableBrowser(QtGui.QWidget):
     
   def __setProxyModel(self, state):
     if state == QtCore.Qt.Checked:
-      print "setting proxy"
       self.__tableView.setModel(self.__proxyModel)
     else:
       self.__tableView.setModel(self.__tableModel)
