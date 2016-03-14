@@ -29,7 +29,8 @@ from dff.api.types.libtypes import RCVariant, Variant
 from dff.ui.gui.resources import gui_rc
 from dff.ui.gui.nodes.nodesitem import NodeItem
 from dff.ui.gui.nodes.nodestreemodel import NodesTreeModel
-from dff.ui.gui.nodes.nodestablemodel import NodesTableModel
+#from dff.ui.gui.nodes.nodestablemodel import NodesTableModel
+from dff.ui.gui.nodes.nodestableview import NodesTableView
 from dff.ui.gui.nodes.nodestreedelegate import NodesTreeDelegate
 
 resource = QtCore.QResource()
@@ -129,12 +130,18 @@ class NodesTreeBrowser(QtGui.QWidget):
     self.__treeDelegate = NodesTreeDelegate()
     self.__treeView.setItemDelegate(self.__treeDelegate)
     self.connect(self.__treeDelegate, QtCore.SIGNAL("recursionStateChanged(bool, int)"), self.__recursionChanged)
-
+    self.__treeView.expanded.connect(self.__updateColumnsSize)
+    self.__treeView.collapsed.connect(self.__updateColumnsSize)
+    
     layout = QtGui.QVBoxLayout()
     layout.addWidget(self.__treeView)
     self.setLayout(layout)
     self.createActions()
 
+
+  def __updateColumnsSize(self, index):
+    self.__treeView.resizeColumnToContents(0)
+    
     
   def createActions(self):
     populateTreeButton = QtGui.QPushButton("Populate base tree")
@@ -234,12 +241,6 @@ class NodesTableBrowser(QtGui.QWidget):
       self.__tableView.setModel(self.__tableModel)
     
 
-  def setRootUid(self, uid, isRecursive=False):
-    start = time.time()
-    self.__tableModel.setRootUid(uid, isRecursive)
-    end = time.time()
-    print end - start
-
 
 class TestNodesBrowser(QtGui.QWidget):
   def __init__(self, parent=None):
@@ -251,7 +252,7 @@ class TestNodesBrowser(QtGui.QWidget):
     self.__treeBrowser = NodesTreeBrowser()
     self.__treeBrowser.setRootUid(root.uid())
 
-    self.__tableBrowser = NodesTableBrowser()
+    self.__tableBrowser = NodesTableView()
     self.__tableBrowser.setRootUid(root.uid())
     
     self.connect(self.__treeBrowser, QtCore.SIGNAL("currentTreeItemClicked(int, bool)"), self.notifyViews)
