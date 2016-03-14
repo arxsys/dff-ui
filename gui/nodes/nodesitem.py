@@ -19,11 +19,13 @@ from PyQt4 import QtCore, QtGui
 
 from dff.api.vfs.libvfs import VFS
 
+
 class NodeItem():
 
   UidRole = QtCore.Qt.UserRole
   SortRole = UidRole + 1
   RecursionRole = SortRole + 1
+  TagViewedRole = RecursionRole + 1
   
   def __init__(self, uid, parent):
     self.__uid = uid
@@ -50,6 +52,10 @@ class NodeItem():
           return (True, "recursionEnabled")
         else:
           return (True, "recursionDisabled")
+    if role == NodeItem.TagViewedRole:
+      node = VFS.Get().getNodeById(self.__uid)
+      node.setTag("viewed")
+      return (True, None)
     if role == QtCore.Qt.CheckStateRole:
       if attribute == "name":
         return (self.__setCheckState(), None)
@@ -106,6 +112,8 @@ class NodeItem():
   def data(self, role, attribute, childrenCount=False):
     if self.__uid == -1:
       return QtCore.QVariant()
+    if role == QtCore.Qt.SizeHintRole:
+      return self.__sizeHintRole(attribute, childrenCount)
     if role == NodeItem.RecursionRole:
       return QtCore.QVariant(self.__isRecursive)
     if role == NodeItem.UidRole:
@@ -113,16 +121,7 @@ class NodeItem():
     if role == NodeItem.SortRole:
       return self.__sortRole(attribute)
     if role == QtCore.Qt.DisplayRole:
-      if attribute == "row":
-        return QtCore.QVariant(self.row())
-      if attribute == "name":
-        return self.__displayName(childrenCount)
-      if attribute == "uid":
-        return QtCore.QVariant(self.__uid)
-      if attribute == "size":
-        return self.__displaySize()
-      else:
-        return self.__displayAttribute(attribute)
+      return self.__displayRole(attribute, childrenCount)
     if role == QtCore.Qt.DecorationRole and attribute == "name":
       return self.__createIconPixmap()
     if role == QtCore.Qt.ForegroundRole:
@@ -160,14 +159,41 @@ class NodeItem():
     return value
 
 
+  def __displayRole(self, attribute, childrenCount):
+    if attribute == "row":
+      return QtCore.QVariant(self.row())
+    if attribute == "name":
+      return self.__displayName(childrenCount)
+    if attribute == "uid":
+      return QtCore.QVariant(self.__uid)
+    if attribute == "size":
+      return self.__displaySize()
+    else:
+      return self.__displayAttribute(attribute)
+    return QtCore.QVariant()
+
+
+  def __sizeHintRole(self, attribute, childrenCount):
+    data = self.__displayRole(attribute, childrenCount)
+    if data.isValid():
+      fm = QtGui.QApplication.instance().fontMetrics()
+      width = fm.width(data.toString())
+      if attribute == "name":
+        sizeHint = QtCore.QSize(width+100, fm.height())
+      else:
+        sizeHint = QtCore.QSize(width+20, fm.height())
+      return QtCore.QVariant(sizeHint)
+    return QtCore.QVariant()
+
+
   def __toolTip(self):
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
       return QtCore.QVariant()
     absolute = QtCore.QString.fromUtf8(node.absolute())
     return QtCore.QVariant(absolute)
-
-
+  
+  
   def __createIconPixmap(self):
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
@@ -196,7 +222,7 @@ class NodeItem():
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
       return QtCore.QVariant()
-    if node.hasChildren() or node.isDir():
+    if not node.isFile():
       return QtCore.QVariant()
     kb = 1024
     mb = 1024 * kb
@@ -207,21 +233,23 @@ class NodeItem():
     size = node.size()
     qobj = QtCore.QObject()
     if size == 0:
-      return qobj.tr("%1 byte").arg(QtCore.QLocale().toString(size))
-    if size >= eb:
-      return qobj.tr("%1 EiB").arg(QtCore.QLocale().toString(float(size) / eb, 'f', 5))
-    if size >= pb:
-      return qobj.tr("%1 PiB").arg(QtCore.QLocale().toString(float(size) / pb, 'f', 4))
-    if size >= tb:
-      return qobj.tr("%1 TiB").arg(QtCore.QLocale().toString(float(size) / tb, 'f', 3))
-    if size >= gb:
-      return qobj.tr("%1 GiB").arg(QtCore.QLocale().toString(float(size) / gb, 'f', 2))
-    if size >= mb:
-      return qobj.tr("%1 MiB").arg(QtCore.QLocale().toString(float(size) / mb, 'f', 1))
-    if size >= kb:
-      return qobj.tr("%1 KiB").arg(QtCore.QLocale().toString(size / kb))
-    return qobj.tr("%1 bytes").arg(QtCore.QLocale().toString(size))
-
+      displaySize = qobj.tr("%1 byte").arg(QtCore.QLocale().toString(size))
+    elif size >= eb:
+      displaySize = qobj.tr("%1 EiB").arg(QtCore.QLocale().toString(float(size) / eb, 'f', 5))
+    elif size >= pb:
+      displaySize = qobj.tr("%1 PiB").arg(QtCore.QLocale().toString(float(size) / pb, 'f', 4))
+    elif size >= tb:
+      displaySize = qobj.tr("%1 TiB").arg(QtCore.QLocale().toString(float(size) / tb, 'f', 3))
+    elif size >= gb:
+      displaySize = qobj.tr("%1 GiB").arg(QtCore.QLocale().toString(float(size) / gb, 'f', 2))
+    elif size >= mb:
+      displaySize = qobj.tr("%1 MiB").arg(QtCore.QLocale().toString(float(size) / mb, 'f', 1))
+    elif size >= kb:
+      displaySize = qobj.tr("%1 KiB").arg(QtCore.QLocale().toString(size / kb))
+    else:
+      displaySize = qobj.tr("%1 bytes").arg(QtCore.QLocale().toString(size))
+    return QtCore.QVariant(displaySize)
+  
 
   def __displayAttribute(self, attribute):
     # It would be more practical to overload node.__getattr__ method to remove
