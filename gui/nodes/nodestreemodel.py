@@ -128,15 +128,19 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
       
   def setData(self, index, value, role):
     if not index.isValid():
-      return QtCore.QVariant()
+      return False
     item = index.internalPointer()
     if index.column() < len(self.__columns) and item is not None:
       attribute = self.__columns[index.column()]
       success, signal = item.setData(attribute, value, role)
-      if signal is not None:
-        self.emit(QtCore.SIGNAL(signal))
+      if success:
+        topLeft = self.createIndex(index.row(), index.column(), item)
+        bottomRight = self.createIndex(index.row(), index.column(), item)
+        self.dataChanged.emit(topLeft, bottomRight)
+        if signal is not None:
+          self.emit(QtCore.SIGNAL(signal))
       return success
-    return QtGui.QAbstractModel.setData(index, value, role)
+    return False
       
       
   def data(self, index, role):
@@ -145,7 +149,16 @@ class NodesTreeModel(QtCore.QAbstractItemModel, EventHandler):
     item = index.internalPointer()
     if index.column() < len(self.__columns) and item is not None:
       attribute = self.__columns[index.column()]
-      return item.data(role, attribute, self.__displayChildrenCount)
+      itemData = item.data(role, attribute, self.__displayChildrenCount)
+      if role == QtCore.Qt.SizeHintRole:
+        sizeHint = itemData.toSize()
+        if attribute == "name":
+          sizeHint = QtCore.QSize(sizeHint.width(), sizeHint.height()+5)
+        else:
+          sizeHint = QtCore.QSize(sizeHint.width(), sizeHint.height()+5)
+        return QtCore.QVariant(sizeHint)
+      else:
+        return itemData
     return QtCore.QVariant()
 
     
