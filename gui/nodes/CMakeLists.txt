@@ -23,5 +23,6 @@ install_file(
   nodestreemodel.py
   nodestreeview.py
   nodestreedelegate.py
+  nodesfilterwidgets.py
   test.py
 )
