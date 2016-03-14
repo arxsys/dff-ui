@@ -22,7 +22,7 @@ class NodesTreeDelegate(QtGui.QStyledItemDelegate):
       QtGui.QStyledItemDelegate.__init__(self, parent)
 
       
-  def paint(self, painter, options, index):
+  def paint(self, painter, option, index):
     if index.isValid():
         if index.column() == 0:
             painter.save()
@@ -31,12 +31,12 @@ class NodesTreeDelegate(QtGui.QStyledItemDelegate):
                 icon = QtGui.QPixmap(":rectree_on").scaled(QtCore.QSize(16, 16), QtCore.Qt.KeepAspectRatio)
             else:
                 icon = QtGui.QPixmap(":rectree_off").scaled(QtCore.QSize(16, 16), QtCore.Qt.KeepAspectRatio)
-            zx = options.rect.x()
-            zy = options.rect.y()
+            zx = option.rect.x()
+            zy = option.rect.y()
             painter.drawPixmap(QtCore.QRect(zx, zy + 2, icon.width(), icon.height()), icon)
             painter.restore()
-            options.rect.setX(options.rect.x() + icon.width())
-    QtGui.QStyledItemDelegate.paint(self, painter, options, index)
+            option.rect.setX(option.rect.x() + icon.width())
+    super(NodesTreeDelegate, self).paint(painter, option, index)
 
 
   # editorEvent has to handle recursion but also checkbox
@@ -56,4 +56,4 @@ class NodesTreeDelegate(QtGui.QStyledItemDelegate):
             elif position >= rectx + 16 and position <= rectx + 32:
               model.setData(index, 0, QtCore.Qt.CheckStateRole)
               return True
-    return QtGui.QStyledItemDelegate.editorEvent(self, event, model, option, index)
+    return super(NodesTreeDelegate, self).editorEvent(event, model, option, index)
