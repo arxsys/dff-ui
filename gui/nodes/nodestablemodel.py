@@ -29,22 +29,31 @@ class NodesTableHeaderItem():
   DataTypeRole = QtCore.Qt.UserRole + 2
   PinRole = QtCore.Qt.UserRole + 3
   FilterRole = QtCore.Qt.UserRole + 4
+  SortOrderRole = QtCore.Qt.UserRole + 5
+  VisualIndexRole = QtCore.Qt.UserRole + 6
   
-  NameType = 0
-  SizeType = 1
-  DataType = 2
-  TagType = 3
-  TimeType = 4
-  NumberType = 5
-  StringType = 6
+  NumberType = 0
+  BooleanType = 1
+  SizeType = 2
+  StringType = 3
+  NumberType = 4
+  TimeType = 5
+  DataType = 6
+  TagType = 7
 
-  def __init__(self, index, attributeName, dataType, isPinned=False, alias=""):
+  ForcePinned = 0
+  Pinned = 1
+  Unpinned = 2
+
+  def __init__(self, index, attributeName, dataType,
+               pinState=2, alias=""):
     self.__index = index
     self.__attributeName = attributeName
     self.__dataType = dataType
     self.__aliasName = alias
-    self.__isPinned = isPinned
+    self.__pinState = pinState
     self.__filter = ""
+    self.__sortOrder = -1
 
 
   def rawData(self, role):
@@ -60,14 +69,18 @@ class NodesTableHeaderItem():
     if role == NodesTableHeaderItem.DataTypeRole:
       return self.__dataType
     if role == NodesTableHeaderItem.PinRole:
-      return self.__isPinned
+      return self.__pinState
     if role == NodesTableHeaderItem.FilterRole:
       return self.__filter
+    if role == NodesTableHeaderItem.SortOrderRole:
+      return self.__sortOrder
     return None
-    
+
 
   def data(self, role=QtCore.Qt.DisplayRole):
     if role == QtCore.Qt.DisplayRole or role == NodesTableHeaderItem.AttributeNameRole:
+      if self.__index == 0:
+        return QtCore.QVariant("")
       name = QtCore.QString.fromUtf8(self.rawData(role))
       return QtCore.QVariant(name)
     if role == QtCore.Qt.SizeHintRole:
@@ -75,9 +88,11 @@ class NodesTableHeaderItem():
     if role == NodesTableHeaderItem.DataTypeRole:
       return QtCore.QVariant(self.__dataType)
     if role == NodesTableHeaderItem.PinRole:
-      return QtCore.QVariant(self.__isPinned)
+      return QtCore.QVariant(self.__pinState)
     if role == NodesTableHeaderItem.FilterRole:
       return QtCore.QVariant(self.__filter)
+    if role == NodesTableHeaderItem.SortOrderRole:
+      return QtCore.QVariant(self.__sortOrder)
     return QtCore.QVariant()
 
 
@@ -87,13 +102,21 @@ class NodesTableHeaderItem():
       args = (self.__index)
       return (True, "aliasNameChanged()", args)
     if role == NodesTableHeaderItem.PinRole:
-      self.__isPinned = value.toBool()
-      args = (self.__index, self.__isPinned)
-      return (True, "columnPinStateChanged(int, bool)", args)
+      pinState, success = value.toInt()
+      if success:
+        self.__pinState = pinState
+        args = (self.__index, self.__pinState)
+        return (True, "columnPinStateChanged(int, int)", args)
     if role == NodesTableHeaderItem.FilterRole:
       self.__filter = value.toString()
-      args = (self.__index)
-      return (True, "filterChanged(int)", args)
+      args = (self.__index, self.__filter)
+      return (True, "filterChanged(int, QString)", args)
+    if role == NodesTableHeaderItem.SortOrderRole:
+      sortOrder, success = value.toInt()
+      if success:
+        self.__sortOrder = sortOrder
+        args = (self.__index, self.__sortOrder)
+        return (True, "sortChanged(int, int)", args)
     return (False, None, None)
 
 
@@ -101,7 +124,10 @@ class NodesTableHeaderItem():
     data = self.data(QtCore.Qt.DisplayRole)
     if data.isValid():
       fm = QtGui.QApplication.instance().fontMetrics()
-      width = fm.width(data.toString())
+      if self.__index == 0:
+        width = 15
+      else:
+        width = fm.width(data.toString()) + fm.averageCharWidth() * 5
       sizeHint = QtCore.QSize(width+100, fm.height()+10)
       return QtCore.QVariant(sizeHint)
     return QtCore.QVariant()
@@ -111,28 +137,44 @@ class NodesTableFilterModel(QtGui.QSortFilterProxyModel):
   def __init__(self, model, parent=None):
     QtGui.QSortFilterProxyModel.__init__(self, parent)
     self.setSourceModel(model)
-    self.connect(model, QtCore.SIGNAL("filterChanged()"), self.__filterChanged)
+    self.connect(model, QtCore.SIGNAL("filterChanged(int, QString)"), self.__filterChanged)
     self.__filter = Filter("proxy")                 
     self.__compiled = False
+    self.__filtered = False
     
     
-  def __filterChanged(self):
+  def __filterChanged(self, _column, _query):
     self.__compiled = False
-    try:
-      query = ""
-      for column in xrange(0, self.sourceModel().columnCount()):
-        _filter = self.sourceModel().headerData(column, QtCore.Qt.Horizontal, NodesTableHeaderItem.FilterRole)
-        _filter = _filter.toString()
-        if len(_filter):
-          if len(query):
-            query += " and " + _filter
-          else:
-            query = _filter
+    query = ""
+    for column in xrange(0, self.sourceModel().columnCount()):
+      _filter = self.sourceModel().headerData(column, QtCore.Qt.Horizontal,
+                                              NodesTableHeaderItem.FilterRole).toString()
+      _filter = str(_filter)
+      if len(_filter):
+        try:
+          test = _filter
+          self.__filter.compile(test)
+        except:
+          continue
+        if len(query):
+          query += " and " + _filter
+        else:
+          query = _filter
+    if len(query):
+      try:
         self.__filter.compile(str(query))
         self.__compiled = True
+        self.__filtered = True
         self.invalidateFilter()
-    except:
-      self.emit(QtCore.SIGNAL("badFilter(QString)"))
+      except:
+        pass
+    elif self.__filtered:
+      self.__filtered = False
+      self.invalidateFilter()
+
+
+  def pinnedColumnCount(self):
+    return self.sourceModel().pinnedColumnCount()
 
     
   def sort(self, column, order):
@@ -147,7 +189,7 @@ class NodesTableFilterModel(QtGui.QSortFilterProxyModel):
   def filterAcceptsRow(self, sourceRow, sourceParent):
     index = self.sourceModel().index(sourceRow, 0, sourceParent)
     if not index.isValid() or not self.__compiled:
-      return False
+      return True
     node = self.sourceModel().nodeFromIndex(index)
     if node is not None:
       self.__filter.process(node)
@@ -167,11 +209,19 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
     self.__rootUid = -1
     self.__rootItem = NodeItem(-1, None)
     self.__isRecursive = False
-    self.__columns = [NodesTableHeaderItem(0, "name", NodesTableHeaderItem.NameType),
-                      NodesTableHeaderItem(1, "uid", NodesTableHeaderItem.NumberType),
-                      NodesTableHeaderItem(2, "size", NodesTableHeaderItem.SizeType),
-                      NodesTableHeaderItem(3, "type", NodesTableHeaderItem.DataType),
-                      NodesTableHeaderItem(4, "tags", NodesTableHeaderItem.TagType)]
+    self.__columns = [NodesTableHeaderItem(0, "checked",
+                                           NodesTableHeaderItem.BooleanType,
+                                           NodesTableHeaderItem.ForcePinned),
+                      NodesTableHeaderItem(1, "name",
+                                           NodesTableHeaderItem.StringType),
+                      NodesTableHeaderItem(2, "uid",
+                                           NodesTableHeaderItem.NumberType),
+                      NodesTableHeaderItem(3, "size",
+                                           NodesTableHeaderItem.SizeType),
+                      NodesTableHeaderItem(4, "type",
+                                           NodesTableHeaderItem.DataType),
+                      NodesTableHeaderItem(5, "tags",
+                                           NodesTableHeaderItem.TagType)]
     self.__items = {}
     self.__sortedColumns = [("name", QtCore.Qt.AscendingOrder)]
 
@@ -252,15 +302,24 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
       if index.column() < len(self.__columns):
         column = self.__columns[index.column()]
         attribute = column.rawData(NodesTableHeaderItem.AttributeNameRole)
-        itemData = item.data(role, attribute)
-        return itemData
+        return item.data(role, attribute)
     return QtCore.QVariant()
 
   
   def flags(self, index):
     if not index.isValid():
       return 0
-    return QtCore.Qt.ItemIsEnabled
+    column = index.column()
+    if column < len(self.__columns):
+      if column == 0:
+        flags = QtCore.Qt.ItemIsEnabled
+        flags = flags | QtCore.Qt.ItemIsTristate
+        flags = flags | QtCore.Qt.ItemIsUserCheckable
+      else:
+        flags = QtCore.Qt.ItemIsEnabled
+        flags = flags | QtCore.Qt.ItemIsSelectable
+      return flags
+    return 0
 
 
   def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
@@ -279,12 +338,14 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
       column = self.__columns[section]
       success, signal, args  = column.setData(value, role)
       self.headerDataChanged.emit(orientation, section, section)
-      if signal is not None:
-        print signal, args
-        if args is not None and len(args) > 0:
-          self.emit(QtCore.SIGNAL(signal), *args)
-        else:
-          self.emit(QtCore.SIGNAL(signal))
+      if success:
+        if signal is not None:
+          if signal == "sortChanged(int, int)":
+            self.sort(*args)
+          if args is not None and len(args) > 0:
+            self.emit(QtCore.SIGNAL(signal), *args)
+          else:
+            self.emit(QtCore.SIGNAL(signal))
       return success
     return False
 
@@ -326,6 +387,16 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
   def columnCount(self, parent=QtCore.QModelIndex()):
     return len(self.__columns)
 
+
+  def pinnedColumnCount(self, parent=QtCore.QModelIndex()):
+    pinned = 0
+    for column in self.__columns:
+      pinState = column.rawData(NodesTableHeaderItem.PinRole)
+      if pinState == NodesTableHeaderItem.ForcePinned \
+         or pinState == NodesTableHeaderItem.Pinned:
+        pinned += 1
+    return pinned
+
   
   def index(self, row, column, parent=QtCore.QModelIndex()):
     if row < 0 or column < 0 or row > len(self.__items) - 1 or column > len(self.__columns) - 1:
@@ -338,16 +409,23 @@ class NodesTableModel(QtCore.QAbstractItemModel, EventHandler):
   def sort(self, column, order):
     if column > len(self.__columns):
       return
+    if order == -1:
+      return
     self.beginResetModel()
-    column = self.__columns[column]
-    attribute = column.rawData(NodesTableHeaderItem.AttributeNameRole)
-    self.__sortedColumns = [(attribute, order)]
-    self.__sort()
+    self.__sort(column, order)
     self.endResetModel()
 
 
-  def __sort(self):
-    for attribute, order in self.__sortedColumns:
+  def __sort(self, columnIndex=-1, order=-1):
+    if columnIndex == -1 and order == -1:
+      for column in self.__columns:
+        attribute = column.rawData(NodesTableHeaderItem.AttributeNameRole)
+        sortOrder = column.rawData(NodesTableHeaderItem.SortOrderRole)
+        if sortOrder != -1:
+          self.__rootItem.sort(attribute, bool(sortOrder))
+    else:
+      column = self.__columns[columnIndex]
+      attribute = column.rawData(NodesTableHeaderItem.AttributeNameRole)
       self.__rootItem.sort(attribute, bool(order))
 
 

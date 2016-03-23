@@ -13,30 +13,280 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
+import re
+
 from PyQt4 import QtCore, QtGui
 from dff.ui.gui.nodes.nodestablemodel import NodesTableHeaderItem
 
 
-def FilterWidgetFactory(attributeType, attributeName, layoutOrientation=QtCore.Qt.Vertical, parent=None):
-    if attributeType == NodesTableHeaderItem.NameType:
-        return NodesNameFilterWidget(layoutOrientation, parent)
+def FilterWidgetFactory(attributeType, attributeName, layoutOrientation=QtCore.Qt.Vertical, model=None, index=None, parent=None):
+    if attributeType == NodesTableHeaderItem.NumberType:
+        widget = ComparisonFilterWidget(attributeName, layoutOrientation, model, index, parent)
+        widget.setValueWidgets(NumberWidget(widget), NumberWidget(widget))
+        return widget
     if attributeType == NodesTableHeaderItem.SizeType:
-        return NodesSizeFilterWidget(layoutOrientation, parent)
+        widget = ComparisonFilterWidget(attributeName, layoutOrientation, model, index, parent)
+        widget.setValueWidgets(SizeWidget(widget), SizeWidget(widget))
+        return widget
+    if attributeType == NodesTableHeaderItem.StringType:
+        return StringFilterWidget(attributeName, layoutOrientation, model, index, parent)
     if attributeType == NodesTableHeaderItem.DataType:
         return None
     if attributeType == NodesTableHeaderItem.TagType:
         return None
     if attributeType == NodesTableHeaderItem.TimeType:
-        return None
-    if attributeType == NodesTableHeaderItem.NumberType:
-        return NodesNumberFilterWidget(attributeName, layoutOrientation, parent)
-    if attributeType == NodesTableHeaderItem.StringType:
-        return NodesStringFilterWidget(attributeName, layoutOrientation, parent)
+        widget = ComparisonFilterWidget(attributeName, layoutOrientation, model, index, parent)
+        #self.setValueWidgets(TimeWidget(widget), TimeWidget(widget))
+        #return widget
     return None
 
 
-class NodesAbstractFilterWidget(QtGui.QWidget):
-    def __init__(self, layoutOrientation=QtCore.Qt.Vertical, parent=None):
+class ComparisonWidget(QtGui.QComboBox):
+    def __init__(self, parent=None):
+        QtGui.QComboBox.__init__(self, parent)
+        self.setFrame(False)
+        self.insertItem(0, self.tr("Equals to"),
+                        QtCore.QVariant("=="))
+        self.insertItem(1, self.tr("Not equals to"),
+                        QtCore.QVariant("!="))
+        self.insertItem(2, self.tr("Less than"),
+                        QtCore.QVariant("<"))
+        self.insertItem(3, self.tr("Less than or equals to"),
+                        QtCore.QVariant("<="))
+        self.insertItem(4, self.tr("Greater than"),
+                        QtCore.QVariant(">"))
+        self.insertItem(5, self.tr("Greater than or equals to"),
+                        QtCore.QVariant(">="))
+        self.insertItem(6, self.tr("Between ... And ..."),
+                        QtCore.QVariant("ba"))
+        self.insertItem(7, self.tr("In the following list"),
+                        QtCore.QVariant("in"))
+
+        
+    def setOperator(self, operator):
+        idx = self.findData(QtCore.QVariant(operator))
+        if idx == -1:
+            return
+        self.setCurrentIndex(idx)
+        
+
+    def operator(self):
+        idx = self.currentIndex()
+        return str(self.itemData(idx).toString())
+
+
+class NumberWidget(QtGui.QLineEdit):
+    def __init__(self, parent=None):
+        QtGui.QLineEdit.__init__(self, parent)
+        self.setFrame(False)
+        self.__rhs = False
+        self.textEdited.connect(self.__numberChanged)
+        if self.__rhs:
+            self.hide()
+
+
+    def setRhs(self, rhs):
+        self.__rhs = rhs
+        if self.__rhs:
+            self.hide()
+
+
+    def isRhs(self):
+        return self.__rhs == True
+
+
+    def setSinglePlaceholder(self):
+        if self.__rhs:
+            self.clear()
+            self.hide()
+        else:
+            self.setPlaceholderText(self.tr("Number..."))
+
+
+    def setIntervalPlaceholder(self):
+        if self.__rhs:
+            self.setPlaceholderText(self.tr("And Number..."))
+            self.show()
+        else:
+            self.setPlaceholderText(self.tr("Between Number..."))
+
+
+    def setListPlaceholder(self):
+        if self.__rhs:
+            self.clear()
+            self.hide()
+        else:
+            self.setPlaceholderText(self.tr("Comma separated Numbers..."))
+
+
+    def __numberChanged(self, text):
+        self.emit(QtCore.SIGNAL("valueChanged()"))
+
+
+    def setValue(self, value):
+        self.setText(value)
+        
+
+    def value(self):
+        return self.text()
+
+
+class SizeWidget(QtGui.QWidget):
+    def __init__(self, parent=None):
+        QtGui.QWidget.__init__(self, parent)
+        self.__rhs = False
+        self.setContentsMargins(0, 0, 0, 0)
+        layout = QtGui.QHBoxLayout()
+        self.setLayout(layout)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.__size = QtGui.QLineEdit()
+        self.__size.setFrame(False)
+        self.__size.textEdited.connect(self.__sizeChanged)
+        self.__sizeUnit = QtGui.QComboBox(self)
+        self.__sizeUnit.setFrame(False)
+        self.__sizeUnit.insertItem(0, self.tr("Bytes"))
+        self.__sizeUnit.insertItem(1, self.tr("KiB"))
+        self.__sizeUnit.insertItem(2, self.tr("MiB"))
+        self.__sizeUnit.insertItem(3, self.tr("GiB"))
+        self.__sizeUnit.insertItem(4, self.tr("TiB"))
+        self.__sizeUnit.insertItem(5, self.tr("PiB"))
+        self.__sizeUnit.insertItem(6, self.tr("EiB"))
+        self.__sizeUnit.activated.connect(self.__sizeChanged)
+        layout.addWidget(self.__size)
+        layout.addWidget(self.__sizeUnit)
+        if self.__rhs:
+            self.hide()
+
+
+    def setRhs(self, rhs):
+        self.__rhs = rhs
+        if self.__rhs:
+            self.hide()
+
+
+    def isRhs(self):
+        return self.__rhs == True
+    
+
+    def setSinglePlaceholder(self):
+        if self.__rhs:
+            self.__size.clear()
+            self.hide()
+        else:
+            self.__size.setPlaceholderText(self.tr("Size..."))
+
+
+    def setIntervalPlaceholder(self):
+        if self.__rhs:
+            self.__size.setPlaceholderText(self.tr("And Size..."))
+            self.show()
+        else:
+            self.__size.setPlaceholderText(self.tr("Between Size..."))
+
+
+    def setListPlaceholder(self):
+        if self.__rhs:
+            self.__size.clear()
+            self.hide()
+        else:
+            self.__size.setPlaceholderText(self.tr("Comma separated Sizes..."))
+
+
+    def setValue(self, size):
+        if not len(size):
+            return
+        match = re.compile("([0-9]*)(KiB|MiB|GiB|TiB|PiB|EiB)?").match(size)
+        size = match.group(1)
+        unit = match.group(2)
+        if size is None:
+            return
+        idx = 0
+        if unit is not None:
+            idx = self.__sizeUnit.findText(unit)
+            if idx == -1:
+                idx = 0
+        self.__sizeUnit.setCurrentIndex(idx)
+        self.__size.setText(size)
+
+
+    def value(self):
+        size = str(self.__size.text())
+        if not len(size):
+            return ""
+        sizeUnit = str(self.__sizeUnit.currentText())
+        if sizeUnit != self.tr("Bytes"):
+            size = size+sizeUnit
+        return size
+
+
+    def __sizeChanged(self, value):
+        self.emit(QtCore.SIGNAL("valueChanged()"))
+
+
+class StringWidget(QtGui.QWidget):
+    def __init__(self, parent=None):
+        QtGui.QWidget.__init__(self, parent)
+        self.setContentsMargins(0, 0, 0, 0)
+        layout = QtGui.QHBoxLayout()
+        self.setLayout(layout)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        # manage startswith, endswith, contains, equals
+        self.__pattern = QtGui.QLineEdit()
+        self.__pattern.setFrame(False)
+        self.__pattern.textEdited.connect(self.__patternChanged)
+        self.__pattern.setPlaceholderText("Pattern...")
+        self.__patternType = QtGui.QComboBox(self)
+        self.__patternType.setFrame(False)
+        self.__patternType.insertItem(0, self.tr("Fixed"),
+                                      QtCore.QVariant('"'))
+        self.__patternType.insertItem(1, self.tr("RegExp"),
+                                      QtCore.QVariant('/'))
+        self.__patternType.insertItem(2, self.tr("Wildcard"),
+                                      QtCore.QVariant('$'))
+        self.__patternType.insertItem(3, self.tr("Approximative"),
+                                      QtCore.QVariant('~'))
+        self.__patternType.activated.connect(self.__patternChanged)
+        layout.addWidget(self.__pattern)
+        layout.addWidget(self.__patternType)
+
+
+    def setValue(self, pattern):
+        if not len(pattern):
+            return
+        idx = -1
+        for decorator in ['"', "/", "$", "~"]:
+            if pattern.startswith(decorator) and pattern.endswith(decorator):
+                idx = self.__patternType.findText(decorator)
+                break
+        if idx == -1:
+            return
+        self.__patternType.setCurrentIndex(idx)
+        self.__pattern.setText(pattern[1:-1])
+
+
+    def value(self):
+        text = self.__pattern.text()
+        if not len(text):
+            return ""
+        idx = self.__patternType.currentIndex()
+        pattern = "{}{}{}".format(self.__patternType.itemData(idx).toString(),
+                                  self.__pattern.text(),
+                                  self.__patternType.itemData(idx).toString())
+        return pattern
+
+    def __patternChanged(self, value):
+        self.emit(QtCore.SIGNAL("valueChanged()"))
+
+
+
+class FilterWidget(QtGui.QWidget):
+    def __init__(self, attributeName, layoutOrientation=QtCore.Qt.Vertical,
+                 model=None, index=None, parent=None):
+        self.__attributeName = attributeName
+        self.__model = model
+        self.__index = index
         QtGui.QWidget.__init__(self, parent)
         if layoutOrientation == QtCore.Qt.Vertical:
             layout = QtGui.QVBoxLayout(self)
@@ -48,199 +298,182 @@ class NodesAbstractFilterWidget(QtGui.QWidget):
         self.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
 
 
-class NodesNumberAbstractFilterWidget(NodesAbstractFilterWidget):
-    def __init__(self, attributeName, layoutOrientation=QtCore.Qt.Vertical, parent=None):
-        NodesAbstractFilterWidget.__init__(self, layoutOrientation, parent)
-        self.__attributeName = attributeName
-        self.__comparisonOperator = QtGui.QComboBox(self)
-        self.__comparisonOperator.insertItem(0, self.tr("Equals to"))
-        self.__comparisonOperator.insertItem(1, self.tr("Not equals to"))
-        self.__comparisonOperator.insertItem(2, self.tr("Less than to"))
-        self.__comparisonOperator.insertItem(3, self.tr("Less than or equals to"))
-        self.__comparisonOperator.insertItem(4, self.tr("Greater than to"))
-        self.__comparisonOperator.insertItem(5, self.tr("Greater than or equals to"))
-        self.layout().addWidget(self.__comparisonOperator)
-        self._number = QtGui.QLineEdit(self)
-        self._number.setPlaceholderText(self.tr("Number..."))
-        self._number.textChanged.connect(self._filterChanged)
-        self.connect(self.__comparisonOperator,
-                     QtCore.SIGNAL("currentIndexChanged(const QString &)"),
-                     self._filterChanged)
-        
-        
-    # Not implemented
-    # This method must be overloaded when inherited and called in __init__
-    def _manageNumberLayout(self):
-        pass 
+    def setData(self, value):
+        if self.__model is None or self.__index is None:
+            self.emit(QtCore.SIGNAL("filterChanged(QString)"), value)
+            return False
+        return self.__model.setData(self.__index, QtCore.QVariant(value),
+                                          NodesTableHeaderItem.FilterRole)
 
 
-    def _numberValue(self):
-        return self._number.text()
-    
-
-    def _comparisonOperator(self):
-        comparisonOperator = self.__comparisonOperator.currentText()
-        if comparisonOperator == self.tr("Equals to"):
-            return "=="
-        if comparisonOperator == self.tr("Not equals to"):
-            return "!="
-        if comparisonOperator == self.tr("Less than"):
-            return "<"
-        if comparisonOperator == self.tr("Greater than"):
-            return ">"
-        if comparisonOperator == self.tr("Less than or equals to"):
-            return "<="
-        if comparisonOperator == self.tr("Greater than or equals to"):
-            return ">="
+    def data(self):
+        if self.__model is None or self.__index is None:
+            return None
+        return self.__model.data(self.__index, NodesTableHeaderItem.FilterRole)
 
 
     def _attributeName(self):
-        attribute = "@{}@".format(self._attributeName)
-        return attribute
+        if self.__attributeName in ["time", "year", "type", "size", "deleted",
+                                    "folder", "file", "extension", "name",
+                                    "path", "tags", "tagged", "to", "module"]:
+            return self.__attributeName
+        else:
+            return "@{}@".format(self.__attributeName)
 
 
-    def _filterChanged(self, value):
-        query = "{} {} {}".format(self._attributeName(),
-                                      self._comparisonOperator(),
-                                      self._numberValue())
-        print("Number filter: {}".format(query))
-        self.emit(QtCore.SIGNAL("filterChanged(QString)"), query) 
+    def __splitExpression(self, expression):
+        # attributes can have space in their name, manage it first
+        attribute = ""
+        comparison = ""
+        value = ""
+        attributeEndIdx = len(expression)
+        if expression.startswith("@"):
+            attributeEndIdx = expression[1:].find("@")
+            if attributeEndIdx == -1:
+                return (attribute, comparison, value)
+            attributeEndIdx += 2
+            attribute = expression[0:attributeEndIdx].strip()
+        else:
+            attributeEndIdx = expression.find(" ")
+            if attributeEndIdx == -1:
+                return (attribute, comparison, value)
+            attribute = expression[0:attributeEndIdx]
+        expression = expression[attributeEndIdx:].strip()
+        if not len(expression):
+            return (attribute, comparison, value)
+        match = re.compile("(=|!)=|>(=)?|<(=)?|matches|in|").match(expression)
+        if match is None:
+            return (attribute, comparison, value)
+        comparison = match.group()
+        value = expression[match.end():].strip()
+        return (attribute, comparison, value)
 
 
-class NodesNumberFilterWidget(NodesNumberAbstractFilterWidget):
-    def __init__(self, attributeName, layoutOrientation=QtCore.Qt.Vertical, parent=None):
-        NodesNumberAbstractFilterWidget.__init__(self, attributeName, layoutOrientation, parent)
-        self._manageNumberLayout()
+    def _splitFilter(self, _filter):
+        andIndex = _filter.find(" and ")
+        if andIndex != -1:
+            lhs = self.__splitExpression(_filter[:andIndex])
+            rhs = self.__splitExpression(_filter[andIndex+5:])
+        else:
+            lhs = self.__splitExpression(_filter)
+            rhs = None
+        return (lhs, rhs)
 
 
-    def _manageNumberLayout(self):
-        self.layout().addWidget(self._number)
+    # Must be overloaded
+    def setFilter(self, _filter):
+        raise NotImplementedError
+
+
+class ComparisonFilterWidget(FilterWidget):
+    def __init__(self, attributeName, layoutOrientation=QtCore.Qt.Vertical,
+                 model=None, index=None, parent=None):
+        FilterWidget.__init__(self, attributeName,
+                              layoutOrientation, model,
+                              index, parent)
+        self.__comparison = ComparisonWidget(self)
+        self.layout().addWidget(self.__comparison)
+        self.__comparison.activated.connect(self._filterChanged)
+        self.__lhs = None
+        self.__rhs = None
 
         
-class NodesSizeFilterWidget(NodesNumberAbstractFilterWidget):
-    def __init__(self, layoutOrientation=QtCore.Qt.Vertical, parent=None):
-        NodesNumberAbstractFilterWidget.__init__(self, "", layoutOrientation, parent)
-        self.__sizeUnit = QtGui.QComboBox(self)
-        self.__sizeUnit.insertItem(0, self.tr("Bytes"))
-        self.__sizeUnit.insertItem(1, self.tr("KiB"))
-        self.__sizeUnit.insertItem(2, self.tr("MiB"))
-        self.__sizeUnit.insertItem(3, self.tr("GiB"))
-        self.__sizeUnit.insertItem(4, self.tr("TiB"))
-        self.__sizeUnit.insertItem(5, self.tr("PiB"))
-        self.__sizeUnit.insertItem(6, self.tr("EiB"))
-        self.connect(self.__sizeUnit,
-                     QtCore.SIGNAL("currentIndexChanged(const QString &)"),
+    def setValueWidgets(self, lhs, rhs):
+        self.__setLhsWidget(lhs)
+        self.__setRhsWidget(rhs)
+        rhs.setRhs(True)
+
+
+    def __setLhsWidget(self, widget):
+        self.__lhsWidget = widget
+        self.connect(self.__lhsWidget, QtCore.SIGNAL("valueChanged()"),
                      self._filterChanged)
-        self._number.setPlaceholderText(self.tr("Size..."))
-        self._manageNumberLayout()
+        self.layout().addWidget(self.__lhsWidget)
 
 
-    def _manageNumberLayout(self):
-        sizeLayout = QtGui.QHBoxLayout()
-        sizeLayout.addWidget(self._number)
-        sizeLayout.addWidget(self.__sizeUnit)
-        self.layout().addLayout(sizeLayout)
-
-
-    def _numberValue(self):
-        number, success = self._number.text().toULongLong()
-        if success:
-            sizeUnit = self.__sizeUnit.currentText()
-            if sizeUnit == self.tr("Bytes"):
-                return number
-            if sizeUnit == self.tr("KiB"):
-                return number * 1024
-            if sizeUnit == self.tr("MiB"):
-                return number * (1024**2)
-            if sizeUnit == self.tr("GiB"):
-                return number * (1024**3)
-            if sizeUnit == self.tr("TiB"):
-                return number * (1024**4)
-            if sizeUnit == self.tr("PiB"):
-                return number * (1024**5)
-            if sizeUnit == self.tr("EiB"):
-                return number * (1024**6)
-        return 0
-
-    
-    def _filterChanged(self, value):
-        query = "size {} {}".format(self._comparisonOperator(),
-                                    self._numberValue())
-        print("Size filter: {}".format(query))
-        self.emit(QtCore.SIGNAL("filterChanged(QString)"), query) 
-
-
-class NodesStringFilterWidget(NodesAbstractFilterWidget):
-    def __init__(self, attributeName, layoutOrientation=QtCore.Qt.Vertical, parent=None):
-        NodesAbstractFilterWidget.__init__(self, layoutOrientation, parent)
-        self.__attributeName = attributeName
-        self.__comparisonOperator = QtGui.QComboBox(self)
-        self.__comparisonOperator.insertItem(0, self.tr("Contains"))
-        self.__comparisonOperator.insertItem(1, self.tr("Equals"))
-        self.__patternType = QtGui.QComboBox(self)
-        self.__patternType.insertItem(0, self.tr("Fixed"))
-        self.__patternType.insertItem(1, self.tr("RegExp"))
-        self.__patternType.insertItem(2, self.tr("Wildcard"))
-        self.__pattern = QtGui.QLineEdit(self)
-        self.__pattern.setPlaceholderText(self.tr("Filter..."))
-        self.__pattern.textChanged.connect(self._filterChanged)
-        self.connect(self.__comparisonOperator,
-                     QtCore.SIGNAL("currentIndexChanged(const QString &)"),
+    def __setRhsWidget(self, widget):
+        self.__rhsWidget = widget
+        self.connect(self.__rhsWidget, QtCore.SIGNAL("valueChanged()"),
                      self._filterChanged)
-        self.connect(self.__patternType,
-                     QtCore.SIGNAL("currentIndexChanged(const QString &)"),
+        self.layout().addWidget(self.__rhsWidget)
+
+
+    def setFilter(self, _filter):
+        lhs, rhs = self._splitFilter(_filter)
+        if rhs is not None:
+            self.__comparison.setOperator("ba")
+            self.__lhsWidget.setValue(lhs[-1])
+            self.__lhsWidget.setIntervalPlaceholder()
+            self.__rhsWidget.setValue(rhs[-1])
+            self.__rhsWidget.setIntervalPlaceholder()
+        else:
+            attribute, operator, number = lhs
+            self.__comparison.setOperator(operator)
+            self.__lhsWidget.setValue(number)
+            if operator == "in":
+                self.__lhsWidget.setListPlaceholder()
+                self.__rhsWidget.setListPlaceholder()
+            else:
+                self.__lhsWidget.setSinglePlaceholder()
+                self.__rhsWidget.setSinglePlaceholder()
+
+
+    def _filterChanged(self):
+        query = ""
+        operator = self.__comparison.operator()
+        if operator == "ba":
+            self.__lhsWidget.setIntervalPlaceholder()
+            self.__rhsWidget.setIntervalPlaceholder()
+            lhs = "{} >= {}".format(self._attributeName(),
+                                    self.__lhsWidget.value())
+            rhs =  "{} <= {}".format(self._attributeName(),
+                                     self.__rhsWidget.value())
+            query = "{} and {}".format(lhs, rhs)
+        elif operator == "in":
+            self.__lhsWidget.setListPlaceholder()
+            self.__rhsWidget.setListPlaceholder()
+            query = "{} in [{}]".format(self._attributeName(),
+                                        self.__lhsWidget.value())
+        else:
+            self.__lhsWidget.setSinglePlaceholder()
+            self.__rhsWidget.setSinglePlaceholder()
+            query = "{} {} {}".format(self._attributeName(), operator,
+                                      self.__lhsWidget.value())
+        self.setData(query)
+
+
+class StringFilterWidget(FilterWidget):
+    def __init__(self, attributeName, layoutOrientation=QtCore.Qt.Vertical,
+                 model=None, index=None, parent=None):
+        FilterWidget.__init__(self, attributeName,
+                              layoutOrientation,
+                              model, index, parent)
+        self.__operator = QtGui.QComboBox(self)
+        self.__operator.insertItem(0, self.tr("Matches"))
+        self.__operator.setFrame(False)
+        #self.__operator.insertItem(1, self.tr("In"))
+        self.__pattern = StringWidget(self)
+        #self.connect(self.__operator,
+        #             QtCore.SIGNAL("activated(int)"),
+        #             self._filterChanged)
+        self.connect(self.__pattern, QtCore.SIGNAL("valueChanged()"),
                      self._filterChanged)
-        self.layout().addWidget(self.__comparisonOperator)
-        self.layout().addWidget(self.__patternType)
+        self.layout().addWidget(self.__operator)
         self.layout().addWidget(self.__pattern)
 
 
-    def _patternDecorator(self):
-        patternType = self.__patternType.currentText()
-        if patternType == self.tr("Fixed"):
-            return '"'
-        if patternType == self.tr("RegExp"):
-            return '/'
-        if patternType == self.tr("Wildcard"):
-            return '$'
+    def setFilter(self, _filter):
+        (lhs, rhs) = self._splitFilter(_filter)
+        attribute, operator, pattern = lhs
+        self.__pattern.setValue(pattern)
 
 
-    def _comparisonOperator(self):
-        comparisonOperator = self.__comparisonOperator.currentText()
-        if comparisonOperator == self.tr("Contains"):
-            return "matches"
-        if comparisonOperator == self.tr("Equals"):
-            return "=="
+    def _operator(self):
+        return str(self.__operator.currentText()).lower()
 
-
-    def _attributeName(self):
-        attribute = "@{}@".format(self.__attributeName)
-        return attribute
-
-
-    def _pattern(self):
-        pattern = self.__pattern.text()
-        
 
     # XXX UTF 8
-    def _filterChanged(self, value):
-        query = "{} {} {}{}{}".format(self._attributeName(), self._comparisonOperator(),
-                                      self._patternDecorator(), self._pattern(),
-                                      self._patternDecorator())
-        print("String filter: {}".format(query))        
-        self.emit(QtCore.SIGNAL("filterChanged(QString)"), query) 
-
-
-class NodesNameFilterWidget(NodesStringFilterWidget):
-    def __init__(self, layoutOrientation=QtCore.Qt.Vertical, parent=None):
-        NodesStringFilterWidget.__init__(self, "", layoutOrientation, parent)
-
-
-    def _filterChanged(self, value):
-        query = "name {} {}{}{}".format(self._comparisonOperator(),
-                                      self._patternDecorator(), self._pattern(),
-                                      self._patternDecorator())
-        print("Name filter: {}".format(query))        
-        self.emit(QtCore.SIGNAL("filterChanged(QString)"), query)
-
-
+    def _filterChanged(self):
+        query = "{} {} {}".format(self._attributeName(), self._operator(),
+                                  self.__pattern.value())
+        self.setData(query)

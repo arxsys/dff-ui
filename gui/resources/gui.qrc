@@ -223,5 +223,14 @@ Jeremy Mounier jmo@digital-forensic.org
 
     <file alias="trash">icons/actions/trash.png</file>
     <file alias="clock">icons/app/clock.png</file>
+
+    <file alias="column_settings">icons/columns/column_settings.png</file>
+    <file alias="column_settings_hover">icons/columns/column_settings_hover.png</file>
+    <file alias="column_filter">icons/columns/column_filter.png</file>
+    <file alias="column_filtered">icons/columns/column_filtered.png</file>
+    <file alias="column_sorted_az">icons/columns/column_sorted_az.png</file>
+    <file alias="column_sorted_za">icons/columns/column_sorted_za.png</file>
+    <file alias="column_sorted_09">icons/columns/column_sorted_09.png</file>
+    <file alias="column_sorted_90">icons/columns/column_sorted_90.png</file>
 </qresource>
 </RCC>

@@ -54,11 +54,12 @@ class NodeItem():
           return (True, "recursionDisabled")
     if role == NodeItem.TagViewedRole:
       node = VFS.Get().getNodeById(self.__uid)
-      node.setTag("viewed")
-      return (True, None)
-    if role == QtCore.Qt.CheckStateRole:
-      if attribute == "name":
-        return (self.__setCheckState(), None)
+      if node.isFile():
+        node.setTag("viewed")
+        return (True, None)
+      return (False, None)
+    if role == QtCore.Qt.CheckStateRole and attribute == "checked":
+      return (self.__setCheckState(), None)
     return (False, None)
   
 
@@ -126,7 +127,7 @@ class NodeItem():
       return self.__createIconPixmap()
     if role == QtCore.Qt.ForegroundRole:
       return self.__foregroundRole()
-    if role == QtCore.Qt.CheckStateRole and attribute == "name":
+    if role == QtCore.Qt.CheckStateRole and attribute == "checked":
       return QtCore.QVariant(self.__checkState)
     if role == QtCore.Qt.ToolTipRole:
       return self.__toolTip()
@@ -160,6 +161,8 @@ class NodeItem():
 
 
   def __displayRole(self, attribute, childrenCount):
+    if attribute == "checked":
+      return QtCore.QVariant("")
     if attribute == "row":
       return QtCore.QVariant(self.row())
     if attribute == "name":
@@ -178,7 +181,9 @@ class NodeItem():
     if data.isValid():
       fm = QtGui.QApplication.instance().fontMetrics()
       width = fm.width(data.toString())
-      if attribute == "name":
+      if attribute == "checked":
+        sizeHint = QtCore.QSize(10, fm.height())
+      elif attribute == "name":
         sizeHint = QtCore.QSize(width+100, fm.height())
       else:
         sizeHint = QtCore.QSize(width+20, fm.height())
