@@ -1,5 +1,5 @@
 # DFF -- An Open Source Digital Forensics Framework
-# Copyright (C) 2009-2013 ArxSys
+# Copyright (C) 2009-2016 ArxSys
 # This program is free software, distributed under the terms of
 # the GNU General Public License Version 2. See the LICENSE file
 # at the top of the source tree.
@@ -20,14 +20,17 @@ install_file(
   gui.py
   mainwindow.py
   translator.py
+  test.py
 )
 
-add_subdirectory(api)
+add_subdirectory(core)
+add_subdirectory(browser)
 add_subdirectory(nodes)
+add_subdirectory(datatypes)
+add_subdirectory(api)
 add_subdirectory(resources)
 add_subdirectory(i18n)
 add_subdirectory(ide)
 add_subdirectory(utils)
 add_subdirectory(widget)
 add_subdirectory(dialog)
-

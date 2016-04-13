@@ -16,25 +16,25 @@
 import re
 
 from PyQt4 import QtCore, QtGui
-from dff.ui.gui.nodes.nodestablemodel import NodesTableHeaderItem
+from dff.ui.gui.core.standarditems import HorizontalHeaderItem
 
 
 def FilterWidgetFactory(attributeType, attributeName, layoutOrientation=QtCore.Qt.Vertical, model=None, index=None, parent=None):
-    if attributeType == NodesTableHeaderItem.NumberType:
+    if attributeType == HorizontalHeaderItem.NumberType:
         widget = ComparisonFilterWidget(attributeName, layoutOrientation, model, index, parent)
         widget.setValueWidgets(NumberWidget(widget), NumberWidget(widget))
         return widget
-    if attributeType == NodesTableHeaderItem.SizeType:
+    if attributeType == HorizontalHeaderItem.SizeType:
         widget = ComparisonFilterWidget(attributeName, layoutOrientation, model, index, parent)
         widget.setValueWidgets(SizeWidget(widget), SizeWidget(widget))
         return widget
-    if attributeType == NodesTableHeaderItem.StringType:
+    if attributeType == HorizontalHeaderItem.StringType:
         return StringFilterWidget(attributeName, layoutOrientation, model, index, parent)
-    if attributeType == NodesTableHeaderItem.DataType:
+    if attributeType == HorizontalHeaderItem.DataType:
         return None
-    if attributeType == NodesTableHeaderItem.TagType:
+    if attributeType == HorizontalHeaderItem.TagType:
         return None
-    if attributeType == NodesTableHeaderItem.TimeType:
+    if attributeType == HorizontalHeaderItem.TimeType:
         widget = ComparisonFilterWidget(attributeName, layoutOrientation, model, index, parent)
         #self.setValueWidgets(TimeWidget(widget), TimeWidget(widget))
         #return widget
@@ -303,13 +303,13 @@ class FilterWidget(QtGui.QWidget):
             self.emit(QtCore.SIGNAL("filterChanged(QString)"), value)
             return False
         return self.__model.setData(self.__index, QtCore.QVariant(value),
-                                          NodesTableHeaderItem.FilterRole)
+                                          HorizontalHeaderItem.FilterRole)
 
 
     def data(self):
         if self.__model is None or self.__index is None:
             return None
-        return self.__model.data(self.__index, NodesTableHeaderItem.FilterRole)
+        return self.__model.data(self.__index, HorizontalHeaderItem.FilterRole)
 
 
     def _attributeName(self):

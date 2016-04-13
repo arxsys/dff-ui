@@ -12,10 +12,16 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
+import locale
 
-install_file(
-  __init__.py
-  nodesitems.py
-  nodesmodels.py
-  nodesviews.py
-)
+from PyQt4 import QtCore, QtGui
+
+from dff.ui.gui.datatypes.datatypesmodels import DatatypesTreeModel
+from dff.ui.gui.core.standardviews import StandardTreeView
+
+
+class DatatypesTreeView(StandardTreeView):
+  def __init__(self, parent=None):
+    super(DatatypesTreeView, self).__init__(parent)
+    model = DatatypesTreeModel()
+    self.setModel(model)

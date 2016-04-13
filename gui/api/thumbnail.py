@@ -157,6 +157,7 @@ class ScaleConfig(object):
   def __str__(self):
     return str(str(self.node.uid()) + str(self.size) + str(self.percent) + str(self.frames))
 
+
 class ScaleEvent(QEvent):
  Type = QEvent.Type(QEvent.registerEventType())
  def __init__(self, config):
@@ -166,9 +167,16 @@ class ScaleEvent(QEvent):
 class ThumbnailManager(object):
   __instance = None
   def __init__(self):
-     if ThumbnailManager.__instance is None:
-       ThumbnailManager.__instance = ThumbnailManager.__ThumbnailManager()
+    if ThumbnailManager.__instance is None:
+      ThumbnailManager.__instance = ThumbnailManager.__ThumbnailManager()
 
+
+  def getInstance(self):
+    if ThumbnailManager.__instance is None:
+      ThumbnailManager.__instance = ThumbnailManager.__ThumbnailManager()
+    return ThumbnailManager.__instance
+
+      
   def __getattr__(self, attr):
      return getattr(self.__instance, attr)
 
@@ -187,17 +195,10 @@ class ThumbnailManager(object):
       self.corruptionHandler = CorruptedPictureHandler()
       self.pixmapCorrupted = QPixmap(":file_broken.png")
  
-    def register(self, thumbnailer):
-      self.thumbnailers.append(thumbnailer)
-
-    def unregister(self, thumbnailer):
-      try:
-        self.thumbnailers.remove(thumbnailer)
-      except:
-	 pass
 
     def generate(self, config):
-      pixmap = self.pixmapCache.find(str(config))
+      key = str(config)
+      pixmap = self.pixmapCache.find(key)
       if pixmap:
 	return pixmap
       elif self.corruptionHandler.isCorrupted(config.node):
@@ -210,24 +211,19 @@ class ThumbnailManager(object):
     def finished(self, config, scaledImage):
        if scaledImage:
          pixmap = QPixmap().fromImage(scaledImage)
-         self.pixmapCache.insert(str(config), pixmap)
+         key = str(config)
+         self.pixmapCache.insert(key, pixmap)
          self.emitUpdate(config, pixmap)
        else:
          self.corruptionHandler.setAttributes(config.node)
 	 self.emitUpdate(config, self.pixmapCorrupted)
  
     def emitUpdate(self, config, pixmap):
-       for thumbnailer in self.thumbnailers:
-	 try:
-           if thumbnailer.request(config):
-             thumbnailer.emit(SIGNAL("ThumbnailUpdate"), config.node, pixmap)
-	     thumbnailer.requestRemove(config)	 
-	 except:
-	    pass
-       try:
-         self.handledRequest.remove(config)	
-       except KeyError:
-	 pass 
+      self.emit(SIGNAL("ThumbnailUpdate"), config.node, pixmap)
+      try:
+        self.handledRequest.remove(config)	
+      except KeyError:
+	pass 
 
 class ThumbnailBlockingLoop(QEventLoop):
   def __init__(self):

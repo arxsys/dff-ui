@@ -15,7 +15,7 @@
 
 install_file(
   __init__.py
-  nodesitems.py
-  nodesmodels.py
-  nodesviews.py
+  browser.py
+  nodesbrowser.py
+  datatypesbrowser.py
 )

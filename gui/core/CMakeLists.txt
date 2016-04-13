@@ -10,12 +10,14 @@
 # and IRC channels for your use.
 # 
 # Author(s):
-#  Frederic Baguelin <fba@arxsys.fr>
-
+#  Frederic Baguelin <fba@digital-forensic.org>
 
 install_file(
   __init__.py
-  nodesitems.py
-  nodesmodels.py
-  nodesviews.py
+  standarditems.py
+  standardmodels.py
+  standardviews.py
+  standarddelegates.py
+  standardmenus.py
+  standardwidgets.py
 )
