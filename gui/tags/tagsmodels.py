@@ -17,26 +17,25 @@ import locale
 from PyQt4 import QtCore, QtGui
 
 from dff.api.events.libevents import EventHandler
-from dff.api.datatype.libdatatype import DataTypeManager
+from dff.api.vfs.libvfs import TagsManager
 from dff.api.filters.libfilters import Filter
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
-from dff.ui.gui.datatypes.datatypesitems import DatatypeItem
+from dff.ui.gui.core.standarditems import StandardItem, HorizontalHeaderItem
+from dff.ui.gui.tags.tagsitems import TagItem
 from dff.ui.gui.core.standardmodels import StandardTreeModel
 from dff.ui.gui.nodes.nodesitems import NodeItem
 from dff.ui.gui.nodes.nodesmodels import NodesModel, NodesListModel
 
 
-class DatatypesNodesModel(NodesModel, EventHandler):  
+class TagsNodesModel(NodesModel, EventHandler):
   def __init__(self, parent=None):
     NodesModel.__init__(self, parent)
     EventHandler.__init__(self)
-    self.__datatypes = []
+    self.__tag = ""
     self.__rootItem = NodeItem(-1, None)
     self.__filteredRootItem = NodeItem(-1, None)
-    self.__filter = Filter("DatatypesNodesFilterModel")
+    self.__filter = Filter("TagsNodesFilterModel")
     self.__items = {}
     self.__filteredItems = {}
-    self.__isRecursive = False
     index = 0
     for column in NodesListModel.DefaultColumns:
       self.addColumn(column, index)
@@ -47,7 +46,7 @@ class DatatypesNodesModel(NodesModel, EventHandler):
     self.beginResetModel()
     self.setRootItem(self.__rootItem)
     self.endResetModel()
-
+    
 
   def enableFilter(self, query):
     try:
@@ -57,8 +56,8 @@ class DatatypesNodesModel(NodesModel, EventHandler):
       self.disableFilter()
 
 
-  def setDatatypes(self, datatypes):
-    self.__datatypes = datatypes
+  def setTag(self, tag):
+    self.__tag = tag
     self.__populate()
 
 
@@ -72,20 +71,18 @@ class DatatypesNodesModel(NodesModel, EventHandler):
       self.setRootItem(self.__filteredRootItem)
     else:
       self.setRootItem(self.__rootItem)
-    for datatype in self.__datatypes:
-      nodes = DataTypeManager.Get().nodes(datatype)
-      for node in nodes:
-        uid = node.uid()
-        if self._filtered and self.__filter.match(uid):
-          filteredItem = NodeItem(uid, self.__filteredRootItem)
-          self.__filteredRootItem.appendChild(filteredItem)
-          self.__filteredItems[uid] = filteredItem
-        childItem = NodeItem(uid, self.__rootItem)
-        self.__rootItem.appendChild(childItem)
-        self.__items[uid] = childItem
+    nodesUid = TagsManager.get().nodes(self.__tag)
+    for uid in nodesUid:
+      if self._filtered and self.__filter.match(uid):
+        filteredItem = NodeItem(uid, self.__filteredRootItem)
+        self.__filteredRootItem.appendChild(filteredItem)
+        self.__filteredItems[uid] = filteredItem
+      childItem = NodeItem(uid, self.__rootItem)
+      self.__rootItem.appendChild(childItem)
+      self.__items[uid] = childItem
     self.sort(self.columnCount(), 0)
     self.endResetModel()
-
+    
 
   def itemFromUid(self, uid):
     if self._filtered:
@@ -118,7 +115,7 @@ class DatatypesNodesModel(NodesModel, EventHandler):
     return 0
 
 
-class DatatypesTreeModel(StandardTreeModel, EventHandler):
+class TagsTreeModel(StandardTreeModel, EventHandler):
   DefaultColumns = [HorizontalHeaderItem(0, "name",
                                          HorizontalHeaderItem.StringType)]
 
@@ -127,12 +124,11 @@ class DatatypesTreeModel(StandardTreeModel, EventHandler):
     StandardTreeModel.__init__(self, parent, displayChildrenCount)
     EventHandler.__init__(self)
     self.__items = {}
-    self.__dataTypes = DataTypeManager.Get()
-    self.__dataTypes.connection(self)
-    self.connect(self, QtCore.SIGNAL("registerDatatype"), self.insertTree)
-    self.__rootItem = DatatypeItem("", None)
+    TagsManager.get().connection(self)
+    self.connect(self, QtCore.SIGNAL("tagEvent(void)"), self.__tagEvent)
+    self.__rootItem = StandardItem(None)
     index = 0
-    for column in DatatypesTreeModel.DefaultColumns:
+    for column in TagsTreeModel.DefaultColumns:
       self.addColumn(column, index)
       index += 1
     self.__populate()
@@ -145,10 +141,10 @@ class DatatypesTreeModel(StandardTreeModel, EventHandler):
     datatype = value.value()
     if datatype is None:
       return
-    self.emit(QtCore.SIGNAL("registerDatatype"), datatype)
+    self.emit(QtCore.SIGNAL("tagEvent(void)"))
 
 
-  def insertTree(self, datatype):
+  def __tagEvent(self):
     try:
       self.__populate()
     except:
@@ -156,58 +152,22 @@ class DatatypesTreeModel(StandardTreeModel, EventHandler):
       traceback.print_exc()
 
 
-  def __datatypesFromItem(self, item):
-    if item.childCount() > 0:
-      datatypes = []
-      children = item.children()
-      for child in children:
-        datatype = self.__datatypesFromItem(child)
-        datatypes.extend(datatype)
-      return datatypes
-    else:
-      return [item.queryType()]
-
-
-  def datatypesFromIndex(self, index):
+  def tagIdFromIndex(self, index):
     item = index.internalPointer()
     if item is None:
-      return []
-    if item.childCount() > 0:
-      datatypes = []
-      children = item.children()
-      for child in children:
-        datatype = self.__datatypesFromItem(child)
-        datatypes.extend(datatype)
-      return datatypes
-    else:
-      return [item.queryType()]
-  
+      return -1
+    return item.tagId()
+
 
   def __populate(self):
     self.beginResetModel()
-    self.__rootItem = DatatypeItem("", None)
+    self.__rootItem = StandardItem(None)
     self.setRootItem(self.__rootItem)
     self.__items = {}
-    datatypes = self.__dataTypes.existingTypes()
-    for datatype in datatypes:
-      # An item can have several matching types. Currently, all types are
-      # concatenated and space separated.
-      types = datatype.split(" ")
-      for _type in types:
-        categories = _type.split("/")
-        parentItem = self.__rootItem
-        path = ""
-        for category in categories:
-          if len(path):
-            path = path + "/" + category
-          else:
-            path = category
-          if not self.__items.has_key(path):
-            childItem = DatatypeItem(category, parentItem)
-            self.__items[path] = childItem
-            parentItem.appendChild(childItem)
-            parentItem = childItem
-          else:
-            parentItem = self.__items[path]
-        childItem.setQueryType(datatype)
+    tags = TagsManager.get().tags()
+    for tag in tags:
+      tagId = tag.id()
+      tagItem = TagItem(tagId, self.__rootItem)
+      self.__items[tagId] = tagItem
+      self.__rootItem.appendChild(tagItem)
     self.endResetModel()

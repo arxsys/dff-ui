@@ -38,7 +38,7 @@ class DatatypeItem(StandardItem):
         width = fm.width(data.toString())
         sizeHint = QtCore.QSize(width+100, 16)
         return QtCore.QVariant(sizeHint)
-    return super(NodeTreeItem, self).sizeHint(attribute)
+    return QtCore.QVariant()
 
   
   def display(self, attribute):

@@ -18,6 +18,7 @@ from dff.ui.gui.core.standarditems import HorizontalHeaderItem
 from dff.ui.gui.core.standardmodels import HorizontalHeaderProxyModel
 from dff.ui.gui.core.standardwidgets import FilterWidgetFactory
 
+
 class HorizontalHeaderSettingMenu(QtGui.QMenu):
     def __init__(self, model, index, parent=None):
         QtGui.QMenu.__init__(self, parent)
@@ -154,6 +155,9 @@ class HorizontalHeaderMenu(QtGui.QTabWidget):
         self.connect(self.__model,
                      QtCore.SIGNAL("filterChanged(int, QString)"),
                      self.__filterChanged)
+        self.connect(self.__model,
+                     QtCore.SIGNAL("filterEnabled(int, QString)"),
+                     self.__filterChanged)
         self.connect(self.__settingsMenu, QtCore.SIGNAL("settingClicked()"),
                      self.hide)
         self.currentChanged.connect(self.__updateTabSize)
@@ -171,10 +175,17 @@ class HorizontalHeaderMenu(QtGui.QTabWidget):
                                                 HorizontalHeaderItem.AttributeNameRole).toString()
         proxyModel = HorizontalHeaderProxyModel(self.__model)
         self.__filterWidget = FilterWidgetFactory(columnType, attributeName,
-                                                  model=proxyModel, index=self.__index,
                                                   parent=self)
         if self.__filterWidget is not None:
+            self.connect(self.__filterWidget, QtCore.SIGNAL("filterChanged(QString)"),
+                         self.__setFilter)
             self.addTab(self.__filterWidget, QtGui.QIcon(":column_filter"), "")
+
+
+    def __setFilter(self, queryString):
+        self.__model.setHeaderData(self.__index, QtCore.Qt.Horizontal,
+                                   QtCore.QVariant(queryString),
+                                   HorizontalHeaderItem.FilterDataRole)
 
 
     def __initSettingsMenu(self):
@@ -203,13 +214,13 @@ class HorizontalHeaderMenu(QtGui.QTabWidget):
         self.__settingsMenu.setPinState(pinState)
 
 
-    def __filterChanged(self, index, _filter):
+    def __filterChanged(self, index, query):
         if self.isVisible():
             self.__updateTabSize(self.currentIndex())
             return
         if self.__filterWidget is None or index != self.__index:
             return
-        self.__filterWidget.setFilter(str(_filter.toUtf8()))
+        self.__filterWidget.setFilter(str(query.toUtf8()))
 
 
     def __updateTabSize(self, index):

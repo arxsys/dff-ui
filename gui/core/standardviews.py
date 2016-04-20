@@ -42,6 +42,21 @@ class StandardTreeView(QtGui.QTreeView):
     self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
     self.__treeDelegate = StandardTreeDelegate()
     self.setItemDelegate(self.__treeDelegate)
+    expandAction = QtGui.QAction(self.tr("Expand all"), self)
+    expandAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
+    expandAction.triggered.connect(self.expandAll)
+    collapseAction = QtGui.QAction(self.tr("Collapse all"), self)
+    collapseAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Left))
+    collapseAction.triggered.connect(self.collapseAll)
+    selectAllAction = QtGui.QAction(self.tr("Select all visible items"), self)
+    #selectAllAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
+    #selectAllAction.triggered.connect(self.expandAll)
+    unselectAllAction = QtGui.QAction(self.tr("Deselect all visible items"), self)
+    #unselectAllAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
+    #unselectAllAction.triggered.connect(self.expandAll)
+    clearSelectionAction = QtGui.QAction(self.tr("Clear all selected items"), self)
+    #clearSelectionAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
+    #clearSelectionAction.triggered.connect(self.expandAll)
 
 
   def setFrozen(self, frozen):
@@ -66,26 +81,34 @@ class StandardTreeView(QtGui.QTreeView):
 
 
   def setModel(self, model):
+    if model is None:
+      return
     if model == self.model():
       return
     super(StandardTreeView, self).setModel(model)
     self.header().setModel(model)
     self.setChildrenCountDisplay(True)
-    
-    
+
+
   def __updateColumnsSize(self, index):
     self.resizeColumnToContents(0)
 
 
   def setChildrenCountDisplay(self, enable):
+    if self.model() is None:
+      return
     self.model().setChildrenCountDisplay(enable)
 
 
   def addColumn(self, column, index=-1):
+    if self.model() is None:
+      return None
     return self.model().addColumn(column, index)
 
 
   def addColumns(self, columns, index=-1):
+    if self.model() is None:
+      return
     if index == -1:
       index = self.model().columnCount()
     for column in columns:
@@ -96,6 +119,7 @@ class StandardTreeView(QtGui.QTreeView):
 class StandardTableView(QtGui.QTableView):
   def __init__(self, parent=None):
     super(StandardTableView, self).__init__(parent)
+    self.__frozen = False
     self.setShowGrid(False)
     self.setAlternatingRowColors(True)
     self.verticalHeader().hide()
@@ -105,12 +129,11 @@ class StandardTableView(QtGui.QTableView):
     self.setPalette(palette)
     self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
     self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-    self.__delegate = StandardDelegate()
-    self.setItemDelegate(self.__delegate)
 
 
   def setFrozen(self, frozen):
-    self.__delegate.setFrozen(frozen)
+    self.__frozen = True
+    self.itemDelegate().setFrozen(frozen)
 
     
   def showEvent(self, event):
@@ -119,6 +142,8 @@ class StandardTableView(QtGui.QTableView):
 
 
   def setModel(self, model):
+    if model is None:
+      return
     if model == self.model():
       return
     super(StandardTableView, self).setModel(model)
@@ -126,10 +151,14 @@ class StandardTableView(QtGui.QTableView):
 
 
   def addColumn(self, column, index=-1):
+    if self.model() is None:
+      return None
     return self.model().addColumn(column, index)
 
 
   def addColumns(self, columns, index=-1):
+    if self.model() is None:
+      return
     if index == -1:
       index = self.model().columnCount()
     for column in columns:
@@ -171,11 +200,10 @@ class StandardIconView(QtGui.QListView):
     
     
 class StandardFrozenView(QtGui.QWidget):
-  def __init__(self, viewFactory, filterModel=None, parent=None):
+  def __init__(self, viewFactory, parent=None):
     super(StandardFrozenView, self).__init__(parent)
     self.setLayout(QtGui.QHBoxLayout(self))
     self.layout().setContentsMargins(0, 0, 0, 0)
-    self.__filterModel = filterModel
     self.__frozenColumns = 0
     self.__previousIndex = None
     self.__viewedTagEnable = True
@@ -196,8 +224,6 @@ class StandardFrozenView(QtGui.QWidget):
     self._baseView.viewport().stackUnder(self._frozenView)
     self._baseView.horizontalHeader().sectionResized.connect(self.__updateFrozenSectionWidth)
     self._frozenView.horizontalHeader().sectionResized.connect(self.__frozenSectionResized)
-    self.connect(self.__baseModel, QtCore.SIGNAL("filterChanged(int, QString)"),
-                 self.__filterChanged)
     self.connect(self.__baseModel,
                  QtCore.SIGNAL("columnPinStateChanged(int, int)"),
                  self.__columnPinStateChanged)
@@ -215,15 +241,40 @@ class StandardFrozenView(QtGui.QWidget):
 
 
   def setModel(self, model):
-    if model == self.__baseModel:
+    if model is None:
       return
     if self.__baseModel is not None:
-      self.disconnect(self.__baseModel, QtCore.SIGNAL("filterChanged(int, QString)"), self.__filterChanged)
+      self.disconnect(self.__baseModel,
+                   QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+                   self.__columnPinStateChanged)
     self.__baseModel = model
-    self._baseView.setModel(model)
-    self._frozenView.setModel(model)
-    self.connect(self.__baseModel, QtCore.SIGNAL("filterChanged(int, QString)"),
-                 self.__filterChanged)
+    self._baseView.setModel(self.__baseModel)
+    self._frozenView.setModel(self.__baseModel)
+    self.connect(self.__baseModel,
+                    QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+                    self.__columnPinStateChanged)
+    self._baseView.horizontalHeader().setModel(self.__baseModel)
+    self._frozenView.horizontalHeader().setModel(self.__baseModel)
+    for column in xrange(0, self.__baseModel.columnCount()):
+      data = self.__baseModel.headerData(column, QtCore.Qt.Horizontal,
+                                         HorizontalHeaderItem.PinRole)
+      if not data.isValid():
+        continue
+      pinState, success = data.toInt()
+      if not success:
+        continue
+      if pinState == HorizontalHeaderItem.ForcePinned or \
+         pinState == HorizontalHeaderItem.Pinned:
+        self._frozenView.setColumnHidden(column, False)
+        self.__frozenColumns += 1
+      else:
+        self._frozenView.setColumnHidden(column, True)
+    self._frozenView.setSelectionModel(self._baseView.selectionModel())
+    if self.__frozenColumns != 0:
+      self._frozenView.show()
+    else:
+      self._frozenView.hide()
+    self.__updateFrozenViewGeometry()
 
 
   def enableViewedTag(self, enable):
@@ -237,7 +288,7 @@ class StandardFrozenView(QtGui.QWidget):
   def setCurrentIndex(self, index):
     self._baseView.setCurrentIndex(index)
     self._frozenView.setCurrentIndex(index)
-    
+
 
   def __configureBaseView(self):
     self._baseView.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
@@ -273,11 +324,6 @@ class StandardFrozenView(QtGui.QWidget):
       else:
         self._frozenView.setColumnHidden(column, True)
     self._frozenView.setSelectionModel(self._baseView.selectionModel())
-
-
-  def __filterChanged(self, column, query):
-    self._baseView.setModel(self.__filterModel)
-    self._frozenView.setModel(self.__filterModel)
 
 
   def __pinColumn(self, logicalIndex):
@@ -371,8 +417,8 @@ class StandardFrozenView(QtGui.QWidget):
 
 
 class StandardFrozenTreeView(StandardFrozenView):
-  def __init__(self, viewFactory, filterModel=None, parent=None):
-    super(StandardFrozenTreeView, self).__init__(viewFactory, filterModel, parent)
+  def __init__(self, viewFactory, parent=None):
+    super(StandardFrozenTreeView, self).__init__(viewFactory, parent)
     self._baseView.collapsed.connect(self._frozenView.collapse)
     self._frozenView.collapsed.connect(self._baseView.collapse)
     self._baseView.expanded.connect(self._frozenView.expand)
@@ -386,7 +432,7 @@ class StandardFrozenTreeView(StandardFrozenView):
 
 class StandardHeaderView(QtGui.QHeaderView):
   def __init__(self, model, frozen=False, parent=None):
-    QtGui.QHeaderView.__init__(self, QtCore.Qt.Horizontal, parent)
+    super(StandardHeaderView, self).__init__(QtCore.Qt.Horizontal, parent)
     self.setModel(model)
     self.__frozen = frozen
     self.connect(model, QtCore.SIGNAL("columnPinStateChanged(int, int)"),
@@ -404,6 +450,23 @@ class StandardHeaderView(QtGui.QHeaderView):
     self.__pinnedColumns = []
     self.__icons = {}
     self.__createDefaultIcons()
+    for column in xrange(0, model.columnCount()):
+      self.addColumn(column)
+
+
+  def setModel(self, model):
+    if model is None:
+      return
+    if model == self.model():
+      return
+    if self.model() is not None:
+      self.disconnect(self.model(), QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+                      self.__columnPinStateChanged)
+    self.connect(model, QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+                 self.__columnPinStateChanged)
+    super(StandardHeaderView, self).setModel(model)
+    self.__menus = {}
+    self.__pinnedColumns = []
     for column in xrange(0, model.columnCount()):
       self.addColumn(column)
 
@@ -500,9 +563,9 @@ class StandardHeaderView(QtGui.QHeaderView):
     sortOrder = self.model().headerData(logicalIndex,
                                         QtCore.Qt.Horizontal,
                                         HorizontalHeaderItem.SortOrderRole)
-    _filter = self.model().headerData(logicalIndex,
-                                      QtCore.Qt.Horizontal,
-                                      HorizontalHeaderItem.FilterRole)
+    filtered = self.model().headerData(logicalIndex,
+                                       QtCore.Qt.Horizontal,
+                                       HorizontalHeaderItem.FilteredRole).toBool()
     pinState = self.model().headerData(logicalIndex,
                                        QtCore.Qt.Horizontal,
                                        HorizontalHeaderItem.PinRole)
@@ -537,23 +600,22 @@ class StandardHeaderView(QtGui.QHeaderView):
     painter.restore()
     sortIcon = self.__getSortIcon(sortOrder, _type)
     filterIcon = None
-    if not _filter.toString().isEmpty():
+    if filtered:
       filterIcon = self.__icons[":column_filtered"]
     textWidth = rect.width() - 20
     textX = rect.x()
-    #painter.save()
     if sortIcon is not None and sortIcon.width() < rect.width() - 20:
       painter.drawPixmap(QtCore.QRect(rect.x(), 5, sortIcon.width(),
                                       sortIcon.height()), sortIcon)
-      if filterIcon is not None:
-        if sortIcon is not None and filterIcon.width() < rect.width()-40:
-          painter.drawPixmap(QtCore.QRect(rect.x()+20, 5, filterIcon.width(),
-                                          filterIcon.height()), filterIcon)
-          textX += 36
-          textWidth -= 20
-        elif sortIcon is None and filterIcon.width() < rect.width()-20:
-          painter.drawPixmap(QtCore.QRect(rect.x()+2, 5, filterIcon.width(),
-                                          filterIcon.height()), filterIcon)
+    if filterIcon is not None:
+      if sortIcon is not None and filterIcon.width() < rect.width()-40:
+        painter.drawPixmap(QtCore.QRect(rect.x()+20, 5, filterIcon.width(),
+                                        filterIcon.height()), filterIcon)
+        textX += 36
+        textWidth -= 20
+      elif sortIcon is None and filterIcon.width() < rect.width()-20:
+        painter.drawPixmap(QtCore.QRect(rect.x()+2, 5, filterIcon.width(),
+                                        filterIcon.height()), filterIcon)
     textRect = QtCore.QRect(rect)
     textRect.setWidth(textWidth)
     textRect.setX(textX)

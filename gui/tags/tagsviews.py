@@ -12,11 +12,16 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
+import locale
 
-install_file(
-  __init__.py
-  nodesitems.py
-  nodesmodels.py
-  nodesviews.py
-  nodesdelegates.py
-)
+from PyQt4 import QtCore, QtGui
+
+from dff.ui.gui.tags.tagsmodels import TagsTreeModel
+from dff.ui.gui.core.standardviews import StandardTreeView
+
+
+class TagsTreeView(StandardTreeView):
+  def __init__(self, parent=None):
+    super(TagsTreeView, self).__init__(parent)
+    model = TagsTreeModel()
+    self.setModel(model)

@@ -17,6 +17,7 @@ import locale
 
 from PyQt4 import QtCore, QtGui
 
+from dff.api.filters.libfilters import Filter
 
 class StandardItem(object):
   """
@@ -104,6 +105,10 @@ class StandardItem(object):
       return self.toolTip(attribute)
     if role == QtCore.Qt.ForegroundRole:
       return self.foreground(attribute)
+    if role == QtCore.Qt.ForegroundRole:
+      return self.foreground(attribute)
+    if role == QtCore.Qt.BackgroundRole:
+      return self.background(attribute)
     if role == QtCore.Qt.SizeHintRole:
       return self.sizeHint(attribute)
     return QtCore.QVariant()
@@ -197,6 +202,10 @@ class StandardItem(object):
     return QtCore.QVariant()  
 
 
+  def background(self, attribute):
+    return QtCore.QVariant()
+
+
   def checkableAttribute(self):
     raise NotImplementedError
 
@@ -243,10 +252,11 @@ class HorizontalHeaderItem(object):
   AttributeNameRole = QtCore.Qt.UserRole + 1
   DataTypeRole = QtCore.Qt.UserRole + 2
   PinRole = QtCore.Qt.UserRole + 3
-  FilterRole = QtCore.Qt.UserRole + 4
-  SortOrderRole = QtCore.Qt.UserRole + 5
-  VisualIndexRole = QtCore.Qt.UserRole + 6
-  ResizeRole = QtCore.Qt.UserRole + 7
+  FilteredRole = QtCore.Qt.UserRole + 4
+  FilterDataRole = QtCore.Qt.UserRole + 5
+  SortOrderRole = QtCore.Qt.UserRole + 6
+  VisualIndexRole = QtCore.Qt.UserRole + 7
+  ResizeRole = QtCore.Qt.UserRole + 8
   
   NumberType = 0
   BooleanType = 1
@@ -271,7 +281,9 @@ class HorizontalHeaderItem(object):
     self.__pinState = pinState
     self.__resizable = resizable
     self.__aliasName = alias
-    self.__filter = ""
+    self.__filterString = ""
+    self.__filter = Filter("columnFilter")
+    self.__filtered = False
     self.__sortOrder = -1
 
 
@@ -289,8 +301,10 @@ class HorizontalHeaderItem(object):
       return self.__dataType
     if role == HorizontalHeaderItem.PinRole:
       return self.__pinState
-    if role == HorizontalHeaderItem.FilterRole:
-      return self.__filter
+    if role == HorizontalHeaderItem.FilteredRole:
+      return self.__filtered
+    if role == HorizontalHeaderItem.FilterDataRole:
+      return self.__filterString
     if role == HorizontalHeaderItem.SortOrderRole:
       return self.__sortOrder
     return None
@@ -310,8 +324,10 @@ class HorizontalHeaderItem(object):
       return QtCore.QVariant(self.__dataType)
     if role == HorizontalHeaderItem.PinRole:
       return QtCore.QVariant(self.__pinState)
-    if role == HorizontalHeaderItem.FilterRole:
-      return QtCore.QVariant(self.__filter)
+    if role == HorizontalHeaderItem.FilteredRole:
+      return QtCore.QVariant(self.__filtered)
+    if role == HorizontalHeaderItem.FilterDataRole:
+      return QtCore.QVariant(self.__filterString)
     if role == HorizontalHeaderItem.SortOrderRole:
       return QtCore.QVariant(self.__sortOrder)
     if role == HorizontalHeaderItem.ResizeRole:
@@ -332,10 +348,17 @@ class HorizontalHeaderItem(object):
         self.__pinState = pinState
         args = (self.__index, self.__pinState)
         return (True, "columnPinStateChanged(int, int)", args)
-    if role == HorizontalHeaderItem.FilterRole:
-      self.__filter = value.toString()
-      args = (self.__index, self.__filter)
-      return (True, "filterChanged(int, QString)", args)
+    if role == HorizontalHeaderItem.FilterDataRole:
+      self.__filterString = value.toString()
+      try:
+        self.__filter.compile(str(self.__filterString.toUtf8()))
+        self.__filtered = True
+        args = (self.__index, self.__filterString)
+        return (True, "filterEnabled(int, QString)", args)
+      except Exception as e:
+        self.__filtered = False
+        args = (self.__index, self.__filterString)
+        return (True, "filterChanged(int, QString)", args)
     if role == HorizontalHeaderItem.SortOrderRole:
       sortOrder, success = value.toInt()
       if success:

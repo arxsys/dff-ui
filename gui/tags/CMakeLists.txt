@@ -12,11 +12,9 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
-
 install_file(
   __init__.py
-  nodesitems.py
-  nodesmodels.py
-  nodesviews.py
-  nodesdelegates.py
-)
+  tagsitems.py
+  tagsmodels.py
+  tagsviews.py
+  )

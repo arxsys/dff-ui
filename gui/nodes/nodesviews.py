@@ -15,8 +15,9 @@
 from PyQt4 import QtCore, QtGui
 
 from dff.ui.gui.core.standarditems import HorizontalHeaderItem
-from dff.ui.gui.nodes.nodesmodels import NodesListModel, NodesTreeModel
 from dff.ui.gui.core.standardviews import StandardTableView, StandardTreeView, StandardIconView
+from dff.ui.gui.nodes.nodesmodels import NodesListModel, NodesTreeModel
+from dff.ui.gui.nodes.nodesdelegates import NodesDelegate, NodesTreeDelegate, NodesIconDelegate
 
 
 class NodesDetailedView(StandardTableView):
@@ -24,6 +25,8 @@ class NodesDetailedView(StandardTableView):
     super(NodesDetailedView, self).__init__(parent)
     model = NodesListModel()
     self.setModel(model)
+    delegate = NodesDelegate()
+    self.setItemDelegate(delegate)
 
 
 class NodesTreeView(StandardTreeView):
@@ -32,7 +35,10 @@ class NodesTreeView(StandardTreeView):
     self.displayRecursion(True)
     model = NodesTreeModel()
     self.setModel(model)
-    
+    delegate = NodesTreeDelegate()
+    delegate.displayRecursion(True)
+    self.setItemDelegate(delegate)
+
 
   def setCurrentIndexFromUid(self, uid):
     index = self.model().createIndexFromUid(uid)
@@ -47,3 +53,5 @@ class NodesTreeView(StandardTreeView):
 class NodesIconView(StandardIconView):
   def __init__(self, parent=None):
     super(NodesIconView, self).__init__(1, parent)
+    delegate = NodesIconDelegate()
+    self.setItemDelegate(delegate)

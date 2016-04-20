@@ -17,6 +17,8 @@ from PyQt4 import QtGui, QtCore
 
 from dff.ui.gui.browser.nodesbrowser import NodesBrowser
 from dff.ui.gui.browser.datatypesbrowser import DatatypesBrowser
+from dff.ui.gui.browser.tagsbrowser import TagsBrowser
+from dff.ui.gui.browser.processusbrowser import ProcessusBrowser
 
 class Browser(QtGui.QTabWidget):
     def __init__(self, parent=None):
@@ -28,4 +30,7 @@ class Browser(QtGui.QTabWidget):
         self.addTab(self.__nodesBrowser, self.tr("Tree"))
         self.__datatypesBrowser = DatatypesBrowser(self)
         self.addTab(self.__datatypesBrowser, self.tr("Types"))
-
+        self.__tagsBrowser = TagsBrowser(self)
+        self.addTab(self.__tagsBrowser, self.tr("Tags"))
+        self.__processusBrowser = ProcessusBrowser(self)
+        self.addTab(self.__processusBrowser, self.tr("Processus"))

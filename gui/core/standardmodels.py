@@ -16,13 +16,14 @@ import locale
 
 from PyQt4 import QtCore, QtGui
 
-from dff.ui.gui.core.headeritems import HorizontalHeaderItem
+from dff.ui.gui.core.standarditems import HorizontalHeaderItem
 
 
 class StandardModel(QtCore.QAbstractItemModel):
   def __init__(self, parent=None):
     super(StandardModel, self).__init__(parent)
-    self._rootItem = None
+    self.__rootItem = None
+    self._filtered = False
     self.__columns = []
 
 
@@ -46,6 +47,14 @@ class StandardModel(QtCore.QAbstractItemModel):
 
   def customData(self, item, role, attribute):
     return item.data(role, attribute)
+
+
+  def setRootItem(self, rootItem):
+    self.__rootItem = rootItem
+
+
+  def rootItem(self):
+    return self.__rootItem
 
 
   def setData(self, index, value, role):
@@ -90,6 +99,10 @@ class StandardModel(QtCore.QAbstractItemModel):
         if signal is not None:
           if signal == "sortChanged(int, int)":
             self.sort(*args)
+          if signal == "filterEnabled(int, QString)":
+            self.__filter()
+          if self._filtered and signal == "filterChanged(int, QString)":
+            self.__filter()
           if args is not None and len(args) > 0:
             self.emit(QtCore.SIGNAL(signal), *args)
           else:
@@ -98,10 +111,38 @@ class StandardModel(QtCore.QAbstractItemModel):
     return False
 
 
+  def enableFilter(self, query):
+    return
+
+
+  def disableFilter(self):
+    return
+
+
+  def __filter(self):
+    query = ""
+    for column in self.__columns:
+      filtered = column.data(HorizontalHeaderItem.FilteredRole).toBool()
+      if filtered:
+        _filter = column.data(HorizontalHeaderItem.FilterDataRole).toString()
+        _filter = str(_filter)
+        if len(query):
+          query += " and " + _filter
+        else:
+          query = _filter
+    if len(query):
+      self._filtered = True
+      self.enableFilter(query)
+    else:
+      if self._filtered:
+        self.disableFilter()
+      self._filtered = False
+
+  
   # descending order == reverse on
   # python stable sort average performance is O(n log n)
   def sort(self, column, order):
-    if self._rootItem is None:
+    if self.__rootItem is None:
       return
     if column < 0 or column > len(self.__columns):
       return
@@ -117,20 +158,20 @@ class StandardModel(QtCore.QAbstractItemModel):
         datatype = column.rawData(HorizontalHeaderItem.DataTypeRole)
         sortOrder = column.rawData(HorizontalHeaderItem.SortOrderRole)
         if sortOrder != -1:
-          self._rootItem.sort(attribute, datatype, bool(sortOrder))
+          self.__rootItem.sort(attribute, datatype, bool(sortOrder))
     else:
       column = self.__columns[columnIndex]
       datatype = column.rawData(HorizontalHeaderItem.DataTypeRole)
       attribute = column.rawData(HorizontalHeaderItem.AttributeNameRole)
-      self._rootItem.sort(attribute, datatype, bool(order))
+      self.__rootItem.sort(attribute, datatype, bool(order))
 
 
   def index(self, row, column, parent=QtCore.QModelIndex()):
-    if self._rootItem is None or parent is None \
+    if self.__rootItem is None or parent is None \
        or not self.hasIndex(row, column, parent):
       return QtCore.QModelIndex()
     if not parent.isValid():
-      parentItem = self._rootItem
+      parentItem = self.__rootItem
     else:
       parentItem = parent.internalPointer()
     childItem = parentItem.child(row)
@@ -141,7 +182,7 @@ class StandardModel(QtCore.QAbstractItemModel):
 
 
   def parent(self, index):
-    if self._rootItem is None:
+    if self.__rootItem is None:
       return QtCore.QModelIndex()
     if not index.isValid():
       return QtCore.QModelIndex()
@@ -151,19 +192,25 @@ class StandardModel(QtCore.QAbstractItemModel):
     parentItem = childItem.parent()
     if parentItem is None:
       return QtCore.QModelIndex()
-    if parentItem == self._rootItem:
+    if parentItem == self.__rootItem:
       return QtCore.QModelIndex()
     return self.createIndex(parentItem.row(), 0, parentItem)
       
   
   def rowCount(self, parent):
-    if self._rootItem is None:
+    if self.__rootItem is None:
       return 0
     if not parent.isValid():
-      parentItem = self._rootItem
+      parentItem = self.__rootItem
     else:
       parentItem = parent.internalPointer()
     return parentItem.childCount()
+
+
+  def column(self, index):
+    if index > len(self.__columns) - 1:
+      return None
+    return self.__columns[index]
 
 
   def columnCount(self, parent=QtCore.QModelIndex()):
@@ -208,10 +255,10 @@ class StandardTreeModel(StandardModel):
     
   def setChildrenCountDisplay(self, enable):
     self.__displayChildrenCount = enable
-    if self._rootItem is None:
+    if self.rootItem() is None:
         return
-    topLeft = self.createIndex(self._rootItem.row(), 0, self._rootItem)
-    bottomRight = self.createIndex(self._rootItem.row(), 1, self._rootItem)
+    topLeft = self.createIndex(self.rootItem().row(), 0, self.rootItem())
+    bottomRight = self.createIndex(self.rootItem().row(), 1, self.rootItem())
     self.dataChanged.emit(topLeft, bottomRight)
 
 

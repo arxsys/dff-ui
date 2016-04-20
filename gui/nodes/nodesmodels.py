@@ -47,72 +47,6 @@ class NodesModel(StandardModel):
         topLeft = self.createIndex(item.row(), 0, item)
         bottomRight = self.createIndex(item.row(), 1, item)
         self.dataChanged.emit(topLeft, bottomRight)
-
-
-class NodesTableFilterModel(QtGui.QSortFilterProxyModel):
-  def __init__(self, model, parent=None):
-    QtGui.QSortFilterProxyModel.__init__(self, parent)
-    self.setSourceModel(model)
-    self.connect(model, QtCore.SIGNAL("filterChanged(int, QString)"), self.__filterChanged)
-    self.__filter = Filter("proxy")                 
-    self.__compiled = False
-    self.__filtered = False
-    
-    
-  def __filterChanged(self, _column, _query):
-    self.__compiled = False
-    query = ""
-    for column in xrange(0, self.sourceModel().columnCount()):
-      _filter = self.sourceModel().headerData(column, QtCore.Qt.Horizontal,
-                                              HorizontalHeaderItem.FilterRole).toString()
-      _filter = str(_filter)
-      if len(_filter):
-        try:
-          test = _filter
-          self.__filter.compile(test)
-        except:
-          continue
-        if len(query):
-          query += " and " + _filter
-        else:
-          query = _filter
-    if len(query):
-      try:
-        self.__filter.compile(str(query))
-        self.__compiled = True
-        self.__filtered = True
-        self.invalidateFilter()
-      except:
-        pass
-    elif self.__filtered:
-      self.__filtered = False
-      self.invalidateFilter()
-
-
-  def pinnedColumnCount(self):
-    return self.sourceModel().pinnedColumnCount()
-
-    
-  def sort(self, column, order):
-    self.sourceModel().sort(column, order)
-
-
-  def nodeFromIndex(self, index):
-    index = self.sourceModel().index(0, 0, index)
-    return self.sourceModel().nodeFromIndex(index)
-
-  
-  def filterAcceptsRow(self, sourceRow, sourceParent):
-    index = self.sourceModel().index(sourceRow, 0, sourceParent)
-    if not index.isValid() or not self.__compiled:
-      return True
-    node = self.sourceModel().nodeFromIndex(index)
-    if node is not None:
-      self.__filter.process(node)
-      matched = self.__filter.matchedNodes()
-      if len(matched):
-        return True
-    return False
   
     
 class NodesListModel(NodesModel, EventHandler):
@@ -137,9 +71,12 @@ class NodesListModel(NodesModel, EventHandler):
     self.VFS = VFS.Get()
     self.VFS.connection(self)
     self.__rootUid = -1
-    self._rootItem = NodeItem(-1, None)
+    self.__rootItem = NodeItem(-1, None)
+    self.__filteredRootItem = NodeItem(-1, None)
     self.__isRecursive = False
+    self.__filter = Filter("NodesFilterModel")
     self.__items = {}
+    self.__filteredItems = {}
     self.connect(self, QtCore.SIGNAL("updateModel(long, long)"), self.__updateModel)
     index = 0
     for column in NodesListModel.DefaultColumns:
@@ -168,23 +105,28 @@ class NodesListModel(NodesModel, EventHandler):
 
 
   def itemFromUid(self, uid):
+    if self._filtered:
+      if self.__filteredItems.has_key(uid):
+        return self.__filteredItems[uid]
+      return None
     if self.__items.has_key(uid):
       return self.__items[uid]
     return None
 
 
   def Event(self, event):
-    value = event.value
-    if value is None:
+    if event is None:
       return
-    node = value.value()
+    if event.value is None:
+      return
+    node = event.value.value()
     if node is None:
       return
     uid = node.uid()
     puid = node.parent().uid()
     self.emit(QtCore.SIGNAL("updateModel(long, long)"), uid, puid)
 
-    
+
   def setRootNode(self, node, isRecursive=False):
     if node is None:
       return
@@ -214,6 +156,20 @@ class NodesListModel(NodesModel, EventHandler):
     return None
 
 
+  def disableFilter(self):
+    self.beginResetModel()
+    self.setRootItem(self.__rootItem)
+    self.endResetModel()
+
+
+  def enableFilter(self, query):
+    try:
+      self.__filter.compile(query)
+      self.__populate()
+    except:
+      self.disableFilter()
+
+
   def __updateModel(self, uid, puid):
     if self.__isRecursive:
       # if recursive is enabled and node is under the current root recursion
@@ -239,8 +195,12 @@ class NodesListModel(NodesModel, EventHandler):
     children = node.children()
     for child in children:
       uid = child.uid()
-      childItem = NodeItem(uid, self._rootItem)
-      self._rootItem.appendChild(childItem)
+      if self._filtered and self.__filter.match(child):
+        filteredItem = NodeItem(uid, self.__filteredRootItem)
+        self.__filteredRootItem.appendChild(filteredItem)
+        self.__filteredItems[uid] = filteredItem
+      childItem = NodeItem(uid, self.__rootItem)
+      self.__rootItem.appendChild(childItem)
       self.__items[uid] = childItem
       if child.hasChildren():
         self.__recursivePopulate(child)
@@ -252,16 +212,25 @@ class NodesListModel(NodesModel, EventHandler):
       return
     self.beginResetModel()
     self.__items = {}
-    self._rootItem = NodeItem(-1, None)
+    self.__filteredItems = {}
+    self.__rootItem = NodeItem(-1, None)
+    self.__filteredRootItem = NodeItem(-1, None)
+    if self._filtered:
+      self.setRootItem(self.__filteredRootItem)
+    else:
+      self.setRootItem(self.__rootItem)
     children = rootNode.children()
     for child in children:
       uid = child.uid()
-      childItem = NodeItem(uid, self._rootItem)
-      self._rootItem.appendChild(childItem)
+      if self._filtered and self.__filter.match(child):
+        filteredItem = NodeItem(uid, self.__filteredRootItem)
+        self.__filteredRootItem.appendChild(filteredItem)
+        self.__filteredItems[uid] = filteredItem
+      childItem = NodeItem(uid, self.__rootItem)
+      self.__rootItem.appendChild(childItem)
       self.__items[uid] = childItem
       if self.__isRecursive and child.hasChildren():
         self.__recursivePopulate(child)
-    # use private sort which does not call beginResetModel()
     self.sort(self.columnCount(), 0)
     self.endResetModel()
 
@@ -286,7 +255,7 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
     self.VFS.connection(self)
     #self.__thumbnailer
     self.connect(self, QtCore.SIGNAL("registerTree(long)"), self.insertTree)
-    self._rootItem = NodeTreeItem(-1, None)
+    self.__rootItem = NodeTreeItem(-1, None)
     self.__items = {}
     self.__rootUid = -1
     self.__createFiles = createFiles
@@ -378,8 +347,8 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
     topLeft = self.createIndex(changedItem.row(), 0, changedItem)
     bottomRight = self.createIndex(changedItem.row(), 1, changedItem)
     self.dataChanged.emit(topLeft, bottomRight)
-    
-      
+
+
   def createIndexFromUid(self, uid):
     if not self.__items.has_key(uid):
       return QtCore.QModelIndex()
@@ -408,10 +377,11 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
       return
     self.beginResetModel()
     self.__items = {}
-    self._rootItem = NodeTreeItem(-1, None)
-    childItem = NodeTreeItem(self.__rootUid, self._rootItem)
+    self.__rootItem = NodeTreeItem(-1, None)
+    self.setRootItem(self.__rootItem)
+    childItem = NodeTreeItem(self.__rootUid, self.__rootItem)
     self.__items[self.__rootUid] = childItem
-    self._rootItem.appendChild(childItem)
+    self.__rootItem.appendChild(childItem)
     self.__createTreeItems(rootNode, childItem)
     self.endResetModel()
 

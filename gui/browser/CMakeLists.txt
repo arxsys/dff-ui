@@ -18,4 +18,6 @@ install_file(
   browser.py
   nodesbrowser.py
   datatypesbrowser.py
+  tagsbrowser.py
+  processusbrowser.py
 )

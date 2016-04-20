@@ -12,11 +12,20 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
+import locale
 
-install_file(
-  __init__.py
-  nodesitems.py
-  nodesmodels.py
-  nodesviews.py
-  nodesdelegates.py
-)
+from PyQt4 import QtCore, QtGui
+
+from dff.ui.gui.processus.processusmodels import ProcessusTreeModel
+from dff.ui.gui.core.standardviews import StandardTreeView
+
+
+class ProcessusTreeView(StandardTreeView):
+  def __init__(self, parent=None):
+    super(ProcessusTreeView, self).__init__(parent)
+    model = ProcessusTreeModel()
+    self.setModel(model)
+    self.__timer = QtCore.QTimer(self)
+    self.connect(self.__timer, QtCore.SIGNAL("timeout()"), model.refresh)
+    self.__timer.start(2000)
+

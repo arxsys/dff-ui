@@ -28,7 +28,11 @@ class StandardDelegate(QtGui.QStyledItemDelegate):
   def setFrozen(self, frozen):
     self.__frozen = frozen
 
-    
+
+  def tags(self, index):
+    return []
+
+
   def paint(self, painter, option, index):
     if index.isValid():
       data = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
@@ -59,9 +63,8 @@ class StandardDelegate(QtGui.QStyledItemDelegate):
     # logical way to obtain tags is by calling data. But since tag carries
     # several information (name, color) and PyQt does not manage QMap or QList
     # we have to use internalPointer to access tags
-    item = index.internalPointer()
-    tags = item.tags()
-    if tags is not None and len(tags):
+    tags = self.tags(index)
+    if len(tags):
       painter.save()
       self.initStyleOption(option, index)
       painter.setClipRect(option.rect)
@@ -100,7 +103,7 @@ class StandardTreeDelegate(StandardDelegate):
 
   def paint(self, painter, option, index):
     if index.isValid() and index.column() == 0 and self.__displayRecursion:
-        self.__drawRecursionArrow(painter, option, index)
+      self.__drawRecursionArrow(painter, option, index)
     super(StandardTreeDelegate, self).paint(painter, option, index)
 
 
@@ -157,12 +160,15 @@ class StandardIconDelegate(QtGui.QStyledItemDelegate):
     return QtCore.QSize(128+30, 128+30)
 
 
+  def tags(self, index):
+    return []
+
+
   def _drawTags(self, painter, option, index):
-    item = index.internalPointer()
-    tags = item.tags()
+    tags = self.tags(index)
     if tags is not None and len(tags):
       painter.save()
-      #self.initStyleOption(option, index)
+      self.initStyleOption(option, index)
       painter.setClipRect(option.rect)
       xpos = option.rect.x()
       ypos = option.rect.y()
@@ -173,4 +179,3 @@ class StandardIconDelegate(QtGui.QStyledItemDelegate):
         painter.drawRect(xpos, ypos, 10, 10)
         ypos += 10
       painter.restore()
-

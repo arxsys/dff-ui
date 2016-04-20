@@ -15,19 +15,34 @@
 
 from PyQt4 import QtGui, QtCore
 
-from dff.ui.gui.core.standardviews import StandardFrozenView, StandardFrozenTreeView
+from dff.ui.gui.core.standardviews import StandardFrozenView
 from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.nodes.nodesviews import NodesTreeView, NodesDetailedView, NodesIconView
-from dff.api.vfs.libvfs import VFS
+from dff.ui.gui.tags.tagsviews import TagsTreeView
+from dff.ui.gui.tags.tagsmodels import TagsNodesModel
+from dff.ui.gui.nodes.nodesviews import NodesDetailedView, NodesIconView
 from dff.api.taskmanager.taskmanager import TaskManager 
 from dff.api.types.libtypes import typeId, ConfigManager
 
 
-class NodesBrowser(QtGui.QWidget):
+# Manage zoom / views switch / column add / ...
+class AbstractBrowser():
+    def __init__(self):
+        pass
+
+    def setTreeView(self):
+        pass
+
+    def nodesView(self):
+        pass
+
+    def attributesView(self):
+        pass
+
+
+class TagsBrowser(QtGui.QWidget):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         self.setContentsMargins(0, 0, 0, 0)
-        root = VFS.Get().GetNode("/")
         self.__taskManager = TaskManager()
         self.__modulesConfig = ConfigManager.Get()
         self.__splitter = QtGui.QSplitter()
@@ -35,26 +50,19 @@ class NodesBrowser(QtGui.QWidget):
         self.setLayout(layout)
 
         viewsLayout = QtGui.QHBoxLayout()
-        self.__nodesTreeView = StandardFrozenTreeView(NodesTreeView)
-        #self.__nodesTreeView = NodesTreeView()
-        self.__nodesTreeView.displayRecursion(True)
-        self.__nodesTreeView.model().setRootUid(root.uid())
-        
+        self.__tagsTreeView = TagsTreeView()
         self.__nodesDetailedView = StandardFrozenView(NodesDetailedView)
-        self.__nodesDetailedView.model().setRootUid(root.uid())
+        self.__nodesDetailedView.setModel(TagsNodesModel())
+        #self.__nodesDetailedView.setRootUid(root.uid())
+        #self.__nodesDetailedView.doubleClicked.connect(self.__doubleClicked)
 
         self.__nodesIconView = NodesIconView()
         self.__nodesIconView.setModel(self.__nodesDetailedView.model())
-        self.connect(self.__nodesTreeView,
-                     QtCore.SIGNAL("clicked(const QModelIndex&)"),
-                     self.treeViewClicked)
-        self.connect(self.__nodesDetailedView,
-                     QtCore.SIGNAL("doubleClicked(const QModelIndex&)"),
-                     self.__doubleClicked)
-        self.__splitter.addWidget(self.__nodesTreeView)
+        self.__tagsTreeView.clicked.connect(self.treeViewClicked)
+        self.__splitter.addWidget(self.__tagsTreeView)
         self.__splitter.addWidget(self.__nodesDetailedView)
         self.__splitter.addWidget(self.__nodesIconView)
-        #self.__nodesIconView.hide()
+        self.__nodesIconView.hide()
         viewsLayout.addWidget(self.__splitter)
         self.layout().addLayout(viewsLayout)
         #zoomSlider = QtGui.QSlider(QtCore.Qt.Horizontal)
@@ -63,37 +71,19 @@ class NodesBrowser(QtGui.QWidget):
         #zoomSlider.setMaximum(NodesIconView.MaximumZoomFactor)
         #self.layout().addWidget(zoomSlider)
 
-
-    def __nodeFromIndex(self, index):
-        data = index.model().data(index, NodeItem.UidRole)
-        node = None
-        if data.isValid():
-            uid, success = data.toULongLong()
-            if success and uid >= 0:
-                node = VFS.Get().getNodeById(uid)
-        return node
-
     
     def treeViewClicked(self, index):
-        data = index.model().data(index, NodeItem.UidRole)
-        if not data.isValid():
-            return
-        uid, success = data.toULongLong()
-        if not success or uid < 0:
-            return
-        isRecursive = self.__nodesTreeView.model().data(index, NodeItem.RecursionRole).toBool()
-        self.__nodesDetailedView.model().setRootUid(uid, isRecursive)
-            
+        tagId = self.__tagsTreeView.model().tagIdFromIndex(index)
+        self.__nodesDetailedView.model().setTag(tagId)
+
 
     def __doubleClicked(self, index):
-        node = self.__nodeFromIndex(index)
+        node = index.model().nodeFromIndex(index)
         if node is None:
             return
         if node.hasChildren() or node.isDir():
-            treeIndex = self.__nodesTreeView.model().createIndexFromUid(node.uid())
-            if treeIndex.isValid():
-                self.__nodesTreeView.setCurrentIndex(treeIndex)
-            self.__nodesDetailedView.model().setRootUid(node.uid())
+            self.__nodesTreeView.setCurrentIndexFromUid(node.uid())
+            self.__nodesDetailedView.setRootUid(node.uid())
         else:
             compatibleModules = node.compatibleModules()
             if len(compatibleModules) == 1:
