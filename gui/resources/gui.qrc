@@ -223,5 +223,6 @@ Jeremy Mounier jmo@digital-forensic.org
 
     <file alias="trash">icons/actions/trash.png</file>
     <file alias="clock">icons/app/clock.png</file>
+    <file alias="maps">icons/actions/maps.png</file>
 </qresource>
 </RCC>
