@@ -115,7 +115,8 @@ class Scaler(QObject):
       except IOError:
         load = False
     if load:
-      img = img.scaled(QSize(event.config.size, event.config.size), Qt.KeepAspectRatio, Qt.FastTransformation)
+      if img.size().width() > event.config.size or img.size().height() > event.config.size:
+        img = img.scaled(QSize(event.config.size, event.config.size), Qt.KeepAspectRatio, Qt.FastTransformation)
       self.emit(SIGNAL("scaledFinished"), event.config, img)
       return
     self.emit(SIGNAL("scaledFinished"), event.config, None)
