@@ -25,6 +25,26 @@ class StandardModel(QtCore.QAbstractItemModel):
     self.__rootItem = None
     self._filtered = False
     self.__columns = []
+    self.__statusBar = QtGui.QApplication.instance().mainWindow().statusBar()
+
+
+  def _clearStatusMessage(self):
+    self.__statusBar.clearMessage()
+
+
+  def _displayStatusMessage(self, message):
+    self.__statusBar.showMessage(message)
+    QtGui.QApplication.processEvents()
+
+
+  def _displayStatusProgression(self, current, total):
+    status = QtCore.QString(self.tr("Rendering list..."))
+    if current > -1:
+      count = QtCore.QString(" ({} / {})".format(current, total))
+    else:
+      count = QtCore.QString("")
+    self.__statusBar.showMessage(status + count)
+    QtGui.QApplication.processEvents()
 
 
   def flags(self, index):
@@ -37,8 +57,10 @@ class StandardModel(QtCore.QAbstractItemModel):
   def data(self, index, role):
     if not index.isValid():
       return QtCore.QVariant()
+    if index.column() >= len(self.__columns):
+      return QtCore.QVariant()
     item = index.internalPointer()
-    if item is not None and index.column() < len(self.__columns):
+    if item is not None:
       column = self.__columns[index.column()]
       attribute = column.rawData(HorizontalHeaderItem.AttributeNameRole)
       return self.customData(item, role, attribute)

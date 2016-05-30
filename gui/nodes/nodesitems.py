@@ -27,15 +27,38 @@ from dff.ui.gui.api.thumbnail import ThumbnailManager, ScaleConfig
 class NodeItem(StandardItem):
 
   UidRole = StandardItem.UserRole
+  PropertiesRole = StandardItem.UserRole + 1
+  NameRole = StandardItem.UserRole + 2
+  PathRole = StandardItem.UserRole + 3
   
   def __init__(self, uid, parent):
     super(NodeItem, self).__init__(parent)
     self.__uid = uid
+    if self.__uid >= 0:
+      fm = QtGui.QApplication.fontMetrics()
+      self.__displayNameSize = fm.width(self.rawData("name"))
 
 
-  def data(self, role, attribute):
+  def data(self, role, attribute=""):
     if role == NodeItem.UidRole:
       return QtCore.QVariant(self.__uid)
+    if role == NodeItem.NameRole:
+      node = VFS.Get().getNodeById(self.__uid)
+      if node is None:
+        return QtCore.QVariant()
+      return QtCore.QVariant(node.name())
+    if role == NodeItem.PropertiesRole:
+      size, files, folders = self.properties()
+      properties = QtCore.QString("Size: ")
+      properties.append(self._displaySize(size).toString())
+      contains = "|Contains: {} Files, {} Folders".format(files, folders)
+      properties.append(contains)
+      return QtCore.QVariant(properties)
+    if role == NodeItem.PathRole:
+      node = VFS.Get().getNodeById(self.__uid)
+      if node is None:
+        return QtCore.QVariant()
+      return QtCore.QVariant(node.path())
     return super(NodeItem, self).data(role, attribute)
 
 
@@ -51,17 +74,38 @@ class NodeItem(StandardItem):
     node = VFS.Get().getNodeById(self.__uid)
     tags = node.tags()
     return tags
-    
 
-  def sizeHint(self, attribute):
-    data = self.display(attribute)
-    if data.isValid():
-      fm = QtGui.QApplication.instance().fontMetrics()
-      width = fm.width(data.toString())
-      return QtCore.QVariant(QtCore.QSize(width+20, fm.height()))
-    #if attribute == "checked":
-    #  sizeHint = QtCore.QSize(10, fm.height())
-    return QtCore.QVariant()
+
+  def __recursiveProperties(self, node):
+    size = 0
+    files = 0
+    folders = 0
+    if node.size() > 0 or node.isFile():
+      size += node.size()
+      files += 1
+    if node.hasChildren() or node.isDir():
+      folders += 1
+      children = node.children()
+      for child in children:
+        rsize, rfiles, rfolders = self.__recursiveProperties(child)
+        size += rsize
+        files += rfiles
+        folders += rfolders
+    return size, files, folders
+
+
+  def properties(self):
+    node = VFS.Get().getNodeById(self.__uid)
+    children = node.children()
+    size = 0
+    files = 0
+    folders = 0
+    for child in children:
+      rsize, rfiles, rfolders = self.__recursiveProperties(child)
+      size += rsize
+      files += rfiles
+      folders += rfolders
+    return size, files, folders
 
 
   def rawData(self, attribute):
@@ -109,7 +153,7 @@ class NodeItem(StandardItem):
       return QtCore.QVariant()
     absolute = QtCore.QString.fromUtf8(node.absolute())
     return QtCore.QVariant(absolute)
-  
+
 
   def decoration(self, attribute):
     if attribute != "name":
@@ -119,16 +163,16 @@ class NodeItem(StandardItem):
       return QtCore.QVariant()
     datatype = node.dataType()
     if datatype.find("image/") != -1 or datatype.find("video/") != -1:
-      config = ScaleConfig(node, 256)
+      config = ScaleConfig(node, 512)
       pixmap = ThumbnailManager().generate(config)
       if pixmap is None:
         pixmap = QtGui.QPixmap(":file_temporary.png")
-      pixmap = pixmap.scaled(QtCore.QSize(128, 128), QtCore.Qt.KeepAspectRatio)
-      return QtCore.QVariant(QtGui.QIcon(pixmap))
+      icon = QtGui.QIcon()
+      icon.addPixmap(pixmap, QtGui.QIcon.Active)
+      icon.addPixmap(pixmap, QtGui.QIcon.Selected)
+      return QtCore.QVariant(icon)
     pixmap = self.__defaultIcon(node)
-    pixmap.scaled(QtCore.QSize(128, 128), QtCore.Qt.KeepAspectRatio)
     if isinstance(node, VLink):
-      pixmap = pixmap.scaled(QtCore.QSize(128, 128), QtCore.Qt.KeepAspectRatio)
       painter = QtCore.QPainter(pixmap)
       linkPixmap = QPixmap(":vlink")
       painter.drawPixmap(0, 0, linkPixmap)
@@ -144,12 +188,15 @@ class NodeItem(StandardItem):
       if childFso:
         childFsoUid = childFso.uid()
       if fsoUid != -1 and childFsoUid != -1 and fsoUid != childFsoUid:
-        pixmap = pixmap.scaled(QtCore.QSize(128, 128), QtCore.Qt.KeepAspectRatio)
         painter = QtGui.QPainter(pixmap)
-        rootPixmap = QtGui.QPixmap(":root")
+        rootPixmap = QtGui.QPixmap(8, 8)
+        rootPixmap.load(":root")
         painter.drawPixmap(0, 0, rootPixmap)
         painter.end()
-    return QtCore.QVariant(QtGui.QIcon(pixmap))
+    icon = QtGui.QIcon()
+    icon.addPixmap(pixmap, QtGui.QIcon.Active)
+    icon.addPixmap(pixmap, QtGui.QIcon.Selected)
+    return QtCore.QVariant(icon)
 
 
   def __defaultIcon(self, node):
@@ -171,33 +218,6 @@ class NodeItem(StandardItem):
     return QtGui.QPixmap(node.icon())
 
   
-  def decoration2(self, attribute):
-    if attribute != "name":
-      return QtCore.QVariant()
-    node = VFS.Get().getNodeById(self.__uid)
-    if node is None:
-      return QtCore.QVariant()
-    pixmap = QtGui.QPixmap(node.icon())
-    pixmap.scaled(QtCore.QSize(128, 128), QtCore.Qt.KeepAspectRatio)
-    if node.hasChildren():
-      fso = node.fsobj()
-      fsoUid = -1
-      if fso != None:
-        fsoUid = fso.uid()
-      children = node.children()
-      childFso = children[0].fsobj()
-      childFsoUid = -1
-      if childFso:
-        childFsoUid = childFso.uid()
-      if fsoUid != -1 and childFsoUid != -1 and fsoUid != childFsoUid:
-        pixmap = pixmap.scaled(QtCore.QSize(128, 128), QtCore.Qt.KeepAspectRatio)
-        painter = QtGui.QPainter(pixmap)
-        rootPixmap = QtGui.QPixmap(":root")
-        painter.drawPixmap(0, 0, rootPixmap)
-        painter.end()
-    return QtCore.QVariant(QtGui.QIcon(pixmap))
-
-
   def foreground(self, attribute):
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
@@ -238,6 +258,17 @@ class NodeItem(StandardItem):
     return QtCore.QVariant()
 
 
+  def sizeHint(self, attribute):
+    if attribute == "name":
+      return QtCore.QVariant(QtCore.QSize(self.__displayNameSize, 16))
+    data = self.display(attribute)
+    if data.isValid():
+      width = QtGui.QApplication.fontMetrics().width(data.toString())
+      sizeHint = QtCore.QSize(width, 16)
+      return QtCore.QVariant(sizeHint)
+    return QtCore.QVariant(QtCore.QSize())
+
+
   def uid(self):
     return self.__uid
 
@@ -265,6 +296,6 @@ class NodeTreeItem(NodeItem):
       if data.isValid():
         fm = QtGui.QApplication.instance().fontMetrics()
         width = fm.width(data.toString())
-        sizeHint = QtCore.QSize(width+100, 16)
+        sizeHint = QtCore.QSize(width+100, 20)
         return QtCore.QVariant(sizeHint)
     return super(NodeTreeItem, self).sizeHint(attribute)

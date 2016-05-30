@@ -92,7 +92,7 @@ class StandardItem(object):
       self._children.sort(key=lambda item: item.rawData(attribute), reverse=order)
 
 
-  def data(self, role, attribute):
+  def data(self, role, attribute=""):
     if role == QtCore.Qt.CheckStateRole:
       return self.checkState(attribute)
     if role == StandardItem.RecursionRole:
@@ -155,6 +155,10 @@ class StandardItem(object):
 
 
   def tags(self):
+    return None
+
+
+  def properties(self):
     return None
 
 
@@ -380,7 +384,7 @@ class HorizontalHeaderItem(object):
       if self.__dataType == HorizontalHeaderItem.CheckedType:
         width = 15
       else:
-        width = fm.width(data.toString()) + fm.averageCharWidth() * 5 + 100
+        width = fm.width(data.toString()) + fm.averageCharWidth() * 5 + 60
       sizeHint = QtCore.QSize(width, fm.height()+10)
       return QtCore.QVariant(sizeHint)
     return QtCore.QVariant()

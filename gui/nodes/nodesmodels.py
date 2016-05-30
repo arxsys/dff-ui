@@ -32,6 +32,8 @@ class NodesModel(StandardModel):
   def __init__(self, parent=None):
     super(NodesModel, self).__init__(parent)
     thumbnailer = ThumbnailManager().getInstance()
+    self.__waitingMessage = QtCore.QString(self.tr("Rendering list..."))
+    self.__statusBar = QtGui.QApplication.instance().mainWindow().statusBar()
     self.connect(thumbnailer, QtCore.SIGNAL("ThumbnailUpdate"), self.__thumbnailUpdate)
 
 
@@ -191,7 +193,7 @@ class NodesListModel(NodesModel, EventHandler):
     return
         
   
-  def __recursivePopulate(self, node):
+  def __recursivePopulate(self, node, totalChildren):
     children = node.children()
     for child in children:
       uid = child.uid()
@@ -202,8 +204,10 @@ class NodesListModel(NodesModel, EventHandler):
       childItem = NodeItem(uid, self.__rootItem)
       self.__rootItem.appendChild(childItem)
       self.__items[uid] = childItem
+      if len(self.__items) % 5000 == 0:
+        self._displayStatusProgression(len(self.__items), totalChildren)
       if child.hasChildren():
-        self.__recursivePopulate(child)
+        self.__recursivePopulate(child, totalChildren)
 
 
   def __populate(self):
@@ -220,6 +224,8 @@ class NodesListModel(NodesModel, EventHandler):
     else:
       self.setRootItem(self.__rootItem)
     children = rootNode.children()
+    totalChildren = rootNode.totalChildrenCount()
+    self._displayStatusProgression(0, totalChildren)
     for child in children:
       uid = child.uid()
       if self._filtered and self.__filter.match(child):
@@ -229,23 +235,26 @@ class NodesListModel(NodesModel, EventHandler):
       childItem = NodeItem(uid, self.__rootItem)
       self.__rootItem.appendChild(childItem)
       self.__items[uid] = childItem
+      if len(self.__items) % 5000 == 0:
+        self._displayStatusProgression(len(self.__items), totalChildren)
       if self.__isRecursive and child.hasChildren():
-        self.__recursivePopulate(child)
+        self.__recursivePopulate(child, totalChildren)
     self.sort(self.columnCount(), 0)
+    self._clearStatusMessage()
     self.endResetModel()
 
 
 class NodesTreeModel(StandardTreeModel, EventHandler):
   DefaultColumns = [HorizontalHeaderItem(0, "name",
-                                         HorizontalHeaderItem.StringType),
-                    HorizontalHeaderItem(1, "uid",
-                                         HorizontalHeaderItem.NumberType),
-                    HorizontalHeaderItem(2, "size",
-                                         HorizontalHeaderItem.SizeType),
-                    HorizontalHeaderItem(3, "type",
-                                         HorizontalHeaderItem.DataType),
-                    HorizontalHeaderItem(4, "tags",
-                                         HorizontalHeaderItem.TagType)]
+                                         HorizontalHeaderItem.StringType)]
+                    #HorizontalHeaderItem(1, "uid",
+                    #                     HorizontalHeaderItem.NumberType),
+                    #HorizontalHeaderItem(2, "size",
+                    #                     HorizontalHeaderItem.SizeType),
+                    #HorizontalHeaderItem(3, "type",
+                    #                     HorizontalHeaderItem.DataType),
+                    #HorizontalHeaderItem(4, "tags",
+                    #                     HorizontalHeaderItem.TagType)]
 
 
   def __init__(self, parent=None, displayChildrenCount=False, createFiles=False):
@@ -270,6 +279,14 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
     self.VFS.deconnection(self)
 
     
+  def flags(self, index):
+    if not index.isValid():
+      return 0
+    column = index.column()
+    flags = QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
+    return flags
+
+
   def setRootNode(self, node):
     if node is None:
       return
@@ -310,6 +327,8 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
     if parent is None:
       return
     puid = parent.uid()
+    if node.size() > 0 and not self.__createFiles:
+      return
     if not self.__items.has_key(puid):
       # Special case in DFF when. Parent was previously a file and becomes a
       # virtual Folder (module applied on it).
@@ -329,7 +348,9 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
       nodeItem = NodeTreeItem(node.uid(), parentItem)
       self.__items[node.uid()] = nodeItem
       parentItem.appendChild(nodeItem)
+      self._displayStatusMessage(self.tr("Rendering tree..."))
       self.__createTreeItems(node, nodeItem)
+      self._clearStatusMessage()
       self.endInsertRows()
       changedItem = ancestorItem
     else:
@@ -341,7 +362,9 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
       childItem = NodeTreeItem(node.uid(), parentItem)
       self.__items[node.uid()] = childItem
       parentItem.insertChild(insertIdx, childItem)
+      self._displayStatusMessage(self.tr("Rendering tree..."))
       self.__createTreeItems(node, childItem)
+      self._clearStatusMessage()
       self.endInsertRows()
       changedItem = parentItem
     topLeft = self.createIndex(changedItem.row(), 0, changedItem)
@@ -362,11 +385,15 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
       if child.hasChildren() or child.isDir():
         childItem = NodeTreeItem(child.uid(), parent)
         self.__items[child.uid()] = childItem
+        if len(self.__items) % 5000 == 0:
+          self._displayStatusMessage(self.tr("Rendering tree..."))
         self.__createTreeItems(child, childItem)
         parent.appendChild(childItem)
       elif self.__createFiles:
         childItem = NodeTreeItem(child.uid(), parent)
         self.__items[child.uid()] = childItem
+        if len(self.__items) % 5000 == 0:
+          self._displayStatusMessage(self.tr("Rendering tree..."))
         parent.appendChild(childItem)
     parent.sort("name", HorizontalHeaderItem.StringType, False)
 
@@ -379,10 +406,13 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
     self.__items = {}
     self.__rootItem = NodeTreeItem(-1, None)
     self.setRootItem(self.__rootItem)
-    childItem = NodeTreeItem(self.__rootUid, self.__rootItem)
-    self.__items[self.__rootUid] = childItem
-    self.__rootItem.appendChild(childItem)
-    self.__createTreeItems(rootNode, childItem)
+    if rootNode.size() == 0 or (rootNode.size() > 0 and not self.__createFiles):
+      childItem = NodeTreeItem(self.__rootUid, self.__rootItem)
+      self.__items[self.__rootUid] = childItem
+      self.__rootItem.appendChild(childItem)
+      self._displayStatusMessage(self.tr("Rendering tree..."))
+      self.__createTreeItems(rootNode, childItem)
+      self._clearStatusMessage()
     self.endResetModel()
 
 

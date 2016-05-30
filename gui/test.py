@@ -319,6 +319,8 @@ class MainWindow(QtGui.QMainWindow):
     self.__toolBar = MainWindowToolBar(self)
     self.addToolBar(QtCore.Qt.TopToolBarArea, self.__toolBar)
 
+
+  def render(self):
     browser = Browser()
     self.__mainBrowser = DockWidget(self, browser, self.tr("Browser"))
     self.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.__mainBrowser)
@@ -339,6 +341,10 @@ class MainWindow(QtGui.QMainWindow):
     self.timer = QtCore.QTimer(self)
     self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.__refreshSecondWidgets)
     self.timer.start(2000)
+    font = self.font()
+    font.setPointSize(9)
+    self.setFont(font)
+
 
 
   def tabifyDockWidget(self, first, second):
@@ -552,15 +558,20 @@ class Gui(QtGui.QApplication, UI):
       self.setPalette(darkPalette)
 
 
+  def mainWindow(self):
+    return self.__mainWindow
+
+
   def launch(self, modulesPaths = None, defaultConfig=None):
     self.__splash.show()
     if modulesPaths or defaultConfig:
       self.loadModules(modulesPaths, self.__splash.showMessage, defaultConfig)
-    mainWindow = MainWindow()
-    mainWindow.setWindowState(mainWindow.windowState() | QtCore.Qt.WindowMaximized)
-    mainWindow.setWindowTitle("Digital Forensics Framework " + dff.VERSION)
-    mainWindow.show()
-    self.__splash.finish(mainWindow)
+    self.__mainWindow = MainWindow()
+    self.__mainWindow.setWindowState(self.__mainWindow.windowState() | QtCore.Qt.WindowMaximized)
+    self.__mainWindow.setWindowTitle("Digital Forensics Framework " + dff.VERSION)
+    self.__mainWindow.render()
+    self.__mainWindow.show()
+    self.__splash.finish(self.__mainWindow)
     sys.exit(self.exec_())
   
 

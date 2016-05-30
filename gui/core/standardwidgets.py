@@ -19,6 +19,42 @@ from PyQt4 import QtCore, QtGui
 from dff.ui.gui.core.standarditems import HorizontalHeaderItem
 
 
+class ScrollableLabel(QtGui.QLabel):
+  def __init__(self, text, parent=None):
+    super(ScrollableLabel, self).__init__(text, parent)
+    self.__pressed = False
+    self.__originalText = text
+    fm = QtGui.QApplication.instance().fontMetrics()
+    self.__textWidth = fm.width(self.__originalText)
+    self.__cursorPosition = 0
+    self.__textPosition = 0
+
+
+  def mousePressEvent(self, event):
+    self.__pressed = True
+    self.__cursorPosition = event.globalPos()
+
+
+  def mouseReleaseEvent(self, event):
+    self.__pressed = False
+
+
+  def mouseMoveEvent(self, event):
+    if self.__pressed:
+      position = event.globalPos()
+      # going left
+      if position.x() < self.__cursorPosition.x():
+        if self.__textPosition > 0:
+          self.__textPosition -= 1
+      # going right
+      else:
+        subText = self.__originalText.mid(self.__textPosition)
+        width = QtGui.QApplication.instance().fontMetrics().width(subText)
+        if self.size().width() < width:
+          self.__textPosition += 1
+      self.setText(self.__originalText.mid(self.__textPosition))
+
+
 def FilterWidgetFactory(attributeType, attributeName,
                         orientation=QtCore.Qt.Vertical, parent=None):
   if attributeType == HorizontalHeaderItem.NumberType:

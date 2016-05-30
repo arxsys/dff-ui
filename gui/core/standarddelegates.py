@@ -23,6 +23,7 @@ class StandardDelegate(QtGui.QStyledItemDelegate):
     self.__frozen = False
     self.__tagOffset = 10
     self.__tagBorderWidth = 10
+    self.__iconSize = QtCore.QSize(16, 16)
 
 
   def setFrozen(self, frozen):
@@ -33,22 +34,85 @@ class StandardDelegate(QtGui.QStyledItemDelegate):
     return []
 
 
+  def setIconSize(self, size):
+    self.__iconSize = size
+
+
+  def initStyleOption(self, option, index):
+    super(StandardDelegate, self).initStyleOption(option, index)
+    cname = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
+                                     QtCore.Qt.DisplayRole).toString()
+    if cname == "name":
+      option.decorationSize.setWidth(self.__iconSize.width())
+      option.decorationSize.setHeight(self.__iconSize.height())
+      option.decorationAlignment = QtCore.Qt.AlignCenter
+      option.displayAlignment = QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+      return
+    datatype = HorizontalHeaderItem.NumberType
+    data = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
+                                    HorizontalHeaderItem.DataTypeRole)
+    if data.isValid():
+      datatype, success = data.toInt()
+    if datatype == HorizontalHeaderItem.SizeType:
+      option.displayAlignment = QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter
+    else:
+      option.displayAlignment = QtCore.Qt.AlignCenter
+
+
+  def sizeHint(self, option, index):
+    if not index.isValid():
+      return QtCore.QSize()
+    datatype = HorizontalHeaderItem.NumberType
+    data = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
+                                    HorizontalHeaderItem.DataTypeRole)
+    if data.isValid():
+      datatype, success = data.toInt()
+      if datatype == HorizontalHeaderItem.CheckedType:
+        return QtCore.QSize(16, 16)
+    else:
+      return QtCore.QSize()
+    cname = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
+                                     QtCore.Qt.DisplayRole).toString()
+    data = index.model().data(index, QtCore.Qt.SizeHintRole)
+    if data.isValid():
+      textSize = data.toSize()
+      if textSize.isValid():
+        textWidth = textSize.width()
+      else:
+        textWidth = self._displayTextWidth(option, index)
+    else:
+      textWidth = self._displayTextWidth(option, index)
+    size = QtCore.QSize()
+    if option.decorationSize.isValid() and cname == "name":
+      size.setWidth(self.__iconSize.width() + textWidth + 30)
+      if option.decorationSize.height() > self.__iconSize.height():
+        size.setHeight(self.__iconSize.height())
+      else:
+        size.setHeight(option.decorationSize.height())
+    else:
+      option.displayAlignment = QtCore.Qt.AlignLeft
+      size.setWidth(textWidth + 30)
+      size.setHeight(16)
+    return size
+
+
   def paint(self, painter, option, index):
     if index.isValid():
-      data = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
-                                      HorizontalHeaderItem.VisualIndexRole)
-      if data.isValid():
-        visualIndex, success = data.toInt()
-        if success:
-          pinnedColumns = index.model().pinnedColumnCount()-1
-          painter.save()
-          if self.__frozen and visualIndex == pinnedColumns:
-            pen = QtGui.QPen(QtCore.Qt.black, 1, QtCore.Qt.SolidLine)
-          else:
-            pen = QtGui.QPen(QtCore.Qt.black, 0.5, QtCore.Qt.DotLine)
-          painter.setPen(pen)
-          painter.drawLine(option.rect.topRight(), option.rect.bottomRight())
-          painter.restore()
+      if index.model().columnCount() > 1:
+        data = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
+                                        HorizontalHeaderItem.VisualIndexRole)
+        if data.isValid():
+          visualIndex, success = data.toInt()
+          if success:
+            pinnedColumns = index.model().pinnedColumnCount()-1
+            painter.save()
+            if self.__frozen and visualIndex == pinnedColumns:
+              pen = QtGui.QPen(QtCore.Qt.black, 1, QtCore.Qt.SolidLine)
+            else:
+              pen = QtGui.QPen(QtCore.Qt.black, 0.5, QtCore.Qt.DotLine)
+            painter.setPen(pen)
+            painter.drawLine(option.rect.topRight(), option.rect.bottomRight())
+            painter.restore()
       data = index.model().headerData(index.column(),
                                       QtCore.Qt.Horizontal,
                                       HorizontalHeaderItem.DataTypeRole)
@@ -57,6 +121,14 @@ class StandardDelegate(QtGui.QStyledItemDelegate):
         if success and headerType == HorizontalHeaderItem.TagType:
           self._drawTags(painter, option, index)
     super(StandardDelegate, self).paint(painter, option, index)
+
+
+  def _displayTextWidth(self, option, index):
+    fm = QtGui.QFontMetrics(option.font)
+    data = index.model().data(index, QtCore.Qt.DisplayRole)
+    if data.isValid():
+      return fm.width(data.toString())
+    return 0
 
 
   def _drawTags(self, painter, option, index):
@@ -148,6 +220,7 @@ class StandardTreeDelegate(StandardDelegate):
 class StandardIconDelegate(QtGui.QStyledItemDelegate):
   def __init__(self, parent=None):
     super(StandardIconDelegate, self).__init__(parent)
+    self.__iconSize = QtCore.QSize(128, 128)
 
 
   def paint(self, painter, option, index):
@@ -155,9 +228,99 @@ class StandardIconDelegate(QtGui.QStyledItemDelegate):
       self._drawTags(painter, option, index)
     super(StandardIconDelegate, self).paint(painter, option, index)
 
+
+  def setIconSize(self, size):
+    self.__iconSize = size
+
+
+  def initStyleOption(self, option, index):
+    super(StandardIconDelegate, self).initStyleOption(option, index)
+    option.decorationSize.setWidth(self.__iconSize.width())
+    option.displayAlignment = QtCore.Qt.AlignCenter
+    option.showDecorationSelected = True
+    if option.decorationSize.height()  < self.__iconSize.height():
+      option.decorationSize.setHeight(self.__iconSize.height())
+      option.decorationAlignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignHCenter
+    else:
+      option.decorationAlignment = QtCore.Qt.AlignCenter
+
     
   def sizeHint(self, option, index):
-    return QtCore.QSize(128+30, 128+30)
+    size = QtCore.QSize()
+    size.setWidth(self.__iconSize.width())
+    size.setHeight(self.__iconSize.height() + 30)
+    return size
+
+
+  def tags(self, index):
+    return []
+
+
+  def _drawTags(self, painter, option, index):
+    tags = self.tags(index)
+    if tags is not None and len(tags):
+      painter.save()
+      self.initStyleOption(option, index)
+      painter.setClipRect(option.rect)
+      xpos = option.rect.x()
+      ypos = option.rect.y()
+      for tag in tags:
+        color = tag.color()
+        oldPen = painter.pen()
+        painter.setBrush(QtGui.QColor(color.r, color.g, color.b))
+        painter.drawRect(xpos, ypos, 10, 10)
+        ypos += 10
+      painter.restore()
+
+
+class StandardListDelegate(QtGui.QStyledItemDelegate):
+  def __init__(self, parent=None):
+    super(StandardListDelegate, self).__init__(parent)
+    self.__iconSize = QtCore.QSize(32, 32)
+
+
+  def paint(self, painter, option, index):
+    #if index.isValid():
+    #  self._drawTags(painter, option, index)
+    super(StandardListDelegate, self).paint(painter, option, index)
+
+
+  def setIconSize(self, size):
+    self.__iconSize = size
+
+
+  def initStyleOption(self, option, index):
+    super(StandardListDelegate, self).initStyleOption(option, index)
+    option.decorationSize.setWidth(self.__iconSize.width())
+    option.decorationSize.setHeight(self.__iconSize.height())
+
+
+  def _displayTextWidth(self, option, index):
+    fm = QtGui.QFontMetrics(option.font)
+    data = index.model().data(index, QtCore.Qt.DisplayRole)
+    if data.isValid():
+      fm.width(data.toString())
+    return textWidth
+
+
+  def sizeHint(self, option, index):
+    if not index.isValid():
+      return QtCore.QSize()
+    cname = index.model().headerData(index.column(), QtCore.Qt.Horizontal,
+                                     QtCore.Qt.DisplayRole).toString()
+    data = index.model().data(index, QtCore.Qt.SizeHintRole)
+    if data.isValid():
+      textSize = data.toSize()
+      if textSize.isValid():
+        textWidth = textSize.width()
+      else:
+        textWidth = self._displayTextWidth(option, index)
+    else:
+      textWidth = self._displayTextWidth(option, index)
+    size = QtCore.QSize()
+    size.setWidth(self.__iconSize.width() + textWidth + 30)
+    size.setHeight(self.__iconSize.height())
+    return size
 
 
   def tags(self, index):

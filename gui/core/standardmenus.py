@@ -19,6 +19,265 @@ from dff.ui.gui.core.standardmodels import HorizontalHeaderProxyModel
 from dff.ui.gui.core.standardwidgets import FilterWidgetFactory
 
 
+class SelectionMenu(QtGui.QMenu):
+
+  SelectAll = 0
+  DeselectAll = 1
+  ClearAll = 2
+
+  def __init__(self, parent=None):
+    super(SelectionMenu, self).__init__(parent)
+    selectAllAction = QtGui.QAction(self.tr("Select all items"), self)
+    selectAllAction.setData(QtCore.QVariant(SelectionMenu.SelectAll))
+    self.addAction(selectAllAction)
+    deselectAllAction = QtGui.QAction(self.tr("Deselect all items"), self)
+    deselectAllAction.setData(QtCore.QVariant(SelectionMenu.DeselectAll))
+    self.addAction(deselectAllAction)
+    clearSelectionAction = QtGui.QAction(self.tr("Clear all selected items"), self)
+    clearSelectionAction.setData(QtCore.QVariant(SelectionMenu.ClearAll))
+    self.addAction(clearSelectionAction)
+
+
+class ScreenshotMenu(QtGui.QMenu):
+  def __init__(self, parent):
+    super(ScreenshotMenu, self).__init__(parent)
+    screenshotToClipboard = QtGui.QAction(self.tr("To clipboard"), self)
+    keySequence = QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_C)
+    screenshotToClipboard.setShortcuts(keySequence)
+    screenshotToClipboard.setShortcutContext(QtCore.Qt.WidgetShortcut)
+    screenshotToClipboard.triggered.connect(self.__screenshotToClipboard)
+    self.addAction(screenshotToClipboard)
+
+    screenshotToFile = QtGui.QAction(self.tr("To file"), self)
+    keySequence = QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_S)
+    screenshotToFile.setShortcuts(keySequence)
+    screenshotToFile.setShortcutContext(QtCore.Qt.WidgetShortcut)
+    screenshotToFile.triggered.connect(self.__screenshotToFile)
+    self.addAction(screenshotToFile)
+
+    screenshotToReport = QtGui.QAction(self.tr("To report"), self)
+    keySequence = QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_P)
+    screenshotToReport.setShortcuts(keySequence)
+    screenshotToReport.setShortcutContext(QtCore.Qt.WidgetShortcut)
+    screenshotToReport.triggered.connect(self.__screenshotToReport)
+    screenshotToReport.setEnabled(False)
+    self.addAction(screenshotToReport)
+
+
+  def __screenshot(self):
+    pixmap = QtGui.QPixmap(self.parent().size())
+    self.parent().render(pixmap)
+    return pixmap.toImage()
+
+
+  def __screenshotToClipboard(self):
+    pixmap = self.__screenshot()
+    QtGui.QApplication.clipboard().setImage(pixmap)
+
+
+  # XXX Get temp path on Windows platform
+  def __screenshotToFile(self):
+    screenshot = self.__screenshot()
+    imageFile = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save screenshot to file"),
+                                                  "/tmp/screenshot.jpg",
+                                                  self.tr("Images (*.png *.jpg)"))
+    screenshot.save(imageFile)
+
+
+  def __screenshotToReport(self):
+    pass
+
+
+class ExportMenu(QtGui.QMenu):
+  def __init__(self, parent=None):
+    super(ExportMenu, self).__init__(parent)
+    exportDataAction = QtGui.QAction(self.tr("data"), self)
+    self.addAction(exportDataAction)
+    exportCsvAction = QtGui.QAction(self.tr("csv"), self)
+    self.addAction(exportCsvAction)
+
+
+class StandardTreeMenu(QtGui.QMenu):
+  def __init__(self, parent=None):
+    super(StandardTreeMenu, self).__init__(parent)
+    self.addAction(expandAction)
+    self.addAction(collapseAction)
+    selectionActions = QtGui.QAction(self.tr("Selection"), self)
+    selectionMenu = SelectionMenu(self)
+    selectionActions.setMenu(selectionMenu)
+    self.addAction(selectionActions)
+    exportActions = QtGui.QAction(self.tr("Export"), self)
+    exportMenu = ExportMenu(self)
+    exportActions.setMenu(exportMenu)
+    self.addAction(exportActions)
+    self.addAction(childrenCountAction)
+
+
+class ViewAppearanceMenu(QtGui.QMenu):
+
+  Details = 0
+  List = 1
+  Icon64 = 64
+  Icon128 = 128
+  Icon256 = 256
+  Icon512 = 512
+  
+  def __init__(self, parent=None):
+    super(ViewAppearanceMenu, self).__init__(parent)
+    action = self.addAction(self.tr("Extra large icons"))
+    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon512))
+    action = self.addAction(self.tr("Large icons"))
+    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon256))
+    action = self.addAction(self.tr("Medium icons"))
+    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon128))
+    action = self.addAction(self.tr("Small icons"))
+    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon64))
+    self.addSeparator()
+    action = self.addAction(self.tr("List"))
+    action.setData(QtCore.QVariant(ViewAppearanceMenu.List))
+    self.addSeparator()
+    action = self.addAction(self.tr("Details"))
+    action.setData(QtCore.QVariant(ViewAppearanceMenu.Details))
+    self.setActiveAction(action)
+
+
+  def setCheckable(self, checkable):
+    for action in self.actions():
+      action.setCheckable(checkable)
+    if checkable:
+      self.triggered.connect(self.__actionTriggered)
+      self.activeAction().setChecked(True)
+    else:
+      self.triggered.disconnect(self.__actionTriggered)
+
+
+  def __actionTriggered(self, currentAction):
+    for action in self.actions():
+        action.setChecked(False)
+    currentAction.setChecked(True)
+
+
+class Slider(QtGui.QSlider):
+  def __init__(self, parent=None):
+    super(Slider, self).__init__(parent)
+    self.setContentsMargins(0, 0, 0, 0)
+
+
+  def mouseMoveEvent(self, event):
+    self.emit(QtCore.SIGNAL("sliderPositionChanged(int)"),
+              event.y())
+    
+
+class ViewAppearanceSliderMenu(QtGui.QWidget):
+  def __init__(self, parent=None):
+    super(ViewAppearanceSliderMenu, self).__init__(parent)
+    self.__menu = ViewAppearanceMenu()
+    self.__menu.setStyleSheet("QMenu {border: 0px;} QMenu::item:selected{background-color: transparent;}")
+    self.__menu.triggered.connect(self.__actionTriggered)
+    self.__slider = Slider()
+    self.connect(self.__slider, QtCore.SIGNAL("sliderPositionChanged(int)"),
+                 self.__sliderPositionChanged)
+    self.__slider.setInvertedAppearance(True)
+    self.__actionIndex = 0
+    self.__sliderPosition = 0
+    count = 0
+    for action in self.__menu.actions():
+      if not action.isSeparator():
+        count += 1
+    self.setContentsMargins(0, 0, 0, 0)
+    self.setLayout(QtGui.QHBoxLayout())
+    self.layout().setContentsMargins(0, 0, 0, 0)
+    self.layout().addWidget(self.__slider)
+    self.layout().addWidget(self.__menu)
+
+
+  def __actionAt(self, yPosition):
+    actions = self.__menu.actions()
+    foundAction = None
+    foundGeom = None
+    for action in actions:
+      geom = self.__menu.actionGeometry(action)
+      if yPosition >= geom.top() and yPosition <= geom.bottom():
+        foundAction = action
+        foundGeom = geom
+    if foundAction is None:
+      return (None, -1)
+    index = actions.index(foundAction)
+    if foundAction.isSeparator():
+      if index > 0 and index < len(actions) - 1:
+        if yPosition < foundGeom.center().y():
+          index -= 1
+          foundAction = actions[index]
+        else:
+          index += 1
+          foundAction = actions[index]
+    return (foundAction, index)
+
+
+  def __updateSliderPosition(self, action, index):
+    if action is None:
+      return
+    y = self.__menu.actionGeometry(action).center().y()
+    self.__slider.setSliderPosition(y)
+    self.__menu.setActiveAction(action)
+    data = action.data()
+    if not data.isValid():
+      return
+    viewType, success = data.toInt()
+    if not success:
+      return
+    self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
+
+
+  def __sliderPositionChanged(self, yPosition):
+    action, index = self.__actionAt(yPosition)
+    self.__updateSliderPosition(action, index)
+
+
+  def showEvent(self, event):
+    super(ViewAppearanceSliderMenu, self).showEvent(event)
+    firstAction = self.__menu.actions()[0]
+    lastAction =  self.__menu.actions()[-1]
+    firstGeometry = self.__menu.actionGeometry(firstAction)
+    lastGeometry = self.__menu.actionGeometry(lastAction)
+    self.__slider.setMinimum(firstGeometry.center().y())
+    self.__slider.setMaximum(lastGeometry.center().y())
+    height = (lastGeometry.center().y() + 3) - (firstGeometry.center().y() - 3)
+    self.__slider.setGeometry(self.__slider.x(),
+                              firstGeometry.center().y() - 3,
+                              self.__slider.width(),
+                              height + 3)
+    activeAction = self.__menu.activeAction()
+    if activeAction is not None:
+      sliderPosition = self.__menu.actionGeometry(activeAction).center().y()
+      self.__slider.setSliderPosition(sliderPosition)
+
+
+  def __actionTriggered(self, action):
+    if action is None:
+      return
+    data = action.data()
+    if not data.isValid():
+      return
+    viewType, success = data.toInt()
+    if not success:
+      return
+    index = self.__menu.actions().index(action)
+    self.__updateSliderPosition(action, index)
+    self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
+    self.hide()
+
+
+  def setCurrentViewAction(self, viewActionData):
+    sliderPosition = -1
+    for action in self.__menu.actions():
+      if action.data() == viewActionData:
+        self.__menu.setActiveAction(action)
+        sliderPosition = self.__menu.actionGeometry(action).center().y()
+    if sliderPosition != -1:
+      self.__slider.setSliderPosition(sliderPosition)
+
+
 class HorizontalHeaderSettingMenu(QtGui.QMenu):
     def __init__(self, model, index, parent=None):
         QtGui.QMenu.__init__(self, parent)
@@ -112,7 +371,6 @@ class HorizontalHeaderSettingMenu(QtGui.QMenu):
 
     def __resetColumn(self):
         self.emit(QtCore.SIGNAL("settingClicked()"))
-
 
 
 class HorizontalHeaderMenuTabBar(QtGui.QTabBar):

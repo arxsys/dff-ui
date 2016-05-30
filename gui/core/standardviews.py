@@ -24,39 +24,67 @@
 from PyQt4 import QtCore, QtGui
 
 from dff.ui.gui.core.standarditems import StandardItem, HorizontalHeaderItem
-from dff.ui.gui.core.standardmenus import HorizontalHeaderMenu
-from dff.ui.gui.core.standarddelegates import StandardDelegate, StandardTreeDelegate, StandardIconDelegate
+from dff.ui.gui.core.standardmenus import HorizontalHeaderMenu, ViewAppearanceMenu, ScreenshotMenu
+from dff.ui.gui.core.standarddelegates import StandardDelegate, StandardTreeDelegate, StandardIconDelegate, StandardListDelegate
 
 
 class StandardTreeView(QtGui.QTreeView):
   def __init__(self, parent=None):
     super(StandardTreeView, self).__init__(parent)
-    self.expanded.connect(self.__updateColumnsSize)
-    self.collapsed.connect(self.__updateColumnsSize)
+    self.expanded.connect(self.__itemExpanded)
+    self.setIndentation(10)
+    self.setUniformRowHeights(True)
+    #self.collapsed.connect(self.__updateColumnsSize)
     self.setAlternatingRowColors(True)
     highlight = QtGui.QColor(70, 178, 234)
     palette = self.palette()
     palette.setColor(QtGui.QPalette.Highlight, highlight)
     self.setPalette(palette)
-    self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+    self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
     self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
     self.__treeDelegate = StandardTreeDelegate()
     self.setItemDelegate(self.__treeDelegate)
+    self.__createDefaultContextMenu()
+    self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+    self.setAutoScroll(True)
+
+
+  def currentActions(self):
+    return self.actions()
+
+
+  def __createDefaultContextMenu(self):
     expandAction = QtGui.QAction(self.tr("Expand all"), self)
     expandAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
+    expandAction.setShortcutContext(QtCore.Qt.WidgetShortcut)
     expandAction.triggered.connect(self.expandAll)
+    self.addAction(expandAction)
     collapseAction = QtGui.QAction(self.tr("Collapse all"), self)
     collapseAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Left))
+    collapseAction.setShortcutContext(QtCore.Qt.WidgetShortcut)
     collapseAction.triggered.connect(self.collapseAll)
-    selectAllAction = QtGui.QAction(self.tr("Select all visible items"), self)
-    #selectAllAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
-    #selectAllAction.triggered.connect(self.expandAll)
-    unselectAllAction = QtGui.QAction(self.tr("Deselect all visible items"), self)
-    #unselectAllAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
-    #unselectAllAction.triggered.connect(self.expandAll)
-    clearSelectionAction = QtGui.QAction(self.tr("Clear all selected items"), self)
-    #clearSelectionAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
-    #clearSelectionAction.triggered.connect(self.expandAll)
+    self.addAction(collapseAction)
+    self.__childrenCountAction = QtGui.QAction(self.tr("Display children count"), self)
+    self.__childrenCountAction.setCheckable(True)
+    self.__childrenCountAction.triggered.connect(self.__childrenCountDisplay)
+    self.addAction(self.__childrenCountAction)
+    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    screenshotMenu = ScreenshotMenu(self)
+    screenshotAction.setMenu(screenshotMenu)
+    self.addAction(screenshotAction)
+
+
+  def __itemExpanded(self, index):
+    self.resizeColumnToContents(0)
+    rect = self.visualRect(index)
+    if rect.isValid() and self.horizontalScrollBar().isVisible():
+      value = ((rect.x()) * self.horizontalScrollBar().maximum()) / self.viewport().width()
+      self.horizontalScrollBar().setValue(value)
+
+
+  def __childrenCountDisplay(self, checked):
+    self.__childrenCountAction.setChecked(checked)
+    self.model().setChildrenCountDisplay(checked)
 
 
   def setFrozen(self, frozen):
@@ -88,10 +116,7 @@ class StandardTreeView(QtGui.QTreeView):
     super(StandardTreeView, self).setModel(model)
     self.header().setModel(model)
     self.setChildrenCountDisplay(True)
-
-
-  def __updateColumnsSize(self, index):
-    self.resizeColumnToContents(0)
+    self.__childrenCountAction.setChecked(True)
 
 
   def setChildrenCountDisplay(self, enable):
@@ -117,23 +142,92 @@ class StandardTreeView(QtGui.QTreeView):
 
 
 class StandardTableView(QtGui.QTableView):
+
+  MinimumIconSize = QtCore.QSize(16, 16)
+  DefaultIconSize = QtCore.QSize(128, 128)
+  MaximumIconSize = QtCore.QSize(256, 256)
+
   def __init__(self, parent=None):
     super(StandardTableView, self).__init__(parent)
     self.__frozen = False
+    self.__tableDelegate = StandardDelegate()
+    self.setItemDelegate(self.__tableDelegate)
+    self.setIconSize(QtCore.QSize(16, 16))
     self.setShowGrid(False)
     self.setAlternatingRowColors(True)
     self.verticalHeader().hide()
+    self.verticalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
     highlight = QtGui.QColor(70, 178, 234)
     palette = self.palette()
     palette.setColor(QtGui.QPalette.Highlight, highlight)
     self.setPalette(palette)
     self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
     self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    screenshotMenu = ScreenshotMenu(self)
+    screenshotAction.setMenu(screenshotMenu)
+    self.addAction(screenshotAction)
+
+
+  def currentActions(self):
+    return self.actions()
+
+
+  def wheelEvent(self, event):
+    if event.modifiers() == QtCore.Qt.ControlModifier:
+      if event.delta() > 0:
+        self.zoomIn()
+      if event.delta() < 0:
+        self.zoomOut()
+    else:
+      super(StandardTableView, self).wheelEvent(event)
+
+
+  def zoomIn(self):
+    size = QtCore.QSize(self.iconSize().width() + 32,
+                        self.iconSize().height() + 32)
+    self.setIconSize(size)
+    self.resizeColumnsToContents()
+
+
+  def zoomOut(self):
+    size = QtCore.QSize(self.iconSize().width() - 32,
+                        self.iconSize().height() - 32)
+    self.setIconSize(size)
+    self.resizeColumnsToContents()
+
+
+  #def viewOptions(self):
+    #options = super(StandardTableView, self).viewOptions()
+    #options.displayAlignment = QtCore.Qt.AlignCenter
+    #options.showDecorationSelected = False
+    #return options
+
+
+  def setItemDelegate(self, delegate):
+    if not isinstance(delegate, StandardDelegate):
+      return
+    self.__tableDelegate = delegate
+    self.__tableDelegate.setIconSize(self.iconSize())
+    self.__tableDelegate.setFrozen(self.__frozen)
+    super(StandardTableView, self).setItemDelegate(delegate)
+
+
+  def setIconSize(self, size):
+    if size.width() > StandardTableView.MaximumIconSize.width()\
+       or size.height() > StandardTableView.MaximumIconSize.height()\
+       or size.width() < StandardTableView.MinimumIconSize.width()\
+       or size.height() < StandardTableView.MinimumIconSize.height():
+      return
+    self.__tableDelegate.setIconSize(size)
+    super(StandardTableView, self).setIconSize(size)
+    self.verticalHeader().setDefaultSectionSize(size.height())
+    self.emit(QtCore.SIGNAL("iconSizeChanged(QSize&)"), size)
 
 
   def setFrozen(self, frozen):
     self.__frozen = True
-    self.itemDelegate().setFrozen(frozen)
+    self.__tableDelegate.setFrozen(frozen)
 
     
   def showEvent(self, event):
@@ -146,8 +240,10 @@ class StandardTableView(QtGui.QTableView):
       return
     if model == self.model():
       return
+    if self.model() is not None:
+      self.model().modelReset.disconnect(self.resizeColumnsToContents)
     super(StandardTableView, self).setModel(model)
-    self.horizontalHeader().setModel(model)
+    self.model().modelReset.connect(self.resizeColumnsToContents)
 
 
   def addColumn(self, column, index=-1):
@@ -168,28 +264,84 @@ class StandardTableView(QtGui.QTableView):
 
 class StandardIconView(QtGui.QListView):
 
-  DefaultIconSize = 128
+  MinimumIconSize = QtCore.QSize(64, 64)
+  DefaultIconSize = QtCore.QSize(128, 128)
+  MaximumIconSize = QtCore.QSize(512, 512)
 
   def __init__(self, modelColumn=0, parent=None):
     super(StandardIconView, self).__init__(parent)
+    self.__iconDelegate = StandardIconDelegate()
+    self.setItemDelegate(self.__iconDelegate)
+    self.setIconSize(StandardIconView.DefaultIconSize)
     self.__modelColumn = modelColumn
     self.setModelColumn(modelColumn)
     self.setViewMode(QtGui.QListView.IconMode)
     self.setMovement(QtGui.QListView.Static)
     self.setFlow(QtGui.QListView.LeftToRight)
     self.setLayoutMode(QtGui.QListView.Batched)
-    self.setResizeMode(QtGui.QListView.Adjust)
     self.setUniformItemSizes(True)
-    self.setBatchSize(250)
-    self.setIconSize(QtCore.QSize(StandardIconView.DefaultIconSize,
-                                  StandardIconView.DefaultIconSize))
-    self.setGridSize(QtCore.QSize(StandardIconView.DefaultIconSize+30,
-                                  StandardIconView.DefaultIconSize+30))
+    self.setResizeMode(QtGui.QListView.Adjust)
+    self.setSpacing(10)
+    self.setBatchSize(256)
     self.setWordWrap(True)
-    self.setTextElideMode(QtCore.Qt.ElideRight)
+    self.setSelectionRectVisible(False)
     self.setWrapping(True)
-    self.__iconDelegate = StandardIconDelegate()
-    self.setItemDelegate(self.__iconDelegate)
+    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    screenshotMenu = ScreenshotMenu(self)
+    screenshotAction.setMenu(screenshotMenu)
+    self.addAction(screenshotAction)
+
+
+  def currentActions(self):
+    return self.actions()
+
+
+  def wheelEvent(self, event):
+    if event.modifiers() == QtCore.Qt.ControlModifier:
+      if event.delta() > 0:
+        self.zoomIn()
+      if event.delta() < 0:
+        self.zoomOut()
+    else:
+      super(StandardIconView, self).wheelEvent(event)
+
+
+  def zoomIn(self):
+    size = QtCore.QSize(self.iconSize().width() + 32,
+                        self.iconSize().height() + 32)
+    self.setIconSize(size)
+
+
+  def zoomOut(self):
+    size = QtCore.QSize(self.iconSize().width() - 32,
+                        self.iconSize().height() - 32)
+    self.setIconSize(size)
+
+
+  def viewOptions(self):
+    options = super(StandardIconView, self).viewOptions()
+    options.displayAlignment = QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter
+    options.showDecorationSelected = False
+    return options
+
+
+  def setItemDelegate(self, delegate):
+    if not isinstance(delegate, StandardIconDelegate):
+      return
+    self.__iconDelegate = delegate
+    self.__iconDelegate.setIconSize(self.iconSize())
+    super(StandardIconView, self).setItemDelegate(delegate)
+
+
+  def setIconSize(self, size):
+    if size.width() > StandardIconView.MaximumIconSize.width()\
+       or size.height() > StandardIconView.MaximumIconSize.height()\
+       or size.width() < StandardIconView.MinimumIconSize.width()\
+       or size.height() < StandardIconView.MinimumIconSize.height():
+      return
+    self.__iconDelegate.setIconSize(size)
+    super(StandardIconView, self).setIconSize(size)
+    return
 
 
   def setModel(self, model):
@@ -197,7 +349,99 @@ class StandardIconView(QtGui.QListView):
       return
     super(StandardIconView, self).setModel(model)
     self.setModelColumn(self.__modelColumn)
+
+
+class StandardListView(QtGui.QListView):
+
+  MinimumIconSize = QtCore.QSize(16, 16)
+  DefaultIconSize = QtCore.QSize(16, 16)
+  MaximumIconSize = QtCore.QSize(512, 512)
+
+  def __init__(self, modelColumn=0, parent=None):
+    super(StandardListView, self).__init__(parent)
+    self.__listDelegate = StandardListDelegate()
+    self.setItemDelegate(self.__listDelegate)
+    self.setIconSize(StandardListView.DefaultIconSize)
+    self.setFlow(QtGui.QListView.TopToBottom)
+    self.__modelColumn = modelColumn
+    self.setModelColumn(modelColumn)
+    self.setViewMode(QtGui.QListView.IconMode)
+    self.setMovement(QtGui.QListView.Static)
+    self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
+    self.setLayoutMode(QtGui.QListView.Batched)
+    self.setResizeMode(QtGui.QListView.Adjust)
+    self.setBatchSize(256)
+    self.setWrapping(True)
+    self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
+    self.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
+    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    screenshotMenu = ScreenshotMenu(self)
+    screenshotAction.setMenu(screenshotMenu)
+    self.addAction(screenshotAction)
+
+
+  def currentActions(self):
+    return self.actions()
+
+
+  def wheelEvent(self, event):
+    if event.modifiers() == QtCore.Qt.ControlModifier:
+      if event.delta() > 0:
+        self.zoomIn()
+      if event.delta() < 0:
+        self.zoomOut()
+    else:
+      super(StandardListView, self).wheelEvent(event)
+
+
+  def zoomIn(self):
+    size = QtCore.QSize(self.iconSize().width() + 32,
+                        self.iconSize().height() + 32)
+    self.setIconSize(size)
+
+
+  def zoomOut(self):
+    size = QtCore.QSize(self.iconSize().width() - 32,
+                        self.iconSize().height() - 32)
+    self.setIconSize(size)
     
+
+  def viewOptions(self):
+    options = super(StandardListView, self).viewOptions()
+    options.displayAlignment = QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft
+    options.decorationPosition = QtGui.QStyleOptionViewItem.Left
+    options.decorationAlignment = QtCore.Qt.AlignCenter
+    options.showDecorationSelected = True
+    return options
+
+
+  def setItemDelegate(self, delegate):
+    if not isinstance(delegate, StandardListDelegate):
+      return
+    self.__listDelegate = delegate
+    self.__listDelegate.setIconSize(self.iconSize())
+    super(StandardListView, self).setItemDelegate(delegate)
+
+
+  def setIconSize(self, size):
+    if size.width() > StandardListView.MaximumIconSize.width()\
+       or size.height() > StandardListView.MaximumIconSize.height()\
+       or size.width() < StandardListView.MinimumIconSize.width()\
+       or size.height() < StandardListView.MinimumIconSize.height():
+      return
+    self.__listDelegate.setIconSize(size)
+    super(StandardListView, self).setIconSize(size)
+    return
+
+
+  def setModel(self, model):
+    if model is None:
+      return
+    if model == self.model():
+      return
+    super(StandardListView, self).setModel(model)
+    self.setModelColumn(self.__modelColumn)
+
     
 class StandardFrozenView(QtGui.QWidget):
   def __init__(self, viewFactory, parent=None):
@@ -213,6 +457,7 @@ class StandardFrozenView(QtGui.QWidget):
     self._baseView = viewFactory()
     self.__baseModel = self._baseView.model()
     self.__configureBaseView()
+    self.addActions(self._baseView.actions())
     self.layout().addWidget(self._baseView)
     self._frozenView = viewFactory(self._baseView)
     self.__configureFrozenView()
@@ -222,14 +467,26 @@ class StandardFrozenView(QtGui.QWidget):
       self._frozenView.hide()
     self.__updateFrozenViewGeometry()
     self._baseView.viewport().stackUnder(self._frozenView)
-    self._baseView.horizontalHeader().sectionResized.connect(self.__updateFrozenSectionWidth)
-    self._frozenView.horizontalHeader().sectionResized.connect(self.__frozenSectionResized)
+
+    baseWidthResized = self._baseView.horizontalHeader().sectionResized
+    baseWidthResized.connect(self.__updateFrozenSectionWidth)
+    frozenWidthResized = self._frozenView.horizontalHeader().sectionResized
+    frozenWidthResized.connect(self.__updateBaseSectionWidth)
+
     self.connect(self.__baseModel,
                  QtCore.SIGNAL("columnPinStateChanged(int, int)"),
                  self.__columnPinStateChanged)
-    #self._baseView.verticalHeader().sectionResized.connect(self.__updateSectionHeight)
-    self._baseView.verticalScrollBar().valueChanged.connect(self.__updateVerticalScrollBar)
-    self._frozenView.verticalScrollBar().valueChanged.connect(self.__updateVerticalScrollBar)
+
+    self.connect(self._baseView, QtCore.SIGNAL("iconSizeChanged(QSize&)"),
+                 self.__updateFrozenIconSize)
+    self.connect(self._frozenView, QtCore.SIGNAL("iconSizeChanged(QSize&)"),
+                 self.__updateBaseIconSize)
+
+    valueChanged = self._baseView.verticalScrollBar().valueChanged
+    valueChanged.connect(self._frozenView.verticalScrollBar().setValue)
+    valueChanged = self._frozenView.verticalScrollBar().valueChanged
+    valueChanged.connect(self._baseView.verticalScrollBar().setValue)
+
     self._baseView.clicked.connect(self.__clicked)
     self._frozenView.clicked.connect(self.__clicked)
     self._baseView.doubleClicked.connect(self.__doubleClicked)
@@ -238,6 +495,10 @@ class StandardFrozenView(QtGui.QWidget):
 
   def model(self):
     return self.__baseModel
+
+
+  def currentActions(self):
+    return self._baseView.currentActions()
 
 
   def setModel(self, model):
@@ -275,6 +536,20 @@ class StandardFrozenView(QtGui.QWidget):
     else:
       self._frozenView.hide()
     self.__updateFrozenViewGeometry()
+
+
+  def __updateFrozenIconSize(self, baseSize):
+    frozenSize = self._frozenView.iconSize()
+    if frozenSize.width() != baseSize.width() or \
+       frozenSize.height() != baseSize.height():
+      self._frozenView.setIconSize(baseSize)
+
+
+  def __updateBaseIconSize(self, frozenSize):
+    baseSize = self._baseView.iconSize()
+    if baseSize.width() != frozenSize.width() or \
+       baseSize.height() != frozenSize.height():
+      self._baseView.setIconSize(frozenSize)
 
 
   def enableViewedTag(self, enable):
@@ -368,27 +643,36 @@ class StandardFrozenView(QtGui.QWidget):
       self._frozenView.hide()
 
 
-  def __frozenVScrollBarChanged(self, value):
-    self._baseView.verticalScrollBar().setValue(value)
-
-    
-  def __updateVerticalScrollBar(self, value):
-    self._baseView.verticalScrollBar().setValue(value)
+  def __updateFrozenVerticalScrollBar(self, value):
     self._frozenView.verticalScrollBar().setValue(value)
 
 
+  def __updateBaseVerticalScrollBar(self, value):
+    self._baseView.verticalScrollBar().setValue(value)
+
+
   def __updateFrozenSectionWidth(self, logicalIndex, oldSize, newSize):
-    self._frozenView.setColumnWidth(logicalIndex, newSize)
+    if self._frozenView.columnWidth(logicalIndex) != newSize:
+      self._frozenView.setColumnWidth(logicalIndex, newSize)
     self.__updateFrozenViewGeometry()
 
 
-  def __frozenSectionResized(self, logicalIndex, oldSize, newSize):
-    self._baseView.setColumnWidth(logicalIndex, newSize)
+  def __updateBaseSectionWidth(self, logicalIndex, oldSize, newSize):
+    if self._baseView.columnWidth(logicalIndex) != newSize:
+      self._baseView.setColumnWidth(logicalIndex, newSize)
     self.__updateFrozenViewGeometry()
 
 
-  def __updateSectionHeight(self, logicalIndex, oldSize, newSize):
-    self._frozenView.setRowHeight(logicalIndex, newsize)
+  def __updateFrozenSectionHeight(self, logicalIndex, oldSize, newSize):
+    if self._frozenView.verticalHeader().sectionSize(logicalIndex) != newSize:
+      self._frozenView.verticalHeader().sectionResize(logicalIndex, newSize)
+    #self.__updateFrozenViewGeometry()
+
+
+  def __updateBaseSectionHeight(self, logicalIndex, oldSize, newSize):
+    if self._baseView.verticalHeader().sectionSize(logicalIndex) != newSize:
+      self._baseView.verticalHeader().sectionResize(logicalIndex, newSize)
+    #self.__updateFrozenViewGeometry()
 
 
   def __updateFrozenViewGeometry(self):
@@ -397,9 +681,9 @@ class StandardFrozenView(QtGui.QWidget):
     for column in xrange(0, pinnedColumns):
       logicalIndex = self._baseView.horizontalHeader().logicalIndex(column)
       width += self._baseView.columnWidth(logicalIndex)
-      x = self._baseView.frameWidth()
-      height = self._baseView.viewport().height() + self._baseView.horizontalHeader().height()
-      self._frozenView.setGeometry(x, self._baseView.frameWidth(), width, height)
+    x = self._baseView.frameWidth()
+    height = self._baseView.viewport().height() + self._baseView.horizontalHeader().height()
+    self._frozenView.setGeometry(x, self._baseView.frameWidth(), width, height)
 
 
   def __manageViewedTag(self):
@@ -682,8 +966,8 @@ class StandardHeaderView(QtGui.QHeaderView):
       super(StandardHeaderView, self).mousePressEvent(event)
       return
     sectionSize = self.sectionSize(logicalIndex)
-    sectionPosition = self.sectionPosition(logicalIndex)
     position = event.pos()
+    sectionPosition = self.sectionViewportPosition(logicalIndex)
     if position.x() >= sectionPosition+5\
        and position.x() <= sectionPosition+sectionSize-25:
       pass
@@ -722,7 +1006,7 @@ class StandardHeaderView(QtGui.QHeaderView):
       elif self.__previousIndex != logicalIndex:
         self.__previousIndex = logicalIndex
         self.viewport().update()
-    elif not self.__frozen and not self.__resizing and visualIndex < len(self.__pinnedColumns):
+    elif not self.__frozen and not self.__resizing and visualIndex <= len(self.__pinnedColumns):
       return
     elif self.__frozen and not self.__resizing:
       headerType, success = self.model().headerData(logicalIndex,
