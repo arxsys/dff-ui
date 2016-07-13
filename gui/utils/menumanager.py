@@ -11,7 +11,12 @@
 # 
 # Author(s):
 #  Jeremy Mounier <jmo@arxsys.fr>
-# 
+#
+
+import base64, os
+
+from PyQt4 import QtCore, QtGui, QtWebKit
+
 from PyQt4.QtGui import QMenu, QIcon, QWidget, QCursor, QApplication, QAction, QMessageBox, QImage, QIcon
 from PyQt4.QtCore import SIGNAL, SLOT, QObject, QEvent, QString, QBuffer, QByteArray
 
@@ -33,6 +38,7 @@ modulePriority = {}
 class MenuManager(QWidget, Ui_nodeActions):
   def __init__(self, selection, listmodel):
     super(QWidget, self).__init__()
+    self.__iconView = False
     self.setupUi(self)
     self.processusManager = ProcessusManager()
     self.loader = loader.loader()
@@ -44,12 +50,25 @@ class MenuManager(QWidget, Ui_nodeActions):
     self.selection = None
     self.model = listmodel
     self.bookManager = BookmarkManager(self.model)
+    self.document = QtWebKit.QWebView()
+    self.document.loadFinished.connect(self.__print)
+    self.__corrupt = base64.b64encode(str(QtGui.QImage(":file_broken.png").bits()))
+    self.__printer = QtGui.QPrinter(QtGui.QPrinter.ScreenResolution)
+    self.__printer.setOutputFormat(QtGui.QPrinter.PdfFormat)
+    self.__printer.setPaperSize(QtGui.QPrinter.A4)
+    self.__printer.setFullPage(True)
+
+
+  def setIconView(self, enable):
+    self.__iconView = enable
 
   def createActions(self):
     self.extractor = Extractor(self.mainwindow)
     self.connect(self.extractor, SIGNAL("filled"), self.launchExtract)
     self.actionOpen.setParent(self.mainwindow)
     self.actionOpen_in_new_tab.setParent(self.mainwindow)
+    self.copyToHtmlTable = QAction(self.tr("Export selection to pdf"), self)
+    self.copyToHtmlTable.triggered.connect(self.__exportToPdf)
     self.connect(self.actionOpen, SIGNAL("triggered()"), self.openDefault)
     self.connect(self.actionOpen_in_new_tab, SIGNAL("triggered()"), self.openAsNewTab)
     self.connect(self.actionOpen_parent_folder, SIGNAL("triggered()"), self.openParentFolder)
@@ -90,7 +109,8 @@ class MenuManager(QWidget, Ui_nodeActions):
     self.bookseparator = self.mainmenu.addSeparator()
     self.mainmenu.addAction(self.actionHex_viewer)
     self.mainmenu.addAction(self.actionExtract)
-
+    if self.__iconView:
+      self.mainmenu.addAction(self.copyToHtmlTable)
     self.mainmenu.popup(QCursor.pos())
     self.mainmenu.show()
 
@@ -111,6 +131,94 @@ class MenuManager(QWidget, Ui_nodeActions):
           module = self.loader.modules[modname]
           relevant.addAction(newAction(self, self.mainwindow,  modname, module.tags, module.icon))
         self.actionOpen.setMenu(relevant)
+
+
+  def __exportToPdf(self):
+    pdfFile = QtGui.QFileDialog.getSaveFileName(self, self.tr("Export to pdf file"),
+                                                os.path.expanduser("~"),
+                                                self.tr("Pdf files (*.pdf)"))
+    if not pdfFile.endsWith(".pdf"):
+      pdfFile.append(".pdf")
+    self.__printer.setOutputFileName(pdfFile)
+    self.__createPdf()
+
+
+  def __createPdf(self):
+    html = """
+    <html>
+    <head>
+    <style type="text/css">
+    img {
+        max-width: 340px;
+        max-height: 340px;
+        width: expression(this.width > 340 ? "340px" : true);
+        height: expression(this.height > 340 ? "340px" : true);
+    }
+    .break { page-break-before: always; }
+    </style>
+    </head>
+    <body>
+    """
+    start = """<table style="height: 100%; margin: 1px auto; border-spacing: 10px; border-collapse: separate;">"""
+    end  = """</table><p class="break"></p>"""
+    count = 1
+    row = ""
+    for uid in self.checkedSelection._selection:
+      cell = self.__nodeToHtmlCell(uid)
+      if len(cell):
+        row += cell
+        if count == 1:
+          html += start
+        if count % 3 == 0:
+          html += "<tr>\n{}\n</tr>".format(row)
+          row = ""
+        if count == 9:
+          html += end
+          count = 0
+          row = ""
+        count += 1
+    if len(row):
+      html += "<tr>{}</tr></table>".format(row)
+    html += "</body></html>"
+    self.document.setHtml(html)
+
+
+  def __nodeToHtmlCell(self, uid):
+    imagecell = """<td style="text-align: center;"><img src="data:image/jpg;base64,{}"/><br />{} {} {}</td>"""
+    node = VFS.Get().getNodeById(uid)
+    timestamp = ""
+    device = ""
+    model = ""
+    make = ""
+    b64image = self.__corrupt
+    if node is not None:
+      dtype = node.dataType()
+      try:
+        if dtype.find("image") != -1:
+          vfile = node.open()
+          image = vfile.read()
+          vfile.close()
+          data = node.attributesByName("exif.Model", ABSOLUTE_ATTR_NAME)
+          if len(data):
+            model = data[0].toString()
+          data = node.attributesByName("exif.Make", ABSOLUTE_ATTR_NAME)
+          if len(data):
+            make = data[0].toString()
+          if len(model) or len(make):
+            device = "<br />{} {}".format(model, make)
+          data = node.attributesByName("exif.DateTimeDigitized", ABSOLUTE_ATTR_NAME)
+          if len(data):
+            timestamp = "<br /> {}".format(data[0].toString())
+          b64image = base64.b64encode(image)
+      except:
+        pass
+      return imagecell.format(b64image, node.name(), device, timestamp)
+    return ""
+
+
+  def __print(self, ok):
+    self.document.print_(self.__printer)
+
 
   def setOpenWith(self):
     owmenu = QMenu()
