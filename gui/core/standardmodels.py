@@ -14,9 +14,9 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
+from core.standarditems import HorizontalHeaderItem
 
 
 class StandardModel(QtCore.QAbstractItemModel):
@@ -25,7 +25,7 @@ class StandardModel(QtCore.QAbstractItemModel):
     self.__rootItem = None
     self._filtered = False
     self.__columns = []
-    self.__statusBar = QtGui.QApplication.instance().mainWindow().statusBar()
+    self.__statusBar = QtWidgets.QApplication.instance().mainWindow().statusBar()
 
 
   def _clearStatusMessage(self):
@@ -56,15 +56,15 @@ class StandardModel(QtCore.QAbstractItemModel):
 
   def data(self, index, role):
     if not index.isValid():
-      return QtCore.QVariant()
+      return None
     if index.column() >= len(self.__columns):
-      return QtCore.QVariant()
+      return None
     item = index.internalPointer()
     if item is not None:
       column = self.__columns[index.column()]
       attribute = column.rawData(HorizontalHeaderItem.AttributeNameRole)
       return self.customData(item, role, attribute)
-    return QtCore.QVariant()
+    return None
 
 
   def customData(self, item, role, attribute):
@@ -103,11 +103,11 @@ class StandardModel(QtCore.QAbstractItemModel):
 
   def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
     if section > len(self.__columns) - 1:
-      return QtCore.QVariant()
+      return None
     if orientation == QtCore.Qt.Horizontal:
       column = self.__columns[section]
       return column.data(role)
-    return QtCore.QVariant()
+    return None
 
 
   def setHeaderData(self, section, orientation, value, role=QtCore.Qt.EditRole):
@@ -146,7 +146,7 @@ class StandardModel(QtCore.QAbstractItemModel):
     for column in self.__columns:
       filtered = column.data(HorizontalHeaderItem.FilteredRole).toBool()
       if filtered:
-        _filter = column.data(HorizontalHeaderItem.FilterDataRole).toString()
+        _filter = column.data(HorizontalHeaderItem.FilterDataRole)
         _filter = str(_filter)
         if len(query):
           query += " and " + _filter
@@ -269,9 +269,9 @@ class StandardTreeModel(StandardModel):
     display = item.display(attribute)
     if self.__displayChildrenCount:
       count = item.displayChildrenCount(attribute)
-      if count.isValid():
-        displayCount = display.toString() + " (" + count.toString() + ")"
-        display = QtCore.QVariant(displayCount)
+      if count is not None:
+        displayCount = display + " (" + count + ")"
+        display = displayCount
     return display
 
     

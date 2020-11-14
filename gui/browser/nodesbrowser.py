@@ -13,22 +13,22 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtGui, QtCore
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.ui.gui.core.standardviews import StandardFrozenView, StandardFrozenTreeView
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.nodes.nodesviews import NodesTreeView, NodesDetailedView, NodesIconView, NodesListView
-from dff.api.vfs.libvfs import VFS
-from dff.api.taskmanager.taskmanager import TaskManager 
-from dff.api.types.libtypes import typeId, ConfigManager
-from dff.ui.gui.api.widget.propertytable import PropertyTable
+from core.standardviews import StandardFrozenView, StandardFrozenTreeView
+from nodes.nodesitems import NodeItem
+from nodes.nodesviews import NodesTreeView, NodesDetailedView, NodesIconView, NodesListView
+#from dff.api.vfs.libvfs import VFS
+#from dff.api.taskmanager.taskmanager import TaskManager 
+#from dff.api.types.libtypes import typeId, ConfigManager
+#from dff.ui.gui.api.widget.propertytable import PropertyTable
 
-from dff.ui.gui.core.standardmenus import ViewAppearanceMenu, ViewAppearanceSliderMenu
+from core.standardmenus import ViewAppearanceMenu, ViewAppearanceSliderMenu
 
-from dff.ui.gui.widget.preview import Preview
+#from dff.ui.gui.widget.preview import Preview
 
 
-class NodesViewStackedWidget(QtGui.QStackedWidget):
+class NodesViewStackedWidget(QtWidgets.QStackedWidget):
     def __init__(self, parent=None):
         super(NodesViewStackedWidget, self).__init__(parent)
         self.__detailedView = None
@@ -36,7 +36,7 @@ class NodesViewStackedWidget(QtGui.QStackedWidget):
         self.__iconView = None
         self.__viewMenu = ViewAppearanceMenu()
         self.__viewMenu.setCheckable(True)
-        self.__viewActions = QtGui.QAction(self.tr("View"), self)
+        self.__viewActions = QtWidgets.QAction(self.tr("View"), self)
         self.__viewMenu.triggered.connect(self.__selectViewAction)
         self.__viewActions.setMenu(self.__viewMenu)
         self.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
@@ -44,7 +44,7 @@ class NodesViewStackedWidget(QtGui.QStackedWidget):
 
 
     def contextMenuEvent(self, event):
-        menu = QtGui.QMenu()
+        menu = QtWidgets.QMenu()
         widget = self.currentWidget()
         if widget is not None:
             actions = widget.currentActions()
@@ -56,9 +56,7 @@ class NodesViewStackedWidget(QtGui.QStackedWidget):
     def setCurrentViewAction(self, viewActionData):
         if not viewActionData.isValid():
             return
-        viewType, success = viewActionData.toInt()
-        if not success:
-            return
+        viewType = viewActionData
         for action in self.__viewMenu.actions():
             action.setChecked(False)
             if action.data() == viewActionData:
@@ -69,13 +67,10 @@ class NodesViewStackedWidget(QtGui.QStackedWidget):
     def __selectViewAction(self, action):
         if action is None:
             return
-        data = action.data()
-        if not data.isValid():
+        viewType = action.data()
+        if viewType is None:
             return
-        self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
-        viewType, success = data.toInt()
-        if not success:
-            return
+        #self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
         self.selectView(viewType)
 
 
@@ -108,7 +103,7 @@ class NodesViewStackedWidget(QtGui.QStackedWidget):
         self.addWidget(view)
 
 
-class CustomMenuButton(QtGui.QPushButton):
+class CustomMenuButton(QtWidgets.QPushButton):
     def __init__(self, parent=None):
         super(CustomMenuButton, self).__init__(parent)
         self.__customMenu = None
@@ -116,8 +111,8 @@ class CustomMenuButton(QtGui.QPushButton):
         self.setText("")
         self.setFlat(True)
         self.setMinimumSize(44, 16)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed,
-                                       QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed,
+                                       QtWidgets.QSizePolicy.Fixed)
         self.setSizePolicy(sizePolicy)
         self.setContentsMargins(0, 0, 0, 0)
         self.clicked.connect(self.__popupSelection)
@@ -138,27 +133,30 @@ class CustomMenuButton(QtGui.QPushButton):
         self.__customMenu.show()
 
 
-class NodesBrowser(QtGui.QWidget):
+class NodesBrowser(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(NodesBrowser, self).__init__(parent)
-        root = VFS.Get().GetNode("/")
-        self.__taskManager = TaskManager()
-        self.__modulesConfig = ConfigManager.Get()
-        self.__splitter = QtGui.QSplitter()
+        #root = VFS.Get().GetNode("/")
+        root = None
+        #self.__taskManager = TaskManager()
+        #self.__modulesConfig = ConfigManager.Get()
+        self.__splitter = QtWidgets.QSplitter()
         self.__splitter.setContentsMargins(0, 0, 0, 0)
-        layout = QtGui.QVBoxLayout()
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
         self.layout().setContentsMargins(0, 0, 0, 0)
         self.layout().setSpacing(0)
-        viewsLayout = QtGui.QHBoxLayout()
+        viewsLayout = QtWidgets.QHBoxLayout()
         viewsLayout.setContentsMargins(0, 0, 0, 0)
 
         self.__nodesTreeView = NodesTreeView()
         self.__nodesTreeView.displayRecursion(True)
-        self.__nodesTreeView.model().setRootUid(root.uid())
-        
+        #self.__nodesTreeView.model().setRootUid(root.uid())
+        self.__nodesTreeView.model().setRootUid(0)
+
         self.__nodesDetailedView = StandardFrozenView(NodesDetailedView)
-        self.__nodesDetailedView.model().setRootUid(root.uid())
+        #self.__nodesDetailedView.model().setRootUid(root.uid())
+        self.__nodesDetailedView.model().setRootUid(0)
 
         self.__nodesIconView = NodesIconView()
         self.__nodesIconView.setModel(self.__nodesDetailedView.model())
@@ -174,32 +172,32 @@ class NodesBrowser(QtGui.QWidget):
         viewSelection = CustomMenuButton()
         self.__viewMenu = ViewAppearanceSliderMenu()
         viewSelection.setCustomMenu(self.__viewMenu)
-        self.connect(self.__stackedWidget,
-                     QtCore.SIGNAL("viewActionChanged(QVariant&)"),
-                     self.__viewMenu.setCurrentViewAction)
-        self.connect(self.__viewMenu,
-                     QtCore.SIGNAL("viewActionChanged(QVariant&)"),
-                     self.__stackedWidget.setCurrentViewAction)
+        # self.connect(self.__stackedWidget,
+        #              QtCore.SIGNAL("viewActionChanged(QVariant&)"),
+        #              self.__viewMenu.setCurrentViewAction)
+        # self.connect(self.__viewMenu,
+        #              QtCore.SIGNAL("viewActionChanged(QVariant&)"),
+        #              self.__stackedWidget.setCurrentViewAction)
 
         self.layout().addWidget(viewSelection)
-        self.connect(self.__nodesTreeView,
-                     QtCore.SIGNAL("clicked(const QModelIndex&)"),
-                     self.treeViewClicked)
-        self.connect(self.__nodesDetailedView,
-                     QtCore.SIGNAL("doubleClicked(const QModelIndex&)"),
-                     self.__doubleClicked)
-        self.connect(self.__nodesDetailedView,
-                     QtCore.SIGNAL("clicked(const QModelIndex&)"),
-                     self.__detailedClicked)
-        self.connect(self.__nodesIconView,
-                     QtCore.SIGNAL("clicked(const QModelIndex&)"),
-                     self.__detailedClicked)
+        # self.connect(self.__nodesTreeView,
+        #              QtCore.SIGNAL("clicked(const QModelIndex&)"),
+        #              self.treeViewClicked)
+        # self.connect(self.__nodesDetailedView,
+        #              QtCore.SIGNAL("doubleClicked(const QModelIndex&)"),
+        #              self.__doubleClicked)
+        # self.connect(self.__nodesDetailedView,
+        #              QtCore.SIGNAL("clicked(const QModelIndex&)"),
+        #              self.__detailedClicked)
+        # self.connect(self.__nodesIconView,
+        #              QtCore.SIGNAL("clicked(const QModelIndex&)"),
+        #              self.__detailedClicked)
 
 
         self.__splitter.addWidget(self.__nodesTreeView)
         self.__splitter.addWidget(self.__stackedWidget)
-        self.__attributes = PropertyTable(None)
-        self.__splitter.addWidget(self.__attributes)
+        #self.__attributes = PropertyTable(None)
+        #self.__splitter.addWidget(self.__attributes)
         self.__splitter.setStretchFactor(0, 20)
         self.__splitter.setStretchFactor(1, 55)
         self.__splitter.setStretchFactor(2, 25)
@@ -214,27 +212,27 @@ class NodesBrowser(QtGui.QWidget):
 
 
     def __nodeFromIndex(self, index):
-        data = index.model().data(index, NodeItem.UidRole)
+        if not index.isValid():
+            return
+        uid = index.model().data(index, NodeItem.UidRole)
         node = None
-        if data.isValid():
-            uid, success = data.toULongLong()
-            if success and uid >= 0:
-                node = VFS.Get().getNodeById(uid)
+        if uid is not None and uid >= 0:
+            node = VFS.Get().getNodeById(uid)
         return node
 
     
     def treeViewClicked(self, index):
-        data = index.model().data(index, NodeItem.UidRole)
-        if not data.isValid():
+        if not index.isValid():
             return
-        uid, success = data.toULongLong()
-        if not success or uid < 0:
-            return
-        isRecursive = self.__nodesTreeView.model().data(index, NodeItem.RecursionRole).toBool()
-        self.__nodesDetailedView.model().setRootUid(uid, isRecursive)
-
+        uid = index.model().data(index, NodeItem.UidRole)
+        if uid is not None and uid >= 0:
+            isRecursive = self.__nodesTreeView.model().data(index, NodeItem.RecursionRole)
+            self.__nodesDetailedView.model().setRootUid(uid, isRecursive)
+        return
 
     def __doubleClicked(self, index):
+        if not index.isValid():
+            return
         node = self.__nodeFromIndex(index)
         if node is None:
             return
@@ -247,13 +245,13 @@ class NodesBrowser(QtGui.QWidget):
             compatibleModules = node.compatibleModules()
             if len(compatibleModules) == 1:
                 module = compatibleModules[0]
-                message = QtGui.QMessageBox(QtGui.QMessageBox.Question,
+                message = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,
                                             self.tr("About to apply " + module),
                                             self.tr("Do you want to apply " + module + "?"),
-                                            QtGui.QMessageBox.Yes|QtGui.QMessageBox.No,
+                                            QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No,
                                             self)
                 action = message.exec_()
-                if action == QtGui.QMessageBox.Yes:
+                if action == QtWidgets.QMessageBox.Yes:
                     config = self.__modulesConfig.configByName(module)
                     nodeArguments = config.argumentsByType(typeId.Node)
                     if len(nodeArguments) == 1:
@@ -263,4 +261,4 @@ class NodesBrowser(QtGui.QWidget):
                         self.__taskManager.add(module, args, ["thread", "gui"])
             else:
                 for module in compatibleModules:
-                    print module
+                    print(module)

@@ -14,10 +14,10 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.ui.gui.tags.tagsmodels import TagsTreeModel
-from dff.ui.gui.core.standardviews import StandardTreeView
+from tags.tagsmodels import TagsTreeModel
+from core.standardviews import StandardTreeView
 
 
 class TagsTreeView(StandardTreeView):

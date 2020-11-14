@@ -13,19 +13,19 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtGui, QtCore
+from qtpy import QtWidgets, QtCore
 
-from dff.ui.gui.browser.nodesbrowser import NodesBrowser
-from dff.ui.gui.browser.datatypesbrowser import DatatypesBrowser
-from dff.ui.gui.browser.tagsbrowser import TagsBrowser
-from dff.ui.gui.browser.processusbrowser import ProcessusBrowser
+from browser.nodesbrowser import NodesBrowser
+from browser.datatypesbrowser import DatatypesBrowser
+from browser.tagsbrowser import TagsBrowser
+from browser.processusbrowser import ProcessusBrowser
 
-class Browser(QtGui.QTabWidget):
+class Browser(QtWidgets.QTabWidget):
     def __init__(self, parent=None):
-        QtGui.QTabWidget.__init__(self, parent)
+        QtWidgets.QTabWidget.__init__(self, parent)
         self.setContentsMargins(0, 0, 0, 0)
-        self.setTabPosition(QtGui.QTabWidget.South)
-        self.setTabShape(QtGui.QTabWidget.Triangular)
+        self.setTabPosition(QtWidgets.QTabWidget.South)
+        self.setTabShape(QtWidgets.QTabWidget.Triangular)
         self.__nodesBrowser = NodesBrowser(self)
         self.addTab(self.__nodesBrowser, self.tr("Tree"))
         self.__datatypesBrowser = DatatypesBrowser(self)

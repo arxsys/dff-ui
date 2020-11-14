@@ -13,15 +13,16 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtGui, QtCore
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.ui.gui.core.standardviews import StandardFrozenView
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.tags.tagsviews import TagsTreeView
-from dff.ui.gui.tags.tagsmodels import TagsNodesModel
-from dff.ui.gui.nodes.nodesviews import NodesDetailedView, NodesIconView
-from dff.api.taskmanager.taskmanager import TaskManager 
-from dff.api.types.libtypes import typeId, ConfigManager
+from core.standardviews import StandardFrozenView
+from nodes.nodesitems import NodeItem
+from tags.tagsviews import TagsTreeView
+from tags.tagsmodels import TagsNodesModel
+from nodes.nodesviews import NodesDetailedView, NodesIconView
+#from dff.api.taskmanager.taskmanager import TaskManager 
+#from dff.api.types.libtypes import typeId, ConfigManager
+
 
 
 # Manage zoom / views switch / column add / ...
@@ -39,17 +40,17 @@ class AbstractBrowser():
         pass
 
 
-class TagsBrowser(QtGui.QWidget):
+class TagsBrowser(QtWidgets.QWidget):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
         self.setContentsMargins(0, 0, 0, 0)
-        self.__taskManager = TaskManager()
-        self.__modulesConfig = ConfigManager.Get()
-        self.__splitter = QtGui.QSplitter()
-        layout = QtGui.QVBoxLayout()
+        #self.__taskManager = TaskManager()
+        #self.__modulesConfig = ConfigManager.Get()
+        self.__splitter = QtWidgets.QSplitter()
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
 
-        viewsLayout = QtGui.QHBoxLayout()
+        viewsLayout = QtWidgets.QHBoxLayout()
         self.__tagsTreeView = TagsTreeView()
         self.__nodesDetailedView = StandardFrozenView(NodesDetailedView)
         self.__nodesDetailedView.setModel(TagsNodesModel())
@@ -65,7 +66,7 @@ class TagsBrowser(QtGui.QWidget):
         self.__nodesIconView.hide()
         viewsLayout.addWidget(self.__splitter)
         self.layout().addLayout(viewsLayout)
-        #zoomSlider = QtGui.QSlider(QtCore.Qt.Horizontal)
+        #zoomSlider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         #zoomSlider.setTickInterval(1)
         #zoomSlider.setMinimum(1)
         #zoomSlider.setMaximum(NodesIconView.MaximumZoomFactor)
@@ -88,13 +89,13 @@ class TagsBrowser(QtGui.QWidget):
             compatibleModules = node.compatibleModules()
             if len(compatibleModules) == 1:
                 module = compatibleModules[0]
-                message = QtGui.QMessageBox(QtGui.QMessageBox.Question,
+                message = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,
                                             self.tr("About to apply " + module),
                                             self.tr("Do you want to apply " + module + "?"),
-                                            QtGui.QMessageBox.Yes|QtGui.QMessageBox.No,
+                                            QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No,
                                             self)
                 action = message.exec_()
-                if action == QtGui.QMessageBox.Yes:
+                if action == QtWidgets.QMessageBox.Yes:
                     config = self.__modulesConfig.configByName(module)
                     nodeArguments = config.argumentsByType(typeId.Node)
                     if len(nodeArguments) == 1:
@@ -104,4 +105,4 @@ class TagsBrowser(QtGui.QWidget):
                         self.__taskManager.add(module, args, ["thread", "gui"])
             else:
                 for module in compatibleModules:
-                    print module
+                    print(module)

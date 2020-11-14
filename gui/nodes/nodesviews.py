@@ -12,14 +12,14 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
-from dff.ui.gui.core.standardviews import StandardTableView, StandardTreeView, StandardIconView, StandardListView
-from dff.ui.gui.core.standardwidgets import ScrollableLabel
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.nodes.nodesmodels import NodesListModel, NodesTreeModel
-from dff.ui.gui.nodes.nodesdelegates import NodesDelegate, NodesTreeDelegate, NodesIconDelegate
+from core.standarditems import HorizontalHeaderItem
+from core.standardviews import StandardTableView, StandardTreeView, StandardIconView, StandardListView
+from core.standardwidgets import ScrollableLabel
+from nodes.nodesitems import NodeItem
+from nodes.nodesmodels import NodesListModel, NodesTreeModel
+from nodes.nodesdelegates import NodesDelegate, NodesTreeDelegate, NodesIconDelegate
 
 
 class NodesDetailedView(StandardTableView):
@@ -41,10 +41,10 @@ class NodesTreeView(StandardTreeView):
     model = NodesTreeModel()
     self.setModel(model)
     self.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-    self.__displayFilesAction = QtGui.QAction(self.tr("Display files"), self)
+    self.__displayFilesAction = QtWidgets.QAction(self.tr("Display files"), self)
     self.__displayFilesAction.setCheckable(True)
     self.__displayFilesAction.triggered.connect(self.__displayFiles)
-    propertiesAction = QtGui.QAction(self.tr("Properties"), self)
+    propertiesAction = QtWidgets.QAction(self.tr("Properties"), self)
     propertiesAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_P))
     propertiesAction.setShortcutContext(QtCore.Qt.WidgetShortcut)
     propertiesAction.triggered.connect(self.properties)
@@ -62,10 +62,10 @@ class NodesTreeView(StandardTreeView):
   def properties(self):
     index = self.currentIndex()
     if index.isValid():
-      location = index.data(NodeItem.PathRole).toString()
-      name = index.data(NodeItem.NameRole).toString()
+      location = index.data(NodeItem.PathRole)
+      name = index.data(NodeItem.NameRole)
       name.append(self.tr(" Properties"))
-      properties = index.data(NodeItem.PropertiesRole).toString().split("|")
+      properties = index.data(NodeItem.PropertiesRole).split("|")
       propertiesDialog = QtGui.QDialog(self)
       propertiesDialog.setFixedWidth(400)
       propertiesDialog.setWindowTitle(name)

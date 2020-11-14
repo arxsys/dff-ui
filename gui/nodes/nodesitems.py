@@ -15,13 +15,13 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.ui.gui.core.standarditems import StandardItem
-from dff.api.vfs.libvfs import VFS, VLink
+from core.standarditems import StandardItem
+#from dff.api.vfs.libvfs import VFS, VLink
 
 # XXX move it nodes?
-from dff.ui.gui.api.thumbnail import ThumbnailManager, ScaleConfig
+#from dff.ui.gui.api.thumbnail import ThumbnailManager, ScaleConfig
 
 
 class NodeItem(StandardItem):
@@ -41,24 +41,24 @@ class NodeItem(StandardItem):
 
   def data(self, role, attribute=""):
     if role == NodeItem.UidRole:
-      return QtCore.QVariant(self.__uid)
+      return self.__uid
     if role == NodeItem.NameRole:
       node = VFS.Get().getNodeById(self.__uid)
       if node is None:
-        return QtCore.QVariant()
-      return QtCore.QVariant(node.name())
+        None
+      return node.name()
     if role == NodeItem.PropertiesRole:
       size, files, folders = self.properties()
       properties = QtCore.QString("Size: ")
-      properties.append(self._displaySize(size).toString())
+      properties.append(self._displaySize(size))
       contains = "|Contains: {} Files, {} Folders".format(files, folders)
       properties.append(contains)
-      return QtCore.QVariant(properties)
+      return properties
     if role == NodeItem.PathRole:
       node = VFS.Get().getNodeById(self.__uid)
       if node is None:
-        return QtCore.QVariant()
-      return QtCore.QVariant(node.path())
+        return None
+      return node.path()
     return super(NodeItem, self).data(role, attribute)
 
 
@@ -137,30 +137,30 @@ class NodeItem(StandardItem):
   
   def display(self, attribute):
     if attribute == "row":
-      return QtCore.QVariant(self.row())
+      return self.row()
     if attribute == "uid":
-      return QtCore.QVariant(self.__uid)
+      return self.__uid
     if attribute == "checked":
-      return QtCore.QVariant("")
+      return ""
     else:
       return self._displayAttribute(attribute)
-    return QtCore.QVariant()
+    return None
 
 
   def toolTip(self, attribute):
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
-      return QtCore.QVariant()
-    absolute = QtCore.QString.fromUtf8(node.absolute())
-    return QtCore.QVariant(absolute)
+      return None
+    absolute = node.absolute()
+    return absolute
 
 
   def decoration(self, attribute):
     if attribute != "name":
-      return QtCore.QVariant()
+      return None
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
-      return QtCore.QVariant()
+      return None
     datatype = node.dataType()
     if datatype.find("image/") != -1 or datatype.find("video/") != -1:
       config = ScaleConfig(node, 512)
@@ -170,7 +170,7 @@ class NodeItem(StandardItem):
       icon = QtGui.QIcon()
       icon.addPixmap(pixmap, QtGui.QIcon.Active)
       icon.addPixmap(pixmap, QtGui.QIcon.Selected)
-      return QtCore.QVariant(icon)
+      return icon
     pixmap = self.__defaultIcon(node)
     if isinstance(node, VLink):
       painter = QtCore.QPainter(pixmap)
@@ -196,7 +196,7 @@ class NodeItem(StandardItem):
     icon = QtGui.QIcon()
     icon.addPixmap(pixmap, QtGui.QIcon.Active)
     icon.addPixmap(pixmap, QtGui.QIcon.Selected)
-    return QtCore.QVariant(icon)
+    return icon
 
 
   def __defaultIcon(self, node):
@@ -221,10 +221,10 @@ class NodeItem(StandardItem):
   def foreground(self, attribute):
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
-      return QtCore.QVariant()
+      return None
     if node.isDeleted():
-      return  QtCore.QVariant(QtGui.QColor(QtCore.Qt.red))
-    return QtCore.QVariant()
+      return  QtGui.QColor(QtCore.Qt.red)
+    return None
   
 
   def _displayAttribute(self, attribute):
@@ -232,41 +232,41 @@ class NodeItem(StandardItem):
     # all the following conditions.
     node = VFS.Get().getNodeById(self.__uid)
     if node is None:
-      return QtCore.QVariant()
+      return None
     if attribute == "name":
-      name = QtCore.QString.fromUtf8(node.name())
-      return QtCore.QVariant(name)
+      name = node.name()
+      return name
     if attribute == "size":
       if node.isDir():
-        return QtCore.QVariant()
+        return None
       size = node.size()
       return self._displaySize(size)
     if attribute == "type":
-      datatype = QtCore.QString.fromUtf8(node.dataType())
-      return QtCore.QVariant(datatype)
+      datatype = node.dataType()
+      return datatype
     elif attribute == "extension":
-      extention = QtCore.QString.fromUtf8(node.extension())
-      return QtCore.QVariant(extension)
+      extention = node.extension()
+      return extension
     elif attribute == "path":
       if isinstance(node, VLink):
-        path = QtCore.QString.fromUtf8(node.linkPath())
+        path = node.linkPath()
       else:
-        path = QtCore.QString.fromUtf8(node.path())
-      return QtCore.QVariant(path)
+        path = node.path()
+      return path
     elif attribute == "deleted":
-      return QtCore.QVariant(node.isDeleted())
-    return QtCore.QVariant()
+      return node.isDeleted()
+    return None
 
 
   def sizeHint(self, attribute):
     if attribute == "name":
-      return QtCore.QVariant(QtCore.QSize(self.__displayNameSize, 16))
+      return QtCore.QSize(self.__displayNameSize, 16)
     data = self.display(attribute)
     if data.isValid():
-      width = QtGui.QApplication.fontMetrics().width(data.toString())
+      width = QtGui.QApplication.fontMetrics().width(data)
       sizeHint = QtCore.QSize(width, 16)
-      return QtCore.QVariant(sizeHint)
-    return QtCore.QVariant(QtCore.QSize())
+      return sizeHint
+    return QtCore.QSize()
 
 
   def uid(self):
@@ -282,8 +282,8 @@ class NodeTreeItem(NodeItem):
     if attribute == "name":
       node = VFS.Get().getNodeById(self.uid())
       if node is not None:
-        return QtCore.QVariant(node.totalChildrenCount())
-    return QtCore.QVariant()
+        return node.totalChildrenCount()
+    return None
 
 
   def checkableAttribute(self):
@@ -295,7 +295,7 @@ class NodeTreeItem(NodeItem):
       data = self.display(attribute)
       if data.isValid():
         fm = QtGui.QApplication.instance().fontMetrics()
-        width = fm.width(data.toString())
+        width = fm.width(data)
         sizeHint = QtCore.QSize(width+100, 20)
-        return QtCore.QVariant(sizeHint)
+        return sizeHint
     return super(NodeTreeItem, self).sizeHint(attribute)

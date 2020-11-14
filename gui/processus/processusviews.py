@@ -14,10 +14,10 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.ui.gui.processus.processusmodels import ProcessusTreeModel
-from dff.ui.gui.core.standardviews import StandardTreeView
+from processus.processusmodels import ProcessusTreeModel
+from core.standardviews import StandardTreeView
 
 
 class ProcessusTreeView(StandardTreeView):
@@ -26,6 +26,6 @@ class ProcessusTreeView(StandardTreeView):
     model = ProcessusTreeModel()
     self.setModel(model)
     self.__timer = QtCore.QTimer(self)
-    self.connect(self.__timer, QtCore.SIGNAL("timeout()"), model.refresh)
+    #self.connect(self.__timer, QtCore.SIGNAL("timeout()"), model.refresh)
     self.__timer.start(2000)
 

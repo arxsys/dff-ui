@@ -13,13 +13,13 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtCore, QtGui
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
-from dff.ui.gui.core.standardmodels import HorizontalHeaderProxyModel
-from dff.ui.gui.core.standardwidgets import FilterWidgetFactory
+from qtpy import QtCore, QtGui, QtWidgets
+from core.standarditems import HorizontalHeaderItem
+from core.standardmodels import HorizontalHeaderProxyModel
+from core.standardwidgets import FilterWidgetFactory
 
 
-class SelectionMenu(QtGui.QMenu):
+class SelectionMenu(QtWidgets.QMenu):
 
   SelectAll = 0
   DeselectAll = 1
@@ -27,35 +27,35 @@ class SelectionMenu(QtGui.QMenu):
 
   def __init__(self, parent=None):
     super(SelectionMenu, self).__init__(parent)
-    selectAllAction = QtGui.QAction(self.tr("Select all items"), self)
-    selectAllAction.setData(QtCore.QVariant(SelectionMenu.SelectAll))
+    selectAllAction = QtWidgets.QAction(self.tr("Select all items"), self)
+    selectAllAction.setData(SelectionMenu.SelectAll)
     self.addAction(selectAllAction)
-    deselectAllAction = QtGui.QAction(self.tr("Deselect all items"), self)
-    deselectAllAction.setData(QtCore.QVariant(SelectionMenu.DeselectAll))
+    deselectAllAction = QtWidgets.QAction(self.tr("Deselect all items"), self)
+    deselectAllAction.setData(SelectionMenu.DeselectAll)
     self.addAction(deselectAllAction)
-    clearSelectionAction = QtGui.QAction(self.tr("Clear all selected items"), self)
-    clearSelectionAction.setData(QtCore.QVariant(SelectionMenu.ClearAll))
+    clearSelectionAction = QtWidgets.QAction(self.tr("Clear all selected items"), self)
+    clearSelectionAction.setData(SelectionMenu.ClearAll)
     self.addAction(clearSelectionAction)
 
 
-class ScreenshotMenu(QtGui.QMenu):
+class ScreenshotMenu(QtWidgets.QMenu):
   def __init__(self, parent):
     super(ScreenshotMenu, self).__init__(parent)
-    screenshotToClipboard = QtGui.QAction(self.tr("To clipboard"), self)
+    screenshotToClipboard = QtWidgets.QAction(self.tr("To clipboard"), self)
     keySequence = QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_C)
     screenshotToClipboard.setShortcuts(keySequence)
     screenshotToClipboard.setShortcutContext(QtCore.Qt.WidgetShortcut)
     screenshotToClipboard.triggered.connect(self.__screenshotToClipboard)
     self.addAction(screenshotToClipboard)
 
-    screenshotToFile = QtGui.QAction(self.tr("To file"), self)
+    screenshotToFile = QtWidgets.QAction(self.tr("To file"), self)
     keySequence = QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_S)
     screenshotToFile.setShortcuts(keySequence)
     screenshotToFile.setShortcutContext(QtCore.Qt.WidgetShortcut)
     screenshotToFile.triggered.connect(self.__screenshotToFile)
     self.addAction(screenshotToFile)
 
-    screenshotToReport = QtGui.QAction(self.tr("To report"), self)
+    screenshotToReport = QtWidgets.QAction(self.tr("To report"), self)
     keySequence = QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_P)
     screenshotToReport.setShortcuts(keySequence)
     screenshotToReport.setShortcutContext(QtCore.Qt.WidgetShortcut)
@@ -65,20 +65,20 @@ class ScreenshotMenu(QtGui.QMenu):
 
 
   def __screenshot(self):
-    pixmap = QtGui.QPixmap(self.parent().size())
+    pixmap = QtWidgets.QPixmap(self.parent().size())
     self.parent().render(pixmap)
     return pixmap.toImage()
 
 
   def __screenshotToClipboard(self):
     pixmap = self.__screenshot()
-    QtGui.QApplication.clipboard().setImage(pixmap)
+    QtWidgets.QApplication.clipboard().setImage(pixmap)
 
 
   # XXX Get temp path on Windows platform
   def __screenshotToFile(self):
     screenshot = self.__screenshot()
-    imageFile = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save screenshot to file"),
+    imageFile = QtWidgets.QFileDialog.getSaveFileName(self, self.tr("Save screenshot to file"),
                                                   "/tmp/screenshot.jpg",
                                                   self.tr("Images (*.png *.jpg)"))
     screenshot.save(imageFile)
@@ -88,32 +88,32 @@ class ScreenshotMenu(QtGui.QMenu):
     pass
 
 
-class ExportMenu(QtGui.QMenu):
+class ExportMenu(QtWidgets.QMenu):
   def __init__(self, parent=None):
     super(ExportMenu, self).__init__(parent)
-    exportDataAction = QtGui.QAction(self.tr("data"), self)
+    exportDataAction = QtWidgets.QAction(self.tr("data"), self)
     self.addAction(exportDataAction)
-    exportCsvAction = QtGui.QAction(self.tr("csv"), self)
+    exportCsvAction = QtWidgets.QAction(self.tr("csv"), self)
     self.addAction(exportCsvAction)
 
 
-class StandardTreeMenu(QtGui.QMenu):
+class StandardTreeMenu(QtWidgets.QMenu):
   def __init__(self, parent=None):
     super(StandardTreeMenu, self).__init__(parent)
     self.addAction(expandAction)
     self.addAction(collapseAction)
-    selectionActions = QtGui.QAction(self.tr("Selection"), self)
+    selectionActions = QtWidgets.QAction(self.tr("Selection"), self)
     selectionMenu = SelectionMenu(self)
     selectionActions.setMenu(selectionMenu)
     self.addAction(selectionActions)
-    exportActions = QtGui.QAction(self.tr("Export"), self)
+    exportActions = QtWidgets.QAction(self.tr("Export"), self)
     exportMenu = ExportMenu(self)
     exportActions.setMenu(exportMenu)
     self.addAction(exportActions)
     self.addAction(childrenCountAction)
 
 
-class ViewAppearanceMenu(QtGui.QMenu):
+class ViewAppearanceMenu(QtWidgets.QMenu):
 
   Details = 0
   List = 1
@@ -125,19 +125,19 @@ class ViewAppearanceMenu(QtGui.QMenu):
   def __init__(self, parent=None):
     super(ViewAppearanceMenu, self).__init__(parent)
     action = self.addAction(self.tr("Extra large icons"))
-    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon512))
+    action.setData(ViewAppearanceMenu.Icon512)
     action = self.addAction(self.tr("Large icons"))
-    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon256))
+    action.setData(ViewAppearanceMenu.Icon256)
     action = self.addAction(self.tr("Medium icons"))
-    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon128))
+    action.setData(ViewAppearanceMenu.Icon128)
     action = self.addAction(self.tr("Small icons"))
-    action.setData(QtCore.QVariant(ViewAppearanceMenu.Icon64))
+    action.setData(ViewAppearanceMenu.Icon64)
     self.addSeparator()
     action = self.addAction(self.tr("List"))
-    action.setData(QtCore.QVariant(ViewAppearanceMenu.List))
+    action.setData(ViewAppearanceMenu.List)
     self.addSeparator()
     action = self.addAction(self.tr("Details"))
-    action.setData(QtCore.QVariant(ViewAppearanceMenu.Details))
+    action.setData(ViewAppearanceMenu.Details)
     self.setActiveAction(action)
 
 
@@ -157,7 +157,7 @@ class ViewAppearanceMenu(QtGui.QMenu):
     currentAction.setChecked(True)
 
 
-class Slider(QtGui.QSlider):
+class Slider(QtWidgets.QSlider):
   def __init__(self, parent=None):
     super(Slider, self).__init__(parent)
     self.setContentsMargins(0, 0, 0, 0)
@@ -168,15 +168,15 @@ class Slider(QtGui.QSlider):
               event.y())
     
 
-class ViewAppearanceSliderMenu(QtGui.QWidget):
+class ViewAppearanceSliderMenu(QtWidgets.QWidget):
   def __init__(self, parent=None):
     super(ViewAppearanceSliderMenu, self).__init__(parent)
     self.__menu = ViewAppearanceMenu()
     self.__menu.setStyleSheet("QMenu {border: 0px;} QMenu::item:selected{background-color: transparent;}")
     self.__menu.triggered.connect(self.__actionTriggered)
     self.__slider = Slider()
-    self.connect(self.__slider, QtCore.SIGNAL("sliderPositionChanged(int)"),
-                 self.__sliderPositionChanged)
+    #self.connect(self.__slider, QtCore.SIGNAL("sliderPositionChanged(int)"),
+    #             self.__sliderPositionChanged)
     self.__slider.setInvertedAppearance(True)
     self.__actionIndex = 0
     self.__sliderPosition = 0
@@ -185,7 +185,7 @@ class ViewAppearanceSliderMenu(QtGui.QWidget):
       if not action.isSeparator():
         count += 1
     self.setContentsMargins(0, 0, 0, 0)
-    self.setLayout(QtGui.QHBoxLayout())
+    self.setLayout(QtWidgets.QHBoxLayout())
     self.layout().setContentsMargins(0, 0, 0, 0)
     self.layout().addWidget(self.__slider)
     self.layout().addWidget(self.__menu)
@@ -221,12 +221,12 @@ class ViewAppearanceSliderMenu(QtGui.QWidget):
     self.__slider.setSliderPosition(y)
     self.__menu.setActiveAction(action)
     data = action.data()
-    if not data.isValid():
+    if data is None:
       return
-    viewType, success = data.toInt()
-    if not success:
+    viewType = data
+    if not viewType:
       return
-    self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
+    #self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
 
 
   def __sliderPositionChanged(self, yPosition):
@@ -257,14 +257,14 @@ class ViewAppearanceSliderMenu(QtGui.QWidget):
     if action is None:
       return
     data = action.data()
-    if not data.isValid():
+    if data is None:
       return
-    viewType, success = data.toInt()
-    if not success:
+    viewType = data
+    if not viewType:
       return
     index = self.__menu.actions().index(action)
     self.__updateSliderPosition(action, index)
-    self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
+    #self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
     self.hide()
 
 
@@ -278,14 +278,14 @@ class ViewAppearanceSliderMenu(QtGui.QWidget):
       self.__slider.setSliderPosition(sliderPosition)
 
 
-class HorizontalHeaderSettingMenu(QtGui.QMenu):
+class HorizontalHeaderSettingMenu(QtWidgets.QMenu):
     def __init__(self, model, index, parent=None):
-        QtGui.QMenu.__init__(self, parent)
+        QtWidgets.QMenu.__init__(self, parent)
         self.__model = model
         self.__index = index
-        pinState, success = self.__model.headerData(self.__index, QtCore.Qt.Horizontal,
-                                           HorizontalHeaderItem.PinRole).toInt()
-        if not success:
+        pinState = self.__model.headerData(self.__index, QtCore.Qt.Horizontal,
+                                           HorizontalHeaderItem.PinRole)
+        if pinState is None:
             return
         if pinState != HorizontalHeaderItem.ForcePinned:
             self.__pinAction = self.addAction(self.tr("Pin"), self.__pin)
@@ -329,10 +329,10 @@ class HorizontalHeaderSettingMenu(QtGui.QMenu):
         hdata = self.__model.headerData(self.__index,
                                         QtCore.Qt.Horizontal,
                                         HorizontalHeaderItem.PinRole)
-        pinState, success = hdata.toInt()
-        if success and pinState == HorizontalHeaderItem.Unpinned and self.__unpinAction.isChecked():
+        pinState = hdata
+        if pinState and pinState == HorizontalHeaderItem.Unpinned and self.__unpinAction.isChecked():
             self.__model.setHeaderData(self.__index, QtCore.Qt.Horizontal,
-                                       QtCore.QVariant(HorizontalHeaderItem.Pinned),
+                                       HorizontalHeaderItem.Pinned,
                                        HorizontalHeaderItem.PinRole)
         self.__pinAction.setChecked(True)
         self.__unpinAction.setChecked(False)
@@ -343,10 +343,10 @@ class HorizontalHeaderSettingMenu(QtGui.QMenu):
         hdata = self.__model.headerData(self.__index,
                                         QtCore.Qt.Horizontal,
                                         HorizontalHeaderItem.PinRole)
-        pinState, success = hdata.toInt()
-        if success and pinState == HorizontalHeaderItem.Pinned and self.__pinAction.isChecked():
+        pinState = hdata
+        if pinState and pinState == HorizontalHeaderItem.Pinned and self.__pinAction.isChecked():
             self.__model.setHeaderData(self.__index, QtCore.Qt.Horizontal,
-                                       QtCore.QVariant(HorizontalHeaderItem.Unpinned),
+                                       HorizontalHeaderItem.Unpinned,
                                        HorizontalHeaderItem.PinRole)
         self.__unpinAction.setChecked(True)
         self.__pinAction.setChecked(False)
@@ -373,7 +373,7 @@ class HorizontalHeaderSettingMenu(QtGui.QMenu):
         self.emit(QtCore.SIGNAL("settingClicked()"))
 
 
-class HorizontalHeaderMenuTabBar(QtGui.QTabBar):
+class HorizontalHeaderMenuTabBar(QtWidgets.QTabBar):
     def __init__(self, parent):
         super(HorizontalHeaderMenuTabBar, self).__init__(parent)
         self.setContentsMargins(0, 0, 0, 0)
@@ -386,9 +386,9 @@ class HorizontalHeaderMenuTabBar(QtGui.QTabBar):
         super(HorizontalHeaderMenuTabBar, self).mousePressEvent(event)
 
 
-class HorizontalHeaderMenu(QtGui.QTabWidget):
+class HorizontalHeaderMenu(QtWidgets.QTabWidget):
     def __init__(self, model, index, parent=None):
-        QtGui.QTabWidget.__init__(self, parent)
+        QtWidgets.QTabWidget.__init__(self, parent)
         self.__index = index
         self.__model = model
         self.__filterWidget = None
@@ -400,57 +400,57 @@ class HorizontalHeaderMenu(QtGui.QTabWidget):
                            " border-top: 0px;"
                            "}")
         self.setContentsMargins(0, 0, 0, 0)
-        self.setSizePolicy(QtGui.QSizePolicy.Preferred,
-                           QtGui.QSizePolicy.Preferred)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Preferred,
+                           QtWidgets.QSizePolicy.Preferred)
         tabBar = HorizontalHeaderMenuTabBar(self)
         self.setTabBar(tabBar)
         self.__initSettingsMenu()
         self.__initFilterWidget()
-        self.connect(tabBar, QtCore.SIGNAL("close()"), self.hide)
-        self.connect(self.__model,
-                     QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                     self.__updatePinState)
-        self.connect(self.__model,
-                     QtCore.SIGNAL("filterChanged(int, QString)"),
-                     self.__filterChanged)
-        self.connect(self.__model,
-                     QtCore.SIGNAL("filterEnabled(int, QString)"),
-                     self.__filterChanged)
-        self.connect(self.__settingsMenu, QtCore.SIGNAL("settingClicked()"),
-                     self.hide)
-        self.currentChanged.connect(self.__updateTabSize)
+        # self.connect(tabBar, QtCore.SIGNAL("close()"), self.hide)
+        # self.connect(self.__model,
+        #              QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+        #              self.__updatePinState)
+        # self.connect(self.__model,
+        #              QtCore.SIGNAL("filterChanged(int, QString)"),
+        #              self.__filterChanged)
+        # self.connect(self.__model,
+        #              QtCore.SIGNAL("filterEnabled(int, QString)"),
+        #              self.__filterChanged)
+        # self.connect(self.__settingsMenu, QtCore.SIGNAL("settingClicked()"),
+        #              self.hide)
+        # self.currentChanged.connect(self.__updateTabSize)
         self.hide()
 
 
     def __initFilterWidget(self):
-        columnType, success = self.__model.headerData(self.__index,
+        columnType = self.__model.headerData(self.__index,
                                                       QtCore.Qt.Horizontal,
-                                                      HorizontalHeaderItem.DataTypeRole).toInt()
-        if not success:
+                                                      HorizontalHeaderItem.DataTypeRole)
+        if columnType is None:
             return
         attributeName = self.__model.headerData(self.__index,
                                                 QtCore.Qt.Horizontal,
-                                                HorizontalHeaderItem.AttributeNameRole).toString()
+                                                HorizontalHeaderItem.AttributeNameRole)
         proxyModel = HorizontalHeaderProxyModel(self.__model)
         self.__filterWidget = FilterWidgetFactory(columnType, attributeName,
                                                   parent=self)
         if self.__filterWidget is not None:
-            self.connect(self.__filterWidget, QtCore.SIGNAL("filterChanged(QString)"),
-                         self.__setFilter)
+            #self.connect(self.__filterWidget, QtCore.SIGNAL("filterChanged(QString)"),
+            #             self.__setFilter)
             self.addTab(self.__filterWidget, QtGui.QIcon(":column_filter"), "")
 
 
     def __setFilter(self, queryString):
         self.__model.setHeaderData(self.__index, QtCore.Qt.Horizontal,
-                                   QtCore.QVariant(queryString),
+                                   queryString,
                                    HorizontalHeaderItem.FilterDataRole)
 
 
     def __initSettingsMenu(self):
         self.__settingsMenu = HorizontalHeaderSettingMenu(self.__model,
                                                           self.__index, self)
-        self.__settingsMenu.setSizePolicy(QtGui.QSizePolicy.Ignored,
-                                          QtGui.QSizePolicy.Ignored)
+        self.__settingsMenu.setSizePolicy(QtWidgets.QSizePolicy.Ignored,
+                                          QtWidgets.QSizePolicy.Ignored)
         self.addTab(self.__settingsMenu, QtGui.QIcon(":column_settings"), "")
 
 
@@ -482,16 +482,16 @@ class HorizontalHeaderMenu(QtGui.QTabWidget):
 
 
     def __updateTabSize(self, index):
-        for idx in xrange(0, self.count()):
+        for idx in range(0, self.count()):
             if idx != index:
                 _widget = self.widget(idx)
-                _widget.setSizePolicy(QtGui.QSizePolicy.Ignored,
-                                      QtGui.QSizePolicy.Ignored)
+                _widget.setSizePolicy(QtWidgets.QSizePolicy.Ignored,
+                                      QtWidgets.QSizePolicy.Ignored)
         widget = self.widget(index)
         if widget is None:
             return
-        widget.setSizePolicy(QtGui.QSizePolicy.Preferred,
-                             QtGui.QSizePolicy.Preferred)
+        widget.setSizePolicy(QtWidgets.QSizePolicy.Preferred,
+                             QtWidgets.QSizePolicy.Preferred)
         widget.resize(widget.minimumSizeHint())
         widget.adjustSize()
         self.resize(widget.size())

@@ -14,16 +14,22 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.api.events.libevents import EventHandler
-from dff.api.vfs.libvfs import TagsManager
-from dff.api.filters.libfilters import Filter
-from dff.ui.gui.core.standarditems import StandardItem, HorizontalHeaderItem
-from dff.ui.gui.tags.tagsitems import TagItem
-from dff.ui.gui.core.standardmodels import StandardTreeModel
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.nodes.nodesmodels import NodesModel, NodesListModel
+#from dff.api.events.libevents import EventHandler
+#from dff.api.vfs.libvfs import TagsManager
+#from dff.api.filters.libfilters import Filter
+from core.standarditems import StandardItem, HorizontalHeaderItem
+from tags.tagsitems import TagItem
+from core.standardmodels import StandardTreeModel
+from nodes.nodesitems import NodeItem
+from nodes.nodesmodels import NodesModel, NodesListModel
+
+# XXX_XXX Mock Class
+class EventHandler():
+  def __init__(self):
+    pass
+
 
 
 class TagsNodesModel(NodesModel, EventHandler):
@@ -33,7 +39,7 @@ class TagsNodesModel(NodesModel, EventHandler):
     self.__tag = ""
     self.__rootItem = NodeItem(-1, None)
     self.__filteredRootItem = NodeItem(-1, None)
-    self.__filter = Filter("TagsNodesFilterModel")
+    #self.__filter = Filter("TagsNodesFilterModel")
     self.__items = {}
     self.__filteredItems = {}
     index = 0
@@ -124,8 +130,8 @@ class TagsTreeModel(StandardTreeModel, EventHandler):
     StandardTreeModel.__init__(self, parent, displayChildrenCount)
     EventHandler.__init__(self)
     self.__items = {}
-    TagsManager.get().connection(self)
-    self.connect(self, QtCore.SIGNAL("tagEvent(void)"), self.__tagEvent)
+    #TagsManager.get().connection(self)
+    #self.connect(self, QtCore.SIGNAL("tagEvent(void)"), self.__tagEvent)
     self.__rootItem = StandardItem(None)
     index = 0
     for column in TagsTreeModel.DefaultColumns:
@@ -164,7 +170,8 @@ class TagsTreeModel(StandardTreeModel, EventHandler):
     self.__rootItem = StandardItem(None)
     self.setRootItem(self.__rootItem)
     self.__items = {}
-    tags = TagsManager.get().tags()
+    tags = list()
+    #tags = TagsManager.get().tags()
     for tag in tags:
       tagId = tag.id()
       tagItem = TagItem(tagId, self.__rootItem)

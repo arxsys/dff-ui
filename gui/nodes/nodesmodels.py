@@ -14,27 +14,32 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.api.events.libevents import EventHandler
-from dff.api.vfs.libvfs import VFS
-from dff.api.filters.libfilters import Filter
+#from dff.api.events.libevents import EventHandler
+#from dff.api.vfs.libvfs import VFS
+#from dff.api.filters.libfilters import Filter
 
-from dff.ui.gui.nodes.nodesitems import NodeItem, NodeTreeItem
-from dff.ui.gui.core.standardmodels import StandardModel, StandardTreeModel
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
+from nodes.nodesitems import NodeItem, NodeTreeItem
+from core.standardmodels import StandardModel, StandardTreeModel
+from core.standarditems import HorizontalHeaderItem
 
 # XXX move it nodes?
-from dff.ui.gui.api.thumbnail import ThumbnailManager
+#from dff.ui.gui.api.thumbnail import ThumbnailManager
 
+
+# XXX_XXX Mock Class
+class EventHandler():
+  def __init__(self):
+    pass
 
 class NodesModel(StandardModel):
   def __init__(self, parent=None):
     super(NodesModel, self).__init__(parent)
-    thumbnailer = ThumbnailManager().getInstance()
-    self.__waitingMessage = QtCore.QString(self.tr("Rendering list..."))
-    self.__statusBar = QtGui.QApplication.instance().mainWindow().statusBar()
-    self.connect(thumbnailer, QtCore.SIGNAL("ThumbnailUpdate"), self.__thumbnailUpdate)
+    #thumbnailer = ThumbnailManager().getInstance()
+    self.__waitingMessage = self.tr("Rendering list...")
+    self.__statusBar = QtWidgets.QApplication.instance().mainWindow().statusBar()
+    #self.connect(thumbnailer, QtCore.SIGNAL("ThumbnailUpdate"), self.__thumbnailUpdate)
 
 
   def itemFromUid(self, uid):
@@ -70,16 +75,16 @@ class NodesListModel(NodesModel, EventHandler):
   def __init__(self, parent=None):
     NodesModel.__init__(self, parent)
     EventHandler.__init__(self)
-    self.VFS = VFS.Get()
-    self.VFS.connection(self)
+    #self.VFS = VFS.Get()
+    #self.VFS.connection(self)
     self.__rootUid = -1
     self.__rootItem = NodeItem(-1, None)
     self.__filteredRootItem = NodeItem(-1, None)
     self.__isRecursive = False
-    self.__filter = Filter("NodesFilterModel")
+    #self.__filter = Filter("NodesFilterModel")
     self.__items = {}
     self.__filteredItems = {}
-    self.connect(self, QtCore.SIGNAL("updateModel(long, long)"), self.__updateModel)
+    #self.connect(self, QtCore.SIGNAL("updateModel(long, long)"), self.__updateModel)
     index = 0
     for column in NodesListModel.DefaultColumns:
       self.addColumn(column, index)
@@ -87,7 +92,8 @@ class NodesListModel(NodesModel, EventHandler):
 
 
   def __del__(self):
-    self.VFS.deconnection(self)
+    pass
+    #self.VFS.deconnection(self)
 
 
   def flags(self, index):
@@ -138,7 +144,8 @@ class NodesListModel(NodesModel, EventHandler):
 
 
   def setRootUid(self, uid, isRecursive=False):
-    node = VFS.Get().getNodeById(uid)
+    #node = VFS.Get().getNodeById(uid)
+    node = None
     if node is None:
       return
     self.__rootUid = uid
@@ -176,13 +183,13 @@ class NodesListModel(NodesModel, EventHandler):
     if self.__isRecursive:
       # if recursive is enabled and node is under the current root recursion
       # the model is reset.
-      if puid == self.__rootUid or self.__items.has_key(puid):
+      if puid == self.__rootUid or puid in self.__items:
         self.__populate()
       return
     elif puid == self.__rootUid:
       # if node already exists, just emit dataChanged. It means that node now
       # has children.
-      if self.__items.has_key(uid):
+      if uid in self.__items:
         item = self.__items[uid]
         topLeft = self.createIndex(item.row(), 0, item)
         bottomRight = self.createIndex(item.row(), 1, item)
@@ -260,10 +267,10 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
   def __init__(self, parent=None, displayChildrenCount=False, createFiles=False):
     StandardTreeModel.__init__(self, parent, displayChildrenCount)
     EventHandler.__init__(self)
-    self.VFS = VFS.Get()
-    self.VFS.connection(self)
+    #self.VFS = VFS.Get()
+    #self.VFS.connection(self)
     #self.__thumbnailer
-    self.connect(self, QtCore.SIGNAL("registerTree(long)"), self.insertTree)
+    #self.connect(self, QtCore.SIGNAL("registerTree(long)"), self.insertTree)
     self.__rootItem = NodeTreeItem(-1, None)
     self.__items = {}
     self.__rootUid = -1
@@ -276,7 +283,8 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
     
 
   def __del__(self):
-    self.VFS.deconnection(self)
+    pass
+    #self.VFS.deconnection(self)
 
     
   def flags(self, index):
@@ -295,7 +303,8 @@ class NodesTreeModel(StandardTreeModel, EventHandler):
 
 
   def setRootUid(self, uid):
-    node = VFS.Get().getNodeById(uid)
+    #node = VFS.Get().getNodeById(uid)
+    node = None
     if node is None:
       return
     self.__rootUid = uid

@@ -13,15 +13,15 @@
 #  Jeremy MOUNIER <jmo@digital-forensic.org>
 
 
-from PyQt4.QtCore import SIGNAL, QAbstractItemModel, QModelIndex, QVariant, Qt, QDateTime, QString, QSize
-from PyQt4.QtGui import QColor, QIcon, QPixmap, QPainter, QStandardItemModel, QStandardItem, QApplication, QCursor, QPalette
+from qtpy.QtCore import SIGNAL, QAbstractItemModel, QModelIndex, Qt, QDateTime, QString, QSize
+from qtpy.QtGui import QColor, QIcon, QPixmap, QPainter, QStandardItemModel, QStandardItem, QApplication, QCursor, QPalette
 
-from dff.api.types.libtypes import Variant, DateTime 
-from dff.api.events.libevents import EventHandler
-from dff.api.vfs.libvfs import VFS, ABSOLUTE_ATTR_NAME, VecNode, VLink
-from dff.api.types.libtypes import typeId
+#from dff.api.types.libtypes import Variant, DateTime 
+#from dff.api.events.libevents import EventHandler
+#from dff.api.vfs.libvfs import VFS, ABSOLUTE_ATTR_NAME, VecNode, VLink
+#from dff.api.types.libtypes import typeId
 
-from dff.ui.gui.api.thumbnail import Thumbnailer
+f#rom dff.ui.gui.api.thumbnail import Thumbnailer
 
 from functools import cmp_to_key
 import locale
@@ -109,7 +109,7 @@ class NodeListModel(QAbstractItemModel):
     \return `True` if no error occured, `False` otherwise.
     """
     if not index.isValid():
-      return QVariant()
+      return None
     column = index.column()
     if role == Qt.CheckStateRole:
       if column == HNAME:
@@ -216,72 +216,72 @@ class NodeListModel(QAbstractItemModel):
   def data(self, index, role):
     attributes = self.availableAttributes()
     if not index.isValid():
-      return QVariant()
+      return None
     if index.row() > len(self._list) or index.row() < 0:
-      return QVariant()
+      return None
     try:
       node = self._rows[index.row()]
     except:
-      return QVariant()
+      return None
     if role == Qt.DisplayRole :
       attrpath = str(unicode(attributes[index.column()]).encode('utf-8'))
       if attrpath == "name":
-          return QVariant(QString.fromUtf8(node.name()))
+          return node.name()
       elif attrpath == "size":
-          return QVariant(node.size())
+          return node.size()
       elif attrpath == "extension":
-          return QVariant(QString.fromUtf8(node.extension()))
+          return node.extension()
       elif attrpath == "path":
           if isinstance(node, VLink):
-            return QVariant(QString.fromUtf8(node.linkPath()))
+            return node.linkPath()
           else:
-            return QVariant(QString.fromUtf8(node.path()))
+            return node.path()
       elif attrpath == "absolute":
           if isinstance(node, VLink):
-            return QVariant(QString.fromUtf8(node.linkAbsolute()))
+            return node.linkAbsolute()
           else:
-           return QVariant(QString.fromUtf8(node.absolute()))
+           return node.absolute()
       elif attrpath == "module":
 	  if node.fsobj():
-            return QVariant(QString.fromUtf8(node.fsobj().name))
-          return QVariant()
+            return node.fsobj().name
+          return None
       elif attrpath == "has children":
           if isinstance(node, VLink):
-            return QVariant(node.linkHasChildren())
+            return node.linkHasChildren()
           else:
-            return QVariant(node.hasChildren())
+            return node.hasChildren()
       elif attrpath == "child count":
           if isinstance(node, VLink):
-            return QVariant(node.linkChildCount())
+            return node.linkChildCount()
           else:
-            return QVariant(node.childCount())
+            return node.childCount()
       elif attrpath == "is deleted":
-          return QVariant(node.isDeleted())
+          return node.isDeleted()
       elif attrpath == "tags":
           #Special case tag use a delegate to draw boxes
-          return QVariant()
+          return None
       else:
 	try :
           val = node.attributesByName(attrpath, ABSOLUTE_ATTR_NAME)
 	except Exception as e:
 	   print "NodeListModel data can't get attribute " + attrpath + " by name " + str(e)
-	   return QVariant()
+	   return None
         if len(val) == 1:
           if val[0].type() == typeId.DateTime:
             dateTime = val[0].value()
             if dateTime:
               try:
-                return QVariant(str(dateTime))
+                return str(dateTime)
               except:
-                return QVariant()
+                return None
           elif val[0].type() == typeId.String:
-            return QVariant(QString.fromUtf8(val[0].value()))
+            return val[0].value()
           else:
-            return QVariant(val[0].value())
+            return val[0].value()
         else:
-          return QVariant()
+          return None
     if role == Qt.ToolTipRole :
-      return QVariant(QString.fromUtf8(node.name()))
+      return node.name()
 
     # Display icons
     if (role == Qt.DecorationRole) and (attributes[index.column()] == "name"):
@@ -318,25 +318,25 @@ class NodeListModel(QAbstractItemModel):
             rootPixmap = QPixmap(":root")
             painter.drawPixmap(0, 0, rootPixmap)
             painter.end()
-      return QVariant(QIcon(pixmap))
+      return QIcon(pixmap)
 	
     if role == Qt.BackgroundRole:
       if index.row() == self.activeSelection():
         palette = QPalette().color(QPalette.Highlight)
-        return QVariant(QColor(palette))
+        return QColor(palette)
     if role == Qt.ForegroundRole:
       if index.row() == self.activeSelection():
         palette = QPalette().color(QPalette.HighlightedText)
-        return QVariant(QColor(palette))
+        return QColor(palette)
       if node.isDeleted():
-        return  QVariant(QColor(Qt.red))
+        return  QColor(Qt.red)
 
     if (role == Qt.CheckStateRole) and (attributes[index.column()] == "name"):
       if node.uid() in self.selection.get():
         return Qt.Checked
       else:
         return Qt.Unchecked
-    return QVariant()
+    return None
 
   def setThumb(self, state):
     self._thumb = state
@@ -520,10 +520,10 @@ class NodeListModel(QAbstractItemModel):
 
   def headerData(self, section, orientation, role=Qt.DisplayRole):
     if role != Qt.DisplayRole:
-      return QVariant()
+      return None
     if orientation == Qt.Horizontal:
       attrs = self.availableAttributes()
-      return QVariant(attrs[section])
+      return attrs[section]
 
   def sort(self, column, order):
     """
@@ -702,79 +702,78 @@ class TimeLineNodeListModel(NodeListModel):
   def data(self, index, role): #XXX
     attributes = self.availableAttributes()
     if not index.isValid():
-      return QVariant()
+      return None
     if index.row() > len(self._list) or index.row() < 0:
-      return QVariant()
+      return None
     try:
       timeLineNode = self._rows[index.row()]
       node = timeLineNode.node()
     except:
-      return QVariant()
+      return None
     if role == Qt.DisplayRole :
       attrpath = str(unicode(attributes[index.column()]).encode('utf-8'))
       if attrpath == "name":
-          return QVariant(QString.fromUtf8(node.name()))
-
+          return node.name()
       elif attrpath == "time":
          try:
-           return QVariant(QString.fromUtf8(str(timeLineNode.attribute())))
+           return str(timeLineNode.attribute())
          except:
-           return QVariant()
+           return None
       elif attrpath == "time attribute":
-          return QVariant(QString.fromUtf8(timeLineNode.attributeName()))
+          return timeLineNode.attributeName()
 
       elif attrpath == "size":
-          return QVariant(node.size())
+          return node.size()
       elif attrpath == "extension":
-          return QVariant(QString.fromUtf8(node.extension()))
+          return node.extension()
       elif attrpath == "path":
           if isinstance(node, VLink):
-            return QVariant(QString.fromUtf8(node.linkPath()))
+            return node.linkPath()
           else:
-            return QVariant(QString.fromUtf8(node.path()))
+            return node.path()
       elif attrpath == "absolute":
           if isinstance(node, VLink):
-            return QVariant(QString.fromUtf8(node.linkAbsolute()))
+            return node.linkAbsolute()
           else:
-           return QVariant(QString.fromUtf8(node.absolute()))
+           return node.absolute()
       elif attrpath == "module":
 	  if node.fsobj():
-            return QVariant(QString.fromUtf8(node.fsobj().name))
-          return QVariant()
+            return node.fsobj().name
+          return None
       elif attrpath == "has children":
           if isinstance(node, VLink):
-            return QVariant(node.linkHasChildren())
+            return node.linkHasChildren()
           else:
-            return QVariant(node.hasChildren())
+            return node.hasChildren()
       elif attrpath == "child count":
           if isinstance(node, VLink):
-            return QVariant(node.linkChildCount())
+            return node.linkChildCount()
           else:
-            return QVariant(node.childCount())
+            return node.childCount()
       elif attrpath == "is deleted":
-          return QVariant(node.isDeleted())
+          return node.isDeleted()
       elif attrpath == "tags":
           #Special case tag use a delegate to draw boxes
-          return QVariant()
+          return None
       else:
 	try :
           val = node.attributesByName(attrpath, ABSOLUTE_ATTR_NAME)
 	except Exception as e:
 	   print "NodeListModel data can't get attribute " + attrpath + " by name " + str(e)
-	   return QVariant()
+	   return None
         if len(val) == 1:
           if val[0].type() == typeId.DateTime:
             dateTime = val[0].value()
             if dateTime:
-              return QVariant(str(dateTime))
+              return str(dateTime)
           elif val[0].type() == typeId.String:
-            return QVariant(QString.fromUtf8(val[0].value()))
+            return val[0].value()
           else:
-            return QVariant(val[0].value())
+            return val[0].value()
         else:
-          return QVariant()
+          return None
     if role == Qt.ToolTipRole :
-      return QVariant(QString.fromUtf8(node.name()))
+      return node.name()
 
     # Display icons
     if (role == Qt.DecorationRole) and (attributes[index.column()] == "name"):
@@ -811,25 +810,25 @@ class TimeLineNodeListModel(NodeListModel):
             rootPixmap = QPixmap(":root")
             painter.drawPixmap(0, 0, rootPixmap)
             painter.end()
-      return QVariant(QIcon(pixmap))
+      return QIcon(pixmap)
 	
     if role == Qt.BackgroundRole:
       if index.row() == self.activeSelection():
         palette = QPalette().color(QPalette.Highlight)
-        return QVariant(QColor(palette))
+        return QColor(palette)
     if role == Qt.ForegroundRole:
       if index.row() == self.activeSelection():
         palette = QPalette().color(QPalette.HighlightedText)
-        return QVariant(QColor(palette))
+        return QColor(palette)
       if node.isDeleted():
-        return  QVariant(QColor(Qt.red))
+        return  QColor(Qt.red)
 
     if (role == Qt.CheckStateRole) and (attributes[index.column()] == "name"):
       if node.uid() in self.selection.get():
         return Qt.Checked
       else:
         return Qt.Unchecked
-    return QVariant()
+    return None
 
 
   def setDefaultAttributes(self):

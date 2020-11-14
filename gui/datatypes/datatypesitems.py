@@ -13,10 +13,10 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.api.datatype.libdatatype import DataTypeManager
-from dff.ui.gui.core.standarditems import StandardItem
+#from dff.api.datatype.libdatatype import DataTypeManager
+from core.standarditems import StandardItem
 
 
 class DatatypeItem(StandardItem):
@@ -33,19 +33,18 @@ class DatatypeItem(StandardItem):
   def sizeHint(self, attribute):
     if attribute == "name":
       data = self.display(attribute)
-      if data.isValid():
+      if data is not None:
         fm = QtGui.QApplication.instance().fontMetrics()
-        width = fm.width(data.toString())
+        width = fm.width(data)
         sizeHint = QtCore.QSize(width+100, 16)
-        return QtCore.QVariant(sizeHint)
-    return QtCore.QVariant()
+        return sizeHint
+    return None
 
   
   def display(self, attribute):
     if attribute == "name":
-      name = QtCore.QString.fromUtf8(self.__name)
-      return QtCore.QVariant(name)
-    return QtCore.QVariant()
+      return self.__name
+    return None
 
 
   def displayChildrenCount(self, attribute):
@@ -55,7 +54,7 @@ class DatatypeItem(StandardItem):
         count += child.nodesCount()
     else:
       count = self.nodesCount()
-    return QtCore.QVariant(count)
+    return count
 
 
   def name(self):

@@ -14,16 +14,22 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtWidgets
 
-from dff.api.events.libevents import EventHandler
-from dff.api.datatype.libdatatype import DataTypeManager
-from dff.api.filters.libfilters import Filter
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
-from dff.ui.gui.datatypes.datatypesitems import DatatypeItem
-from dff.ui.gui.core.standardmodels import StandardTreeModel
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.nodes.nodesmodels import NodesModel, NodesListModel
+#from dff.api.events.libevents import EventHandler
+#from dff.api.datatype.libdatatype import DataTypeManager
+#from dff.api.filters.libfilters import Filter
+from core.standarditems import HorizontalHeaderItem
+from datatypes.datatypesitems import DatatypeItem
+from core.standardmodels import StandardTreeModel
+from nodes.nodesitems import NodeItem
+from nodes.nodesmodels import NodesModel, NodesListModel
+
+# XXX_XXX Mock Class
+class EventHandler():
+  def __init__(self):
+    pass
+
 
 
 class DatatypesNodesModel(NodesModel, EventHandler):  
@@ -33,7 +39,7 @@ class DatatypesNodesModel(NodesModel, EventHandler):
     self.__datatypes = []
     self.__rootItem = NodeItem(-1, None)
     self.__filteredRootItem = NodeItem(-1, None)
-    self.__filter = Filter("DatatypesNodesFilterModel")
+    #self.__filter = Filter("DatatypesNodesFilterModel")
     self.__items = {}
     self.__filteredItems = {}
     self.__isRecursive = False
@@ -127,9 +133,9 @@ class DatatypesTreeModel(StandardTreeModel, EventHandler):
     StandardTreeModel.__init__(self, parent, displayChildrenCount)
     EventHandler.__init__(self)
     self.__items = {}
-    self.__dataTypes = DataTypeManager.Get()
-    self.__dataTypes.connection(self)
-    self.connect(self, QtCore.SIGNAL("registerDatatype"), self.insertTree)
+    #self.__dataTypes = DataTypeManager.Get()
+    #self.__dataTypes.connection(self)
+    #self.connect(self, QtCore.SIGNAL("registerDatatype"), self.insertTree)
     self.__rootItem = DatatypeItem("", None)
     index = 0
     for column in DatatypesTreeModel.DefaultColumns:
@@ -188,7 +194,8 @@ class DatatypesTreeModel(StandardTreeModel, EventHandler):
     self.__rootItem = DatatypeItem("", None)
     self.setRootItem(self.__rootItem)
     self.__items = {}
-    datatypes = self.__dataTypes.existingTypes()
+    #datatypes = self.__dataTypes.existingTypes()
+    datatypes = []
     for datatype in datatypes:
       # An item can have several matching types. Currently, all types are
       # concatenated and space separated.

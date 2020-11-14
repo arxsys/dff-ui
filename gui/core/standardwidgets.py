@@ -15,11 +15,11 @@
 
 import re
 
-from PyQt4 import QtCore, QtGui
-from dff.ui.gui.core.standarditems import HorizontalHeaderItem
+from qtpy import QtCore, QtGui, QtWidgets
+from core.standarditems import HorizontalHeaderItem
 
 
-class ScrollableLabel(QtGui.QLabel):
+class ScrollableLabel(QtWidgets.QLabel):
   def __init__(self, text, parent=None):
     super(ScrollableLabel, self).__init__(text, parent)
     self.__pressed = False
@@ -78,23 +78,22 @@ def FilterWidgetFactory(attributeType, attributeName,
   return None
 
 
-class ComparisonWidget(QtGui.QComboBox):
+class ComparisonWidget(QtWidgets.QComboBox):
   def __init__(self, parent=None):
     super(ComparisonWidget, self).__init__(parent)
     self.setFrame(False)
-    self.insertItem(0, self.tr("Equals to"), QtCore.QVariant("=="))
-    self.insertItem(1, self.tr("Not equals to"), QtCore.QVariant("!="))
-    self.insertItem(2, self.tr("Less than"), QtCore.QVariant("<"))
-    self.insertItem(3, self.tr("Less than or equals to"), QtCore.QVariant("<="))
-    self.insertItem(4, self.tr("Greater than"), QtCore.QVariant(">"))
-    self.insertItem(5, self.tr("Greater than or equals to"),
-                    QtCore.QVariant(">="))
-    self.insertItem(6, self.tr("Between ... And ..."), QtCore.QVariant("ba"))
-    self.insertItem(7, self.tr("In the following list"), QtCore.QVariant("in"))
+    self.insertItem(0, self.tr("Equals to"), "==")
+    self.insertItem(1, self.tr("Not equals to"), "!=")
+    self.insertItem(2, self.tr("Less than"), "<")
+    self.insertItem(3, self.tr("Less than or equals to"), "<=")
+    self.insertItem(4, self.tr("Greater than"), ">")
+    self.insertItem(5, self.tr("Greater than or equals to"), ">=")
+    self.insertItem(6, self.tr("Between ... And ..."), "ba")
+    self.insertItem(7, self.tr("In the following list"), "in")
 
         
   def setOperator(self, operator):
-    idx = self.findData(QtCore.QVariant(operator))
+    idx = self.findData(operator)
     if idx == -1:
         return
     self.setCurrentIndex(idx)
@@ -102,10 +101,10 @@ class ComparisonWidget(QtGui.QComboBox):
 
   def operator(self):
     idx = self.currentIndex()
-    return str(self.itemData(idx).toString())
+    return self.itemData(idx)
 
 
-class NumberWidget(QtGui.QLineEdit):
+class NumberWidget(QtWidgets.QLineEdit):
   def __init__(self, parent=None):
     super(NumberWidget, self).__init__(parent)
     self.setFrame(False)
@@ -161,19 +160,19 @@ class NumberWidget(QtGui.QLineEdit):
     return self.text()
 
 
-class SizeWidget(QtGui.QWidget):
+class SizeWidget(QtWidgets.QWidget):
   def __init__(self, parent=None):
     super(SizeWidget, self).__init__(parent)
     self.__rhs = False
     self.setContentsMargins(0, 0, 0, 0)
-    layout = QtGui.QHBoxLayout()
+    layout = QtWidgets.QHBoxLayout()
     self.setLayout(layout)
     layout.setSpacing(0)
     layout.setContentsMargins(0, 0, 0, 0)
-    self.__size = QtGui.QLineEdit()
+    self.__size = QtWidgets.QLineEdit()
     self.__size.setFrame(False)
     self.__size.textEdited.connect(self.__sizeChanged)
-    self.__sizeUnit = QtGui.QComboBox(self)
+    self.__sizeUnit = QtWidgets.QComboBox(self)
     self.__sizeUnit.setFrame(False)
     self.__sizeUnit.insertItem(0, self.tr("Bytes"))
     self.__sizeUnit.insertItem(1, self.tr("KiB"))
@@ -254,26 +253,25 @@ class SizeWidget(QtGui.QWidget):
     self.emit(QtCore.SIGNAL("valueChanged()"))
 
 
-class StringWidget(QtGui.QWidget):
+class StringWidget(QtWidgets.QWidget):
   def __init__(self, parent=None):
     super(StringWidget, self).__init__(parent)
     self.setContentsMargins(0, 0, 0, 0)
-    layout = QtGui.QHBoxLayout()
+    layout = QtWidgets.QHBoxLayout()
     self.setLayout(layout)
     layout.setSpacing(0)
     layout.setContentsMargins(0, 0, 0, 0)
     # manage startswith, endswith, contains, equals
-    self.__pattern = QtGui.QLineEdit()
+    self.__pattern = QtWidgets.QLineEdit()
     self.__pattern.setFrame(False)
     self.__pattern.textEdited.connect(self.__patternChanged)
     self.__pattern.setPlaceholderText("Pattern...")
-    self.__patternType = QtGui.QComboBox(self)
+    self.__patternType = QtWidgets.QComboBox(self)
     self.__patternType.setFrame(False)
-    self.__patternType.insertItem(0, self.tr("Fixed"), QtCore.QVariant('"'))
-    self.__patternType.insertItem(1, self.tr("RegExp"), QtCore.QVariant('/'))
-    self.__patternType.insertItem(2, self.tr("Wildcard"), QtCore.QVariant('$'))
-    self.__patternType.insertItem(3, self.tr("Approximative"),
-                                  QtCore.QVariant('~'))
+    self.__patternType.insertItem(0, self.tr("Fixed"), '"')
+    self.__patternType.insertItem(1, self.tr("RegExp"), '/')
+    self.__patternType.insertItem(2, self.tr("Wildcard"), '$')
+    self.__patternType.insertItem(3, self.tr("Approximative"), ('~'))
     self.__patternType.activated.connect(self.__patternChanged)
     layout.addWidget(self.__pattern)
     layout.addWidget(self.__patternType)
@@ -298,9 +296,9 @@ class StringWidget(QtGui.QWidget):
     if not len(text):
       return ""
     idx = self.__patternType.currentIndex()
-    pattern = "{}{}{}".format(self.__patternType.itemData(idx).toString(),
+    pattern = "{}{}{}".format(self.__patternType.itemData(idx),
                               self.__pattern.text(),
-                              self.__patternType.itemData(idx).toString())
+                              self.__patternType.itemData(idx))
     return pattern
 
 
@@ -308,18 +306,18 @@ class StringWidget(QtGui.QWidget):
     self.emit(QtCore.SIGNAL("valueChanged()"))
 
 
-class FilterWidget(QtGui.QWidget):
+class FilterWidget(QtWidgets.QWidget):
   def __init__(self, attributeName, orientation=QtCore.Qt.Vertical, parent=None):
     self.__attributeName = attributeName
-    QtGui.QWidget.__init__(self, parent)
+    QtWidgets.QWidget.__init__(self, parent)
     if orientation == QtCore.Qt.Vertical:
-      layout = QtGui.QVBoxLayout(self)
+      layout = QtWidgets.QVBoxLayout(self)
     else:
-      layout = QtGui.QHBoxLayout(self)
+      layout = QtWidgets.QHBoxLayout(self)
     layout.setSpacing(3)
     layout.setContentsMargins(3, 3, 3, 3)
     self.setLayout(layout)
-    self.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+    self.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
 
   def _attributeName(self):
@@ -396,15 +394,15 @@ class ComparisonFilterWidget(FilterWidget):
 
   def __setLhsWidget(self, widget):
     self.__lhsWidget = widget
-    self.connect(self.__lhsWidget, QtCore.SIGNAL("valueChanged()"),
-                 self._filterChanged)
+    #self.connect(self.__lhsWidget, QtCore.SIGNAL("valueChanged()"),
+    #             self._filterChanged)
     self.layout().addWidget(self.__lhsWidget)
 
 
   def __setRhsWidget(self, widget):
     self.__rhsWidget = widget
-    self.connect(self.__rhsWidget, QtCore.SIGNAL("valueChanged()"),
-                 self._filterChanged)
+    #self.connect(self.__rhsWidget, QtCore.SIGNAL("valueChanged()"),
+    #             self._filterChanged)
     self.layout().addWidget(self.__rhsWidget)
 
 
@@ -456,7 +454,7 @@ class StringFilterWidget(FilterWidget):
                orientation=QtCore.Qt.Vertical,
                parent=None):
     super(StringFilterWidget, self).__init__(attributeName, orientation, parent)
-    self.__operator = QtGui.QComboBox(self)
+    self.__operator = QtWidgets.QComboBox(self)
     self.__operator.insertItem(0, self.tr("Matches"))
     self.__operator.setFrame(False)
     #self.__operator.insertItem(1, self.tr("In"))
@@ -464,8 +462,8 @@ class StringFilterWidget(FilterWidget):
     #self.connect(self.__operator,
     #             QtCore.SIGNAL("activated(int)"),
     #             self._filterChanged)
-    self.connect(self.__pattern, QtCore.SIGNAL("valueChanged()"),
-                 self._filterChanged)
+    #self.connect(self.__pattern, QtCore.SIGNAL("valueChanged()"),
+    #             self._filterChanged)
     self.layout().addWidget(self.__operator)
     self.layout().addWidget(self.__pattern)
 

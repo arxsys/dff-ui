@@ -14,10 +14,10 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.ui.gui.datatypes.datatypesmodels import DatatypesTreeModel
-from dff.ui.gui.core.standardviews import StandardTreeView
+from datatypes.datatypesmodels import DatatypesTreeModel
+from core.standardviews import StandardTreeView
 
 
 class DatatypesTreeView(StandardTreeView):

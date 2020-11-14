@@ -13,10 +13,10 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.api.vfs.libvfs import TagsManager
-from dff.ui.gui.core.standarditems import StandardItem
+#from dff.api.vfs.libvfs import TagsManager
+from core.standarditems import StandardItem
 
 
 class TagItem(StandardItem):
@@ -36,12 +36,12 @@ class TagItem(StandardItem):
   def sizeHint(self, attribute):
     if attribute == "name":
       data = self.display(attribute)
-      if data.isValid():
+      if data is not None:
         fm = QtGui.QApplication.instance().fontMetrics()
-        width = fm.width(data.toString())
+        width = fm.width(data)
         sizeHint = QtCore.QSize(width+100, 16)
-        return QtCore.QVariant(sizeHint)
-    return QtCore.QVariant()
+        return sizeHint
+    return None
 
 
   def display(self, attribute):
@@ -49,8 +49,8 @@ class TagItem(StandardItem):
       tag = TagsManager.get().tag(self.__tagId)
       if tag is not None:
         name = QtCore.QString.fromUtf8(tag.name())
-        return QtCore.QVariant(name)
-    return QtCore.QVariant()
+        return name
+    return None
 
 
   def foreground(self, attribute):
@@ -61,10 +61,10 @@ class TagItem(StandardItem):
         # calculate gray brightness
         g = color.r * 0.299 + color.g * 0.587 + color.b * 0.114
         if g < 128:
-          return QtCore.QVariant(QtGui.QColor(QtCore.Qt.white))
+          return QtGui.QColor(QtCore.Qt.white)
         else:
-          return QtCore.QVariant(QtGui.QColor(QtCore.Qt.black))
-    return QtCore.QVariant()
+          return QtGui.QColor(QtCore.Qt.black)
+    return None
 
   
   def background(self, attribute):
@@ -72,10 +72,10 @@ class TagItem(StandardItem):
       tag = TagsManager.get().tag(self.__tagId)
       if tag is not None:
         color = tag.color()
-        return QtCore.QVariant(QtGui.QColor(color.r, color.g, color.b))
-    return QtCore.QVariant()
+        return QtGui.QColor(color.r, color.g, color.b)
+    return None
 
   
   def displayChildrenCount(self, attribute):
     count = TagsManager.get().nodesCount(self.__tagId)
-    return QtCore.QVariant(count)
+    return count

@@ -14,16 +14,20 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.api.events.libevents import EventHandler
-from dff.api.taskmanager.processus import ProcessusManager 
-from dff.ui.gui.core.standarditems import StandardItem, HorizontalHeaderItem
-from dff.ui.gui.processus.processusitems import ProcessusItem, ProcessusCategory
-from dff.ui.gui.core.standardmodels import StandardTreeModel
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.nodes.nodesmodels import NodesModel, NodesListModel
+#from dff.api.events.libevents import EventHandler
+#from dff.api.taskmanager.processus import ProcessusManager 
+from core.standarditems import StandardItem, HorizontalHeaderItem
+from processus.processusitems import ProcessusItem, ProcessusCategory
+from core.standardmodels import StandardTreeModel
+from nodes.nodesitems import NodeItem
+from nodes.nodesmodels import NodesModel, NodesListModel
 
+# XXX_XXX Mock Class
+class EventHandler():
+  def __init__(self):
+    pass
 
 class ProcessusTreeModel(StandardTreeModel, EventHandler):
   DefaultColumns = [HorizontalHeaderItem(0, "name",
@@ -40,8 +44,8 @@ class ProcessusTreeModel(StandardTreeModel, EventHandler):
     StandardTreeModel.__init__(self, parent, displayChildrenCount)
     EventHandler.__init__(self)
     self.__items = {}
-    ProcessusManager()
-    self.connect(self, QtCore.SIGNAL("moduleEvent(void)"), self.__moduleEvent)
+    #ProcessusManager()
+    #self.connect(self, QtCore.SIGNAL("moduleEvent(void)"), self.__moduleEvent)
     self.__rootItem = StandardItem(None)
     index = 0
     for column in ProcessusTreeModel.DefaultColumns:
@@ -111,7 +115,8 @@ class ProcessusTreeModel(StandardTreeModel, EventHandler):
     self.__rootItem = StandardItem(None)
     self.setRootItem(self.__rootItem)
     self.__items = {}
-    processusManager = ProcessusManager()
+    #processusManager = ProcessusManager()
+    processusManager = list()
     for processus in processusManager:
       name = processus.name
       if not self.__items.has_key(name):

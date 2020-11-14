@@ -15,10 +15,10 @@
 from datetime import datetime
 import time
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
-from dff.api.taskmanager.processus import ProcessusManager 
-from dff.ui.gui.core.standarditems import StandardItem
+#from dff.api.taskmanager.processus import ProcessusManager 
+from core.standarditems import StandardItem
 
 
 class ProcessusCategory(StandardItem):
@@ -34,25 +34,25 @@ class ProcessusCategory(StandardItem):
   def display(self, attribute):
     if attribute == "name":
       name = QtCore.QString.fromUtf8(self.__name)
-      return QtCore.QVariant(name)
-    return QtCore.QVariant()
+      return name
+    return None
 
 
   def sizeHint(self, attribute):
     data = self.display(attribute)
     if data.isValid():
       fm = QtGui.QApplication.instance().fontMetrics()
-      width = fm.width(data.toString())
+      width = fm.width(data)
       sizeHint = QtCore.QSize(width+100, 16)
-      return QtCore.QVariant(sizeHint)
-    return QtCore.QVariant()
+      return sizeHint
+    return None
 
 
   def displayChildrenCount(self, attribute):
     if attribute == "name":
       count = self.childCount()
-      return QtCore.QVariant(count)
-    return QtCore.QVariant()
+      return count
+    return None
 
   
 
@@ -74,19 +74,19 @@ class ProcessusItem(StandardItem):
     data = self.display(attribute)
     if data.isValid():
       fm = QtGui.QApplication.instance().fontMetrics()
-      width = fm.width(data.toString())
+      width = fm.width(data)
       sizeHint = QtCore.QSize(width+100, 16)
-      return QtCore.QVariant(sizeHint)
-    return QtCore.QVariant()
+      return sizeHint
+    return None
 
 
   def display(self, attribute):
     if attribute == "name":
       processus = ProcessusManager()[self.__pid]
       name = QtCore.QString.fromUtf8(processus.name)
-      return QtCore.QVariant(name)
+      return name
     if attribute == "pid":
-      return QtCore.QVariant(self.__pid)
+      return self.__pid
     if attribute == "status":
       processus = ProcessusManager()[self.__pid]
       info = processus.stateinfo
@@ -94,10 +94,10 @@ class ProcessusItem(StandardItem):
         status = processus.state + ": " + processus.stateinfo
       else:
         status = processus.state
-      return QtCore.QVariant(status)
+      return status
     if attribute == "duration":
       return self.__processusDuration()
-    return QtCore.QVariant()
+    return None
 
 
   def __processusDuration(self):
@@ -105,10 +105,10 @@ class ProcessusItem(StandardItem):
     if processus.timestart:
       stime = datetime.fromtimestamp(processus.timestart)
       if processus.timeend:
-  	etime = datetime.fromtimestamp(processus.timeend)
+  	    etime = datetime.fromtimestamp(processus.timeend)
       else:
-	etime = datetime.fromtimestamp(time.time())
+	      etime = datetime.fromtimestamp(time.time())
       delta = etime - stime
     else:
       delta = 0
-    return QtCore.QVariant(str(delta))
+    return str(delta)

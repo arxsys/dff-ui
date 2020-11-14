@@ -12,11 +12,11 @@
 # Author(s):
 #  Jeremy MOUNIER <jmo@digital-forensic.org>
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qtpy import QtCore, QtGui
+#from PyQt4.QtCore import *
+#from PyQt4.QtGui import *
 
-from dff.api.vfs.libvfs import VLink
+#from dff.api.vfs.libvfs import VLink
 
 DEFAULT_SIZE = 16
 

@@ -15,9 +15,14 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.api.filters.libfilters import Filter
+#from dff.api.filters.libfilters import Filter
+
+# XXX_XXX Mock Class
+class Filter():
+  def __init__(self, name):
+    self.name = name
 
 class StandardItem(object):
   """
@@ -96,7 +101,7 @@ class StandardItem(object):
     if role == QtCore.Qt.CheckStateRole:
       return self.checkState(attribute)
     if role == StandardItem.RecursionRole:
-      return QtCore.QVariant(self.__isRecursive)
+      return self.__isRecursive
     if role == QtCore.Qt.DisplayRole:
       return self.display(attribute)
     if role == QtCore.Qt.DecorationRole:
@@ -111,7 +116,7 @@ class StandardItem(object):
       return self.background(attribute)
     if role == QtCore.Qt.SizeHintRole:
       return self.sizeHint(attribute)
-    return QtCore.QVariant()
+    return None
   
 
   def setData(self, attribute, value, role):
@@ -120,7 +125,7 @@ class StandardItem(object):
       success = self.setCheckState(attribute)
       return (success, None)
     if role == StandardItem.TagRole:
-      return self.setTag(str(value.toString()))
+      return self.setTag(str(value))
     if role == StandardItem.RecursionRole:
       self.__isRecursive = value
       if self.__isRecursive:
@@ -164,8 +169,8 @@ class StandardItem(object):
 
   def checkState(self, attribute):
     if attribute != self.checkableAttribute():
-      return QtCore.QVariant()
-    return QtCore.QVariant(self.__checkState)
+      return None
+    return self.__checkState
     
   
   def setCheckState(self, attribute):
@@ -183,31 +188,31 @@ class StandardItem(object):
 
 
   def sizeHint(self, attribute):
-    return QtCore.QVariant()
+    return None
 
 
   def display(self, attribute):
-    return QtCore.QVariant()
+    return None
 
 
   def displayChildrenCount(self, attribute):
-    return QtCore.QVariant()
+    return None
 
 
   def decoration(self, attribute):
-    return QtCore.QVariant()
+    return None
   
 
   def toolTip(self, attribute):
-    return QtCore.QVariant()
+    return None
 
 
   def foreground(self, attribute):
-    return QtCore.QVariant()  
+    return None  
 
 
   def background(self, attribute):
-    return QtCore.QVariant()
+    return None
 
 
   def checkableAttribute(self):
@@ -247,7 +252,7 @@ class StandardItem(object):
       displaySize = qobj.tr("%1 KiB").arg(QtCore.QLocale().toString(size / kb))
     else:
       displaySize = qobj.tr("%1 bytes").arg(QtCore.QLocale().toString(size))
-    return QtCore.QVariant(displaySize)
+    return displaySize
 
 
 class HorizontalHeaderItem(object):
@@ -318,44 +323,44 @@ class HorizontalHeaderItem(object):
     if role == QtCore.Qt.DisplayRole or \
        role == HorizontalHeaderItem.AttributeNameRole:
       if self.__dataType == HorizontalHeaderItem.CheckedType:
-        name = QtCore.QString("")
+        name = ""
       else:
-        name = QtCore.QString.fromUtf8(self.rawData(role))
-      return QtCore.QVariant(name)
+        name = self.rawData(role)
+      return name
     if role == QtCore.Qt.SizeHintRole:
       return self.sizeHint()
     if role == HorizontalHeaderItem.DataTypeRole:
-      return QtCore.QVariant(self.__dataType)
+      return self.__dataType
     if role == HorizontalHeaderItem.PinRole:
-      return QtCore.QVariant(self.__pinState)
+      return self.__pinState
     if role == HorizontalHeaderItem.FilteredRole:
-      return QtCore.QVariant(self.__filtered)
+      return self.__filtered
     if role == HorizontalHeaderItem.FilterDataRole:
-      return QtCore.QVariant(self.__filterString)
+      return self.__filterString
     if role == HorizontalHeaderItem.SortOrderRole:
-      return QtCore.QVariant(self.__sortOrder)
+      return self.__sortOrder
     if role == HorizontalHeaderItem.ResizeRole:
-      return QtCore.QVariant(self.__resizable)
+      return self.__resizable
     if role == HorizontalHeaderItem.VisualIndexRole:
-      return QtCore.QVariant(self.__visualIndex)
-    return QtCore.QVariant()
+      return self.__visualIndex
+    return None
 
 
   def setData(self, value, role):
     if role == HorizontalHeaderItem.AliasRole:
-      self.__aliasName = value.toString()
+      self.__aliasName = value
       args = (self.__index)
       return (True, "aliasNameChanged()", args)
     if role == HorizontalHeaderItem.PinRole:
-      pinState, success = value.toInt()
-      if success:
+      pinState = value
+      if pinState is not None:
         self.__pinState = pinState
         args = (self.__index, self.__pinState)
         return (True, "columnPinStateChanged(int, int)", args)
     if role == HorizontalHeaderItem.FilterDataRole:
-      self.__filterString = value.toString()
+      self.__filterString = value
       try:
-        self.__filter.compile(str(self.__filterString.toUtf8()))
+        self.__filter.compile(self.__filterString)
         self.__filtered = True
         args = (self.__index, self.__filterString)
         return (True, "filterEnabled(int, QString)", args)
@@ -364,14 +369,14 @@ class HorizontalHeaderItem(object):
         args = (self.__index, self.__filterString)
         return (True, "filterChanged(int, QString)", args)
     if role == HorizontalHeaderItem.SortOrderRole:
-      sortOrder, success = value.toInt()
-      if success:
+      sortOrder = value
+      if sortOrder:
         self.__sortOrder = sortOrder
         args = (self.__index, self.__sortOrder)
         return (True, "sortChanged(int, int)", args)
     if role == HorizontalHeaderItem.VisualIndexRole:
-      visualIndex, success = value.toInt()
-      if success:
+      visualIndex = value
+      if value is not None:
         self.__visualIndex = visualIndex
         return (True, None, None)
     return (False, None, None)
@@ -379,12 +384,12 @@ class HorizontalHeaderItem(object):
 
   def sizeHint(self):
     data = self.data(QtCore.Qt.DisplayRole)
-    if data.isValid():
-      fm = QtGui.QApplication.instance().fontMetrics()
+    if data is not None:
+      fm = QtWidgets.QApplication.instance().fontMetrics()
       if self.__dataType == HorizontalHeaderItem.CheckedType:
         width = 15
       else:
-        width = fm.width(data.toString()) + fm.averageCharWidth() * 5 + 60
+        width = fm.width(str(data)) + fm.averageCharWidth() * 5 + 60
       sizeHint = QtCore.QSize(width, fm.height()+10)
-      return QtCore.QVariant(sizeHint)
-    return QtCore.QVariant()
+      return sizeHint
+    return None

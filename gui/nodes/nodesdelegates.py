@@ -12,9 +12,9 @@
 # Author(s):
 #  Frederic Baguelin <fba@arxsys.fr>
 
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.api.vfs.libvfs import VFS
-from dff.ui.gui.core.standarddelegates import StandardDelegate, StandardTreeDelegate, StandardIconDelegate
+from nodes.nodesitems import NodeItem
+#from dff.api.vfs.libvfs import VFS
+from core.standarddelegates import StandardDelegate, StandardTreeDelegate, StandardIconDelegate
 
 
 class NodesDelegate(StandardDelegate):

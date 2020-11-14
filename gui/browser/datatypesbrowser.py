@@ -13,15 +13,15 @@
 #  Frederic Baguelin <fba@arxsys.fr>
 
 
-from PyQt4 import QtGui, QtCore
+from qtpy import QtWidgets, QtCore
 
-from dff.ui.gui.core.standardviews import StandardFrozenView
-from dff.ui.gui.nodes.nodesitems import NodeItem
-from dff.ui.gui.datatypes.datatypesviews import DatatypesTreeView
-from dff.ui.gui.datatypes.datatypesmodels import DatatypesNodesModel
-from dff.ui.gui.nodes.nodesviews import NodesDetailedView, NodesIconView
-from dff.api.taskmanager.taskmanager import TaskManager 
-from dff.api.types.libtypes import typeId, ConfigManager
+from core.standardviews import StandardFrozenView
+from nodes.nodesitems import NodeItem
+from datatypes.datatypesviews import DatatypesTreeView
+from datatypes.datatypesmodels import DatatypesNodesModel
+from nodes.nodesviews import NodesDetailedView, NodesIconView
+#from dff.api.taskmanager.taskmanager import TaskManager 
+#from dff.api.types.libtypes import typeId, ConfigManager
 
 
 # Manage zoom / views switch / column add / ...
@@ -39,17 +39,17 @@ class AbstractBrowser():
         pass
 
 
-class DatatypesBrowser(QtGui.QWidget):
+class DatatypesBrowser(QtWidgets.QWidget):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
         self.setContentsMargins(0, 0, 0, 0)
-        self.__taskManager = TaskManager()
-        self.__modulesConfig = ConfigManager.Get()
-        self.__splitter = QtGui.QSplitter()
-        layout = QtGui.QVBoxLayout()
+        #self.__taskManager = TaskManager()
+        #self.__modulesConfig = ConfigManager.Get()
+        self.__splitter = QtWidgets.QSplitter()
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
 
-        viewsLayout = QtGui.QHBoxLayout()
+        viewsLayout = QtWidgets.QHBoxLayout()
         self.__datatypesTreeView = DatatypesTreeView()
         self.__nodesDetailedView = StandardFrozenView(NodesDetailedView)
         self.__nodesDetailedView.setModel(DatatypesNodesModel())
@@ -65,7 +65,7 @@ class DatatypesBrowser(QtGui.QWidget):
         self.__nodesIconView.hide()
         viewsLayout.addWidget(self.__splitter)
         self.layout().addLayout(viewsLayout)
-        #zoomSlider = QtGui.QSlider(QtCore.Qt.Horizontal)
+        #zoomSlider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         #zoomSlider.setTickInterval(1)
         #zoomSlider.setMinimum(1)
         #zoomSlider.setMaximum(NodesIconView.MaximumZoomFactor)
@@ -73,11 +73,15 @@ class DatatypesBrowser(QtGui.QWidget):
 
     
     def treeViewClicked(self, index):
+        if not index.isValid():
+            return
         datatypes = self.__datatypesTreeView.model().datatypesFromIndex(index)
         self.__nodesDetailedView.model().setDatatypes(datatypes)
 
 
     def __doubleClicked(self, index):
+        if not index.isValid():
+            return
         node = index.model().nodeFromIndex(index)
         if node is None:
             return
@@ -88,13 +92,13 @@ class DatatypesBrowser(QtGui.QWidget):
             compatibleModules = node.compatibleModules()
             if len(compatibleModules) == 1:
                 module = compatibleModules[0]
-                message = QtGui.QMessageBox(QtGui.QMessageBox.Question,
+                message = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,
                                             self.tr("About to apply " + module),
                                             self.tr("Do you want to apply " + module + "?"),
-                                            QtGui.QMessageBox.Yes|QtGui.QMessageBox.No,
+                                            QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No,
                                             self)
                 action = message.exec_()
-                if action == QtGui.QMessageBox.Yes:
+                if action == QtWidgets.QMessageBox.Yes:
                     config = self.__modulesConfig.configByName(module)
                     nodeArguments = config.argumentsByType(typeId.Node)
                     if len(nodeArguments) == 1:
@@ -104,4 +108,4 @@ class DatatypesBrowser(QtGui.QWidget):
                         self.__taskManager.add(module, args, ["thread", "gui"])
             else:
                 for module in compatibleModules:
-                    print module
+                    print(module)

@@ -21,14 +21,14 @@
 #   if enabled, save associated model for each tree item / searches
 
 
-from PyQt4 import QtCore, QtGui
+from qtpy import QtCore, QtGui, QtWidgets
 
-from dff.ui.gui.core.standarditems import StandardItem, HorizontalHeaderItem
-from dff.ui.gui.core.standardmenus import HorizontalHeaderMenu, ViewAppearanceMenu, ScreenshotMenu
-from dff.ui.gui.core.standarddelegates import StandardDelegate, StandardTreeDelegate, StandardIconDelegate, StandardListDelegate
+from core.standarditems import StandardItem, HorizontalHeaderItem
+from core.standardmenus import HorizontalHeaderMenu, ViewAppearanceMenu, ScreenshotMenu
+from core.standarddelegates import StandardDelegate, StandardTreeDelegate, StandardIconDelegate, StandardListDelegate
 
 
-class StandardTreeView(QtGui.QTreeView):
+class StandardTreeView(QtWidgets.QTreeView):
   def __init__(self, parent=None):
     super(StandardTreeView, self).__init__(parent)
     self.expanded.connect(self.__itemExpanded)
@@ -40,8 +40,8 @@ class StandardTreeView(QtGui.QTreeView):
     palette = self.palette()
     palette.setColor(QtGui.QPalette.Highlight, highlight)
     self.setPalette(palette)
-    self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-    self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+    self.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+    self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
     self.__treeDelegate = StandardTreeDelegate()
     self.setItemDelegate(self.__treeDelegate)
     self.__createDefaultContextMenu()
@@ -54,21 +54,21 @@ class StandardTreeView(QtGui.QTreeView):
 
 
   def __createDefaultContextMenu(self):
-    expandAction = QtGui.QAction(self.tr("Expand all"), self)
+    expandAction = QtWidgets.QAction(self.tr("Expand all"), self)
     expandAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Right))
     expandAction.setShortcutContext(QtCore.Qt.WidgetShortcut)
     expandAction.triggered.connect(self.expandAll)
     self.addAction(expandAction)
-    collapseAction = QtGui.QAction(self.tr("Collapse all"), self)
+    collapseAction = QtWidgets.QAction(self.tr("Collapse all"), self)
     collapseAction.setShortcuts(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_Left))
     collapseAction.setShortcutContext(QtCore.Qt.WidgetShortcut)
     collapseAction.triggered.connect(self.collapseAll)
     self.addAction(collapseAction)
-    self.__childrenCountAction = QtGui.QAction(self.tr("Display children count"), self)
+    self.__childrenCountAction = QtWidgets.QAction(self.tr("Display children count"), self)
     self.__childrenCountAction.setCheckable(True)
     self.__childrenCountAction.triggered.connect(self.__childrenCountDisplay)
     self.addAction(self.__childrenCountAction)
-    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    screenshotAction = QtWidgets.QAction(self.tr("Screenshot"), self)
     screenshotMenu = ScreenshotMenu(self)
     screenshotAction.setMenu(screenshotMenu)
     self.addAction(screenshotAction)
@@ -141,7 +141,7 @@ class StandardTreeView(QtGui.QTreeView):
         index += 1
 
 
-class StandardTableView(QtGui.QTableView):
+class StandardTableView(QtWidgets.QTableView):
 
   MinimumIconSize = QtCore.QSize(16, 16)
   DefaultIconSize = QtCore.QSize(128, 128)
@@ -156,14 +156,14 @@ class StandardTableView(QtGui.QTableView):
     self.setShowGrid(False)
     self.setAlternatingRowColors(True)
     self.verticalHeader().hide()
-    self.verticalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
+    #self.verticalHeader().setResizeMode(QtWidgets.QHeaderView.Fixed)
     highlight = QtGui.QColor(70, 178, 234)
     palette = self.palette()
     palette.setColor(QtGui.QPalette.Highlight, highlight)
     self.setPalette(palette)
-    self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-    self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+    self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+    screenshotAction = QtWidgets.QAction(self.tr("Screenshot"), self)
     screenshotMenu = ScreenshotMenu(self)
     screenshotAction.setMenu(screenshotMenu)
     self.addAction(screenshotAction)
@@ -222,7 +222,7 @@ class StandardTableView(QtGui.QTableView):
     self.__tableDelegate.setIconSize(size)
     super(StandardTableView, self).setIconSize(size)
     self.verticalHeader().setDefaultSectionSize(size.height())
-    self.emit(QtCore.SIGNAL("iconSizeChanged(QSize&)"), size)
+    #self.emit(QtCore.SIGNAL("iconSizeChanged(QSize&)"), size)
 
 
   def setFrozen(self, frozen):
@@ -262,7 +262,7 @@ class StandardTableView(QtGui.QTableView):
         index += 1
 
 
-class StandardIconView(QtGui.QListView):
+class StandardIconView(QtWidgets.QListView):
 
   MinimumIconSize = QtCore.QSize(64, 64)
   DefaultIconSize = QtCore.QSize(128, 128)
@@ -275,18 +275,18 @@ class StandardIconView(QtGui.QListView):
     self.setIconSize(StandardIconView.DefaultIconSize)
     self.__modelColumn = modelColumn
     self.setModelColumn(modelColumn)
-    self.setViewMode(QtGui.QListView.IconMode)
-    self.setMovement(QtGui.QListView.Static)
-    self.setFlow(QtGui.QListView.LeftToRight)
-    self.setLayoutMode(QtGui.QListView.Batched)
+    self.setViewMode(QtWidgets.QListView.IconMode)
+    self.setMovement(QtWidgets.QListView.Static)
+    self.setFlow(QtWidgets.QListView.LeftToRight)
+    self.setLayoutMode(QtWidgets.QListView.Batched)
     self.setUniformItemSizes(True)
-    self.setResizeMode(QtGui.QListView.Adjust)
+    self.setResizeMode(QtWidgets.QListView.Adjust)
     self.setSpacing(10)
     self.setBatchSize(256)
     self.setWordWrap(True)
     self.setSelectionRectVisible(False)
     self.setWrapping(True)
-    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    screenshotAction = QtWidgets.QAction(self.tr("Screenshot"), self)
     screenshotMenu = ScreenshotMenu(self)
     screenshotAction.setMenu(screenshotMenu)
     self.addAction(screenshotAction)
@@ -351,7 +351,7 @@ class StandardIconView(QtGui.QListView):
     self.setModelColumn(self.__modelColumn)
 
 
-class StandardListView(QtGui.QListView):
+class StandardListView(QtWidgets.QListView):
 
   MinimumIconSize = QtCore.QSize(16, 16)
   DefaultIconSize = QtCore.QSize(16, 16)
@@ -362,19 +362,19 @@ class StandardListView(QtGui.QListView):
     self.__listDelegate = StandardListDelegate()
     self.setItemDelegate(self.__listDelegate)
     self.setIconSize(StandardListView.DefaultIconSize)
-    self.setFlow(QtGui.QListView.TopToBottom)
+    self.setFlow(QtWidgets.QListView.TopToBottom)
     self.__modelColumn = modelColumn
     self.setModelColumn(modelColumn)
-    self.setViewMode(QtGui.QListView.IconMode)
-    self.setMovement(QtGui.QListView.Static)
-    self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
-    self.setLayoutMode(QtGui.QListView.Batched)
-    self.setResizeMode(QtGui.QListView.Adjust)
+    self.setViewMode(QtWidgets.QListView.IconMode)
+    self.setMovement(QtWidgets.QListView.Static)
+    self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
+    self.setLayoutMode(QtWidgets.QListView.Batched)
+    self.setResizeMode(QtWidgets.QListView.Adjust)
     self.setBatchSize(256)
     self.setWrapping(True)
-    self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
-    self.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
-    screenshotAction = QtGui.QAction(self.tr("Screenshot"), self)
+    self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
+    self.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
+    screenshotAction = QtWidgets.QAction(self.tr("Screenshot"), self)
     screenshotMenu = ScreenshotMenu(self)
     screenshotAction.setMenu(screenshotMenu)
     self.addAction(screenshotAction)
@@ -409,7 +409,7 @@ class StandardListView(QtGui.QListView):
   def viewOptions(self):
     options = super(StandardListView, self).viewOptions()
     options.displayAlignment = QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft
-    options.decorationPosition = QtGui.QStyleOptionViewItem.Left
+    options.decorationPosition = QtWidgets.QStyleOptionViewItem.Left
     options.decorationAlignment = QtCore.Qt.AlignCenter
     options.showDecorationSelected = True
     return options
@@ -443,10 +443,10 @@ class StandardListView(QtGui.QListView):
     self.setModelColumn(self.__modelColumn)
 
     
-class StandardFrozenView(QtGui.QWidget):
+class StandardFrozenView(QtWidgets.QWidget):
   def __init__(self, viewFactory, parent=None):
     super(StandardFrozenView, self).__init__(parent)
-    self.setLayout(QtGui.QHBoxLayout(self))
+    self.setLayout(QtWidgets.QHBoxLayout(self))
     self.layout().setContentsMargins(0, 0, 0, 0)
     self.__frozenColumns = 0
     self.__previousIndex = None
@@ -473,14 +473,14 @@ class StandardFrozenView(QtGui.QWidget):
     frozenWidthResized = self._frozenView.horizontalHeader().sectionResized
     frozenWidthResized.connect(self.__updateBaseSectionWidth)
 
-    self.connect(self.__baseModel,
-                 QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                 self.__columnPinStateChanged)
+    # self.connect(self.__baseModel,
+    #              QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+    #              self.__columnPinStateChanged)
 
-    self.connect(self._baseView, QtCore.SIGNAL("iconSizeChanged(QSize&)"),
-                 self.__updateFrozenIconSize)
-    self.connect(self._frozenView, QtCore.SIGNAL("iconSizeChanged(QSize&)"),
-                 self.__updateBaseIconSize)
+    # self.connect(self._baseView, QtCore.SIGNAL("iconSizeChanged(QSize&)"),
+    #              self.__updateFrozenIconSize)
+    # self.connect(self._frozenView, QtCore.SIGNAL("iconSizeChanged(QSize&)"),
+    #              self.__updateBaseIconSize)
 
     valueChanged = self._baseView.verticalScrollBar().valueChanged
     valueChanged.connect(self._frozenView.verticalScrollBar().setValue)
@@ -504,26 +504,24 @@ class StandardFrozenView(QtGui.QWidget):
   def setModel(self, model):
     if model is None:
       return
-    if self.__baseModel is not None:
-      self.disconnect(self.__baseModel,
-                   QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                   self.__columnPinStateChanged)
+    # if self.__baseModel is not None:
+      # self.disconnect(self.__baseModel,
+      #              QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+      #              self.__columnPinStateChanged)
     self.__baseModel = model
     self._baseView.setModel(self.__baseModel)
     self._frozenView.setModel(self.__baseModel)
-    self.connect(self.__baseModel,
-                    QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                    self.__columnPinStateChanged)
+    # self.connect(self.__baseModel,
+    #                 QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+    #                 self.__columnPinStateChanged)
     self._baseView.horizontalHeader().setModel(self.__baseModel)
     self._frozenView.horizontalHeader().setModel(self.__baseModel)
-    for column in xrange(0, self.__baseModel.columnCount()):
+    for column in range(0, self.__baseModel.columnCount()):
       data = self.__baseModel.headerData(column, QtCore.Qt.Horizontal,
                                          HorizontalHeaderItem.PinRole)
-      if not data.isValid():
+      if data is None:
         continue
-      pinState, success = data.toInt()
-      if not success:
-        continue
+      pinState = data
       if pinState == HorizontalHeaderItem.ForcePinned or \
          pinState == HorizontalHeaderItem.Pinned:
         self._frozenView.setColumnHidden(column, False)
@@ -566,8 +564,8 @@ class StandardFrozenView(QtGui.QWidget):
 
 
   def __configureBaseView(self):
-    self._baseView.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
-    self._baseView.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
+    self._baseView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+    self._baseView.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
     header = StandardHeaderView(self.__baseModel)
     self._baseView.setHorizontalHeader(header)
 
@@ -578,20 +576,18 @@ class StandardFrozenView(QtGui.QWidget):
     self._frozenView.setFocusPolicy(QtCore.Qt.NoFocus)
     self._frozenView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
     self._frozenView.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-    self._frozenView.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
-    self._frozenView.setFrameShape(QtGui.QFrame.Box)
+    self._frozenView.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+    self._frozenView.setFrameShape(QtWidgets.QFrame.Box)
     self._frozenView.setLineWidth(0)
     self._frozenView.setMidLineWidth(0)
     header = StandardHeaderView(self.__baseModel, frozen=True)
     self._frozenView.setHorizontalHeader(header)
-    for column in xrange(0, self.__baseModel.columnCount()):
+    for column in range(0, self.__baseModel.columnCount()):
       data = self.__baseModel.headerData(column, QtCore.Qt.Horizontal,
                                          HorizontalHeaderItem.PinRole)
-      if not data.isValid():
+      if data is None:
         continue
-      pinState, success = data.toInt()
-      if not success:
-        continue
+      pinState = data
       if pinState == HorizontalHeaderItem.ForcePinned or \
          pinState == HorizontalHeaderItem.Pinned:
         self._frozenView.setColumnHidden(column, False)
@@ -678,7 +674,7 @@ class StandardFrozenView(QtGui.QWidget):
   def __updateFrozenViewGeometry(self):
     width = 0
     pinnedColumns = self._baseView.horizontalHeader().pinnedColumnsCount()
-    for column in xrange(0, pinnedColumns):
+    for column in range(0, pinnedColumns):
       logicalIndex = self._baseView.horizontalHeader().logicalIndex(column)
       width += self._baseView.columnWidth(logicalIndex)
     x = self._baseView.frameWidth()
@@ -695,8 +691,7 @@ class StandardFrozenView(QtGui.QWidget):
     if self.__previousIndex is None:
       return
     elif self.__previousIndex == index:
-      self._baseView.model().setData(index, QtCore.QVariant("viewed"),
-                                      StandardItem.TagRole)
+      self._baseView.model().setData(index, "viewed", StandardItem.TagRole)
     return
 
 
@@ -714,17 +709,17 @@ class StandardFrozenTreeView(StandardFrozenView):
     self._frozenView.displayRecursion(display)
 
 
-class StandardHeaderView(QtGui.QHeaderView):
+class StandardHeaderView(QtWidgets.QHeaderView):
   def __init__(self, model, frozen=False, parent=None):
     super(StandardHeaderView, self).__init__(QtCore.Qt.Horizontal, parent)
     self.setModel(model)
     self.__frozen = frozen
-    self.connect(model, QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                 self.__columnPinStateChanged)
+    #self.connect(model, QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+    #             self.__columnPinStateChanged)
     self.sectionMoved.connect(self.__sectionMoved)
     self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
     self.setMouseTracking(True)
-    self.setMovable(True)
+    #self.setMovable(True)
     self.__menus = {}
     self.__previousIndex = -1
     self.__mousePressed = False
@@ -734,7 +729,7 @@ class StandardHeaderView(QtGui.QHeaderView):
     self.__pinnedColumns = []
     self.__icons = {}
     self.__createDefaultIcons()
-    for column in xrange(0, model.columnCount()):
+    for column in range(0, model.columnCount()):
       self.addColumn(column)
 
 
@@ -743,15 +738,15 @@ class StandardHeaderView(QtGui.QHeaderView):
       return
     if model == self.model():
       return
-    if self.model() is not None:
-      self.disconnect(self.model(), QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                      self.__columnPinStateChanged)
-    self.connect(model, QtCore.SIGNAL("columnPinStateChanged(int, int)"),
-                 self.__columnPinStateChanged)
+    # if self.model() is not None:
+    #   self.disconnect(self.model(), QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+    #                   self.__columnPinStateChanged)
+    #self.connect(model, QtCore.SIGNAL("columnPinStateChanged(int, int)"),
+    #             self.__columnPinStateChanged)
     super(StandardHeaderView, self).setModel(model)
     self.__menus = {}
     self.__pinnedColumns = []
-    for column in xrange(0, model.columnCount()):
+    for column in range(0, model.columnCount()):
       self.addColumn(column)
 
 
@@ -779,16 +774,16 @@ class StandardHeaderView(QtGui.QHeaderView):
 
   def addColumn(self, column):
     visualIndex = self.visualIndex(column)
-    self.model().setHeaderData(column, QtCore.Qt.Horizontal,
-                               QtCore.QVariant(visualIndex),
+    self.model().setHeaderData(column, QtCore.Qt.Horizontal, visualIndex,
                                HorizontalHeaderItem.VisualIndexRole)
     resizable = self.model().headerData(column, QtCore.Qt.Horizontal,
-                                        HorizontalHeaderItem.ResizeRole).toBool()
+                                        HorizontalHeaderItem.ResizeRole)
     if not resizable:
-      self.setResizeMode(column, QtGui.QHeaderView.Fixed)
-    pinState, success = self.model().headerData(column, QtCore.Qt.Horizontal,
-                                                HorizontalHeaderItem.PinRole).toInt()
-    if success:
+      pass
+      #self.setResizeMode(column, QtWidgets.QHeaderView.Fixed)
+    pinState = self.model().headerData(column, QtCore.Qt.Horizontal,
+                                                HorizontalHeaderItem.PinRole)
+    if pinState is not None:
       if pinState == HorizontalHeaderItem.ForcePinned or pinState == HorizontalHeaderItem.Pinned:
         self.__pinnedColumns.append(column)
     self.__menus[len(self.__menus)] = HorizontalHeaderMenu(self.model(), column, self)
@@ -849,38 +844,37 @@ class StandardHeaderView(QtGui.QHeaderView):
                                         HorizontalHeaderItem.SortOrderRole)
     filtered = self.model().headerData(logicalIndex,
                                        QtCore.Qt.Horizontal,
-                                       HorizontalHeaderItem.FilteredRole).toBool()
+                                       HorizontalHeaderItem.FilteredRole)
     pinState = self.model().headerData(logicalIndex,
                                        QtCore.Qt.Horizontal,
                                        HorizontalHeaderItem.PinRole)
-    sortOrder, success = sortOrder.toInt()
-    if not success:
+    if sortOrder is None:
       sortOrder = -1
     painter.save()
-    option = QtGui.QStyleOptionHeader()
+    option = QtWidgets.QStyleOptionHeader()
     self.initStyleOption(option)
-    state = QtGui.QStyle.State_None
+    state = QtWidgets.QStyle.State_None
     if self.isEnabled():
-      state = state | QtGui.QStyle.State_Enabled
+      state = state | QtWidgets.QStyle.State_Enabled
     if self.window().isActiveWindow():
-      state = state | QtGui.QStyle.State_Active
+      state = state | QtWidgets.QStyle.State_Active
     if pinState == HorizontalHeaderItem.Pinned \
        or pinState == HorizontalHeaderItem.ForcePinned:
-      state = state | QtGui.QStyle.State_Sunken
+      state = state | QtWidgets.QStyle.State_Sunken
     option.rect = rect
     option.section = logicalIndex
     option.state = option.state | state
     visualIndex = self.visualIndex(logicalIndex)
     if self.count() == 1:
-      option.position = QtGui.QStyleOptionHeader.OnlyOneSection
+      option.position = QtWidgets.QStyleOptionHeader.OnlyOneSection
     elif visualIndex == 0:
-      option.position = QtGui.QStyleOptionHeader.Beginning
+      option.position = QtWidgets.QStyleOptionHeader.Beginning
     elif visualIndex == self.count() - 1:
-      option.position = QtGui.QStyleOptionHeader.End
+      option.position = QtWidgets.QStyleOptionHeader.End
     else:
-      option.position = QtGui.QStyleOptionHeader.Middle
+      option.position = QtWidgets.QStyleOptionHeader.Middle
     option.orientation = QtCore.Qt.Horizontal
-    self.style().drawControl(QtGui.QStyle.CE_HeaderSection, option, painter, self)
+    self.style().drawControl(QtWidgets.QStyle.CE_HeaderSection, option, painter, self)
     painter.restore()
     sortIcon = self.__getSortIcon(sortOrder, _type)
     filterIcon = None
@@ -903,8 +897,8 @@ class StandardHeaderView(QtGui.QHeaderView):
     textRect = QtCore.QRect(rect)
     textRect.setWidth(textWidth)
     textRect.setX(textX)
-    fm = QtGui.QApplication.instance().fontMetrics()
-    name = fm.elidedText(name.toString(), QtCore.Qt.ElideLeft, textWidth)
+    fm = QtWidgets.QApplication.instance().fontMetrics()
+    name = fm.elidedText(str(name), QtCore.Qt.ElideLeft, textWidth)
     align = QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter
     painter.drawText(textRect, align, name)
 
@@ -931,8 +925,8 @@ class StandardHeaderView(QtGui.QHeaderView):
       sortOrder = self.model().headerData(logicalIndex,
                                           QtCore.Qt.Horizontal,
                                           HorizontalHeaderItem.SortOrderRole)
-      sortOrder, success = sortOrder.toInt()
-      if not success:
+      print("{}\n{}\n".format(sortOrder, type(sortOrder), dir(sortOrder)))
+      if sortOrder is None:
         sortOrder = -1
         newSortOrder = -1
       if sortOrder == -1:
@@ -941,9 +935,10 @@ class StandardHeaderView(QtGui.QHeaderView):
         newSortOrder = QtCore.Qt.DescendingOrder
       elif sortOrder == QtCore.Qt.DescendingOrder:
         newSortOrder = -1
+      print(newSortOrder)
       self.model().setHeaderData(logicalIndex,
                                  QtCore.Qt.Horizontal,
-                                 QtCore.QVariant(newSortOrder),
+                                 newSortOrder,
                                  HorizontalHeaderItem.SortOrderRole)
     self.__mousePressed = False
     self.__resizing = False
@@ -955,7 +950,7 @@ class StandardHeaderView(QtGui.QHeaderView):
     for column in xrange(0, self.model().columnCount()):
       visualIndex = self.visualIndex(column)
       self.model().setHeaderData(column, QtCore.Qt.Horizontal,
-                                 QtCore.QVariant(visualIndex),
+                                 visualIndex,
                                  HorizontalHeaderItem.VisualIndexRole)
     
 
@@ -1009,9 +1004,9 @@ class StandardHeaderView(QtGui.QHeaderView):
     elif not self.__frozen and not self.__resizing and visualIndex <= len(self.__pinnedColumns):
       return
     elif self.__frozen and not self.__resizing:
-      headerType, success = self.model().headerData(logicalIndex,
-                                                    QtCore.Qt.Horizontal,
-                                                    HorizontalHeaderItem.DataTypeRole).toInt()
+      headerType = self.model().headerData(logicalIndex,
+                                            QtCore.Qt.Horizontal,
+                                            HorizontalHeaderItem.DataTypeRole)
       if visualIndex > len(self.__pinnedColumns):
         return
       elif headerType == HorizontalHeaderItem.CheckedType:

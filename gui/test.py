@@ -19,32 +19,34 @@ idx = dffpath.rfind("dff")
 dffpath = dffpath[:idx]
 sys.path.append(dffpath)
 
-from PyQt4 import QtGui, QtCore
+from qtpy import QtWidgets, QtCore, QtGui
 
-import dff
-from dff.api.vfs.libvfs import VFS, Node
-from dff.api.datatype.magichandler import *
-from dff.api.events.libevents import EventHandler, event
-from dff.api.types.libtypes import RCVariant, Variant
-from dff.api.taskmanager.taskmanager import TaskManager
+from browser.browser import Browser
 
-from dff.ui.gui.resources import gui_rc
-from dff.ui.gui.browser.browser import Browser
+#import dff
+#from dff.api.vfs.libvfs import VFS, Node
+#from dff.api.datatype.magichandler import *
+#from dff.api.events.libevents import EventHandler, event
+#from dff.api.types.libtypes import RCVariant, Variant
+#from dff.api.taskmanager.taskmanager import TaskManager
 
-from dff.ui.gui.api.widget.devicesdialog import DevicesDialog
+#from dff.ui.gui.resources import gui_rc
+#from dff.ui.gui.browser.browser import Browser
 
-from dff.ui.ui import parseArguments
+#from dff.ui.gui.api.widget.devicesdialog import DevicesDialog
 
-from dff.ui.gui.widget.taskmanager import Processus
-from dff.ui.gui.widget.stdio import STDErr, STDOut
-from dff.ui.gui.widget.preview import Preview
+#from dff.ui.ui import parseArguments
+
+#from dff.ui.gui.widget.taskmanager import Processus
+#from dff.ui.gui.widget.stdio import STDErr, STDOut
+#from dff.ui.gui.widget.preview import Preview
 
 
-from dff.ui.ui import UI
+#from dff.ui.ui import UI
 
 MODULES_PATHS = [os.path.join(dffpath, "dff", "modules")]
 
-print MODULES_PATHS
+print(MODULES_PATHS)
 
 
 MAX_DEPTH=16
@@ -123,9 +125,9 @@ def initTree():
     generateTree(croot, 0, random.randint(0, MAX_DEPTH))
 
 
-class DockWidget(QtGui.QDockWidget):
+class DockWidget(QtWidgets.QDockWidget):
   def __init__(self, parent=None, widget=None, title="", flags=QtCore.Qt.Widget):
-    QtGui.QDockWidget.__init__(self, parent, flags)
+    QtWidgets.QDockWidget.__init__(self, parent, flags)
     self.setAllowedAreas(QtCore.Qt.AllDockWidgetAreas)
     if widget != None:
       self.setWidget(widget)
@@ -136,32 +138,32 @@ class DockWidget(QtGui.QDockWidget):
     return self.widget().windowIcon()
   
     
-class OpenEvidenceMenu(QtGui.QMenu):
+class OpenEvidenceMenu(QtWidgets.QMenu):
   def __init__(self, parent=None):
-    QtGui.QMenu.__init__(self, parent)
+    QtWidgets.QMenu.__init__(self, parent)
     self.setStyleSheet("QMenu {icon-size: 32px;}")
-    icon = self.__createIcon(QtGui.QStyle.SP_DriveHDIcon)
+    icon = self.__createIcon(QtWidgets.QStyle.SP_DriveHDIcon)
     self.addAction(icon, "Device", self.openDevice,
                    QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_D))
-    icon = self.__createIcon(QtGui.QStyle.SP_FileIcon, "Raw")
+    icon = self.__createIcon(QtWidgets.QStyle.SP_FileIcon, "Raw")
     self.addAction(icon, "RAW image", self.openRaw,
                    QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_O))
-    icon = self.__createIcon(QtGui.QStyle.SP_FileIcon, "Ewf")
+    icon = self.__createIcon(QtWidgets.QStyle.SP_FileIcon, "Ewf")
     self.addAction(icon, "EWF image", self.openEwf,
                    QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_E))
-    icon = self.__createIcon(QtGui.QStyle.SP_FileIcon, "Aff")
+    icon = self.__createIcon(QtWidgets.QStyle.SP_FileIcon, "Aff")
     self.addAction(icon, "AFF image", self.openAff,
                    QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_A))
-    icon = self.__createIcon(QtGui.QStyle.SP_FileIcon)
+    icon = self.__createIcon(QtWidgets.QStyle.SP_FileIcon)
     self.addAction(icon, "File(s)", self.openFiles,
                    QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_F))
-    icon = self.__createIcon(QtGui.QStyle.SP_DirIcon)
+    icon = self.__createIcon(QtWidgets.QStyle.SP_DirIcon)
     self.addAction(icon, "Folder(s)", self.openFolders,
                    QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.ALT + QtCore.Qt.Key_F))
 
 
   def __createIcon(self, iconName, text=None):
-    baseIcon = QtGui.qApp.style().standardIcon(iconName)
+    baseIcon = QtWidgets.QApplication.instance().style().standardIcon(iconName)
     if text is not None:
       iconPixmap = baseIcon.pixmap(QtCore.QSize(32, 32))
       painter = QtGui.QPainter(iconPixmap)
@@ -180,7 +182,7 @@ class OpenEvidenceMenu(QtGui.QMenu):
   
   def openDevice(self):
     dialog = DevicesDialog()
-    screenGeometry = QtGui.QApplication.desktop().screenGeometry(0)
+    screenGeometry = QtWidgets.QApplication.desktop().screenGeometry(0)
     dialog.move(screenGeometry.center() - self.rect().center())
     dialog.exec_()
     
@@ -188,9 +190,9 @@ class OpenEvidenceMenu(QtGui.QMenu):
   def openRaw(self):
     caption = "Choose RAW file(s) to import."
     caption += " With split RAW files, you can only select the first segment"
-    dialog = QtGui.QFileDialog(self, translate(self, caption))
+    dialog = QtWidgets.QFileDialog(self, translate(self, caption))
     dialog.setNameFilters([self.tr("Raw File Format (*.bin, *.dd, *.001)"), self.tr("Any files (*)")])
-    screenGeometry = QtGui.QApplication.desktop().screenGeometry(0)
+    screenGeometry = QtWidgets.QApplication.desktop().screenGeometry(0)
     dialog.move(screenGeometry.center() - self.rect().center())
     dialog.exec_()
 
@@ -198,13 +200,13 @@ class OpenEvidenceMenu(QtGui.QMenu):
   def openEwf(self):
     caption = "Choose EWF file(s) to import."
     caption += " With split EWF files, you can only select the first segment"
-    dialog = QtGui.QFileDialog(self, translate(self, caption))
-    dialog.setFileMode(QtGui.QFileDialog.ExistingFile)
+    dialog = QtWidgets.QFileDialog(self, translate(self, caption))
+    dialog.setFileMode(QtWidgets.QFileDialog.ExistingFile)
     dialog.setNameFilters([self.tr("Encase File Format (*.E01)"), self.tr("Any files (*)")])
-    screenGeometry = QtGui.QApplication.desktop().screenGeometry(0)
+    screenGeometry = QtWidgets.QApplication.desktop().screenGeometry(0)
     dialog.move(screenGeometry.center() - self.rect().center())
     action = dialog.exec_()
-    if action == QtGui.QDialog.Accepted:
+    if action == QtWidgets.QDialog.Accepted:
       files = dialog.selectedFiles()
       if len(files):
         args = {}
@@ -220,23 +222,23 @@ class OpenEvidenceMenu(QtGui.QMenu):
   def openAff(self):
     caption = "Choose AFF file(s) to import."
     caption += " With split AFF files, you can only select the first segment"
-    dialog = QtGui.QFileDialog(self, translate(self, caption))
+    dialog = QtWidgets.QFileDialog(self, translate(self, caption))
     dialog.setNameFilters([self.tr("Aff File Format (*.A??)"), self.tr("Any files (*)")])
-    screenGeometry = QtGui.QApplication.desktop().screenGeometry(0)
+    screenGeometry = QtWidgets.QApplication.desktop().screenGeometry(0)
     dialog.move(screenGeometry.center() - self.rect().center())
     dialog.exec_()
 
 
   def openFiles(self):
-    dialog = QtGui.QFileDialog(self)
-    dialog.setFileMode(QtGui.QFileDialog.ExistingFiles)
+    dialog = QtWidgets.QFileDialog(self)
+    dialog.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
     dialog.setNameFilters([self.tr("Any files (*)"),
                            self.tr("Images (*.png, *.jpg, *.bmp)"),
                            self.tr("Text files (*.txt)")])
-    screenGeometry = QtGui.QApplication.desktop().screenGeometry(0)
+    screenGeometry = QtWidgets.QApplication.desktop().screenGeometry(0)
     dialog.move(screenGeometry.center() - self.rect().center())
     action = dialog.exec_()
-    if action == QtGui.QDialog.Accepted:
+    if action == QtWidgets.QDialog.Accepted:
       files = dialog.selectedFiles()
       args = {}
       args['path'] = []
@@ -246,13 +248,13 @@ class OpenEvidenceMenu(QtGui.QMenu):
       
 
   def openFolders(self):
-    dialog = QtGui.QFileDialog(self)
-    dialog.setFileMode(QtGui.QFileDialog.Directory)
-    dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
-    screenGeometry = QtGui.QApplication.desktop().screenGeometry(0)
+    dialog = QtWidgets.QFileDialog(self)
+    dialog.setFileMode(QtWidgets.QFileDialog.Directory)
+    dialog.setOption(QtWidgets.QFileDialog.ShowDirsOnly)
+    screenGeometry = QtWidgets.QApplication.desktop().screenGeometry(0)
     dialog.move(screenGeometry.center() - self.rect().center())
     action = dialog.exec_()
-    if action == QtGui.QDialog.Accepted:
+    if action == QtWidgets.QDialog.Accepted:
       folders = dialog.selectedFiles()
       args = {}
       args['path'] = []
@@ -266,9 +268,9 @@ def translate(context, sourceText, disambiguation=None):
                                            sourceText, disambiguation)
   
 
-class OpenEvidenceButton(QtGui.QPushButton):
+class OpenEvidenceButton(QtWidgets.QPushButton):
   def __init__(self, parent=None):
-    QtGui.QPushButton.__init__(self, translate(self, "Open"),
+    QtWidgets.QPushButton.__init__(self, translate(self, "Open"),
                                parent)
     self.__pixmap = QtGui.QPixmap(":folder_documents_128.png").scaled(32, 32)
     self.setIcon(QtGui.QIcon(self.__pixmap))
@@ -279,20 +281,20 @@ class OpenEvidenceButton(QtGui.QPushButton):
 
 
   def sizeHint(self):
-    fm = QtGui.QApplication.instance().fontMetrics()
+    fm = QtWidgets.QApplication.instance().fontMetrics()
     width = fm.width(self.tr("Open"))
     sizeHint = QtCore.QSize(width+self.__pixmap.width()+15, self.__pixmap.height())
     return sizeHint
 
   
-class MainWindowToolBar(QtGui.QToolBar):
+class MainWindowToolBar(QtWidgets.QToolBar):
   def __init__(self, parent=None):
-    QtGui.QToolBar.__init__(self, parent)
+    QtWidgets.QToolBar.__init__(self, parent)
     self.setMovable(False)
     self.setFloatable(True)
     openEvidence = OpenEvidenceButton(self)
     self.addWidget(openEvidence)
-    createBrowserButton = QtGui.QPushButton(self.tr("Browser"), self)
+    createBrowserButton = QtWidgets.QPushButton(self.tr("Browser"), self)
     createBrowserButton.clicked.connect(self.__createBrowser)
     createBrowserButton.setFlat(True)
     createBrowserButton.setDefault(False)
@@ -305,9 +307,9 @@ class MainWindowToolBar(QtGui.QToolBar):
     self.parent().addDockWidget(QtCore.Qt.TopDockWidgetArea, dockwidget)
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
   def __init__(self, parent=None, flags=QtCore.Qt.Widget):
-    QtGui.QMainWindow.__init__(self, parent, flags)
+    QtWidgets.QMainWindow.__init__(self, parent, flags)
     self.__dockWidgets = {}
     self.__topRootDockWidget = None
     self.__bottomRootDockWidget = None
@@ -324,22 +326,23 @@ class MainWindow(QtGui.QMainWindow):
     browser = Browser()
     self.__mainBrowser = DockWidget(self, browser, self.tr("Browser"))
     self.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.__mainBrowser)
-    self.__processus = Processus(None)
+    #self.__processus = Processus(None)
+    self.__processus = None
     self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
                        DockWidget(self, self.__processus,
                                   self.tr("Task manager")))
     # XXX manage debug flag
-    self.__output = STDOut(None, True)
-    self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
-                       DockWidget(self, self.__output, self.tr("Output")))                       
-    self.__error = STDErr(None, False)
-    self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
-                       DockWidget(self, self.__error, self.tr("Errors")))
-    self.__preview = Preview(None)
-    self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
-                       DockWidget(self, self.__preview, self.tr("Preview")))
+    #self.__output = STDOut(None, True)
+    #self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
+    #                   DockWidget(self, self.__output, self.tr("Output")))                       
+    #self.__error = STDErr(None, False)
+    #self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
+    #                   DockWidget(self, self.__error, self.tr("Errors")))
+    #self.__preview = Preview(None)
+    #self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
+    #                   DockWidget(self, self.__preview, self.tr("Preview")))
     self.timer = QtCore.QTimer(self)
-    self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.__refreshSecondWidgets)
+    #self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.__refreshSecondWidgets)
     self.timer.start(2000)
     font = self.font()
     font.setPointSize(9)
@@ -357,11 +360,11 @@ class MainWindow(QtGui.QMainWindow):
       return
     baseTitle = dockwidget.windowTitle()
     counter = 0
-    for dockWidgetTitle in self.__dockWidgets.iterkeys():
-      if dockWidgetTitle.startsWith(baseTitle):
+    for dockWidgetTitle in self.__dockWidgets:
+      if dockWidgetTitle.startswith(baseTitle):
         counter += 1
     if counter > 0:
-      baseTitle.append(QtCore.QString.number(counter))
+      baseTitle += str(counter)
       dockwidget.setWindowTitle(baseTitle)
     self.__dockWidgets[baseTitle] = dockwidget
     super(MainWindow, self).addDockWidget(area, dockwidget)
@@ -389,7 +392,7 @@ class MainWindow(QtGui.QMainWindow):
       elif widget.inherits("QDockWidget"):
         self.__topRootDockWidget = widget
       else:
-        print "__dockWidgetLocationChanged unknown widget type"
+        print("__dockWidgetLocationChanged unknown widget type")
 
 
   # Each time a new tabification is done, the resulting qtabbar exists
@@ -406,22 +409,22 @@ class MainWindow(QtGui.QMainWindow):
           child.setMovable(True)
           child.tabMoved.connect(self._tabMoved,
                                  type=QtCore.Qt.UniqueConnection)
-        for idx in xrange(0, child.count()):
+        for idx in range(0, child.count()):
           tabText = child.tabText(idx)
-          if self.__dockWidgets.has_key(tabText):
+          if tabText in self.__dockWidgets:
             child.setTabIcon(idx, self.__dockWidgets[tabText].windowIcon())
 
   
   def __refreshTabBars(self):
     for tabBar in self.__tabBars:
-      for idx in xrange(0, tabBar.count()):
+      for idx in range(0, tabBar.count()):
         tabText = tabBar.tabText(idx)
-        if self.__dockWidgets.has_key(tabText):
+        if tabText in self.__dockWidgets:
           tabBar.setTabIcon(idx, self.__dockWidgets[tabText].windowIcon())
 
               
   def event(self, event):          
-    mouseStatus = int(QtGui.QApplication.mouseButtons())
+    mouseStatus = int(QtWidgets.QApplication.mouseButtons())
     if mouseStatus & 0x00000001 == 0:
       if self.__tabMoved:
         self.__tabMoved = False
@@ -431,7 +434,7 @@ class MainWindow(QtGui.QMainWindow):
           visible = []
           hidden = []
           currentDockWidget = None
-          for idx in xrange(0, tab.count()):
+          for idx in range(0, tab.count()):
             tabText = tab.tabText(idx)
             dockwidget = self.__dockWidgets[tabText]
             if idx == tab.currentIndex():
@@ -471,10 +474,10 @@ class MainWindow(QtGui.QMainWindow):
     self.setCentralWidget(None)
     self.setDockNestingEnabled(True)
     self.setContentsMargins(0, 0, 0, 0)
-    widgetPos = [(QtCore.Qt.TopLeftCorner, QtCore.Qt.LeftDockWidgetArea, QtGui.QTabWidget.North),
-	         (QtCore.Qt.BottomLeftCorner, QtCore.Qt.BottomDockWidgetArea, QtGui.QTabWidget.North),
-	         (QtCore.Qt.TopLeftCorner, QtCore.Qt.TopDockWidgetArea, QtGui.QTabWidget.North),
-	         (QtCore.Qt.BottomRightCorner, QtCore.Qt.RightDockWidgetArea, QtGui.QTabWidget.North)]
+    widgetPos = [(QtCore.Qt.TopLeftCorner, QtCore.Qt.LeftDockWidgetArea, QtWidgets.QTabWidget.North),
+	         (QtCore.Qt.BottomLeftCorner, QtCore.Qt.BottomDockWidgetArea, QtWidgets.QTabWidget.North),
+	         (QtCore.Qt.TopLeftCorner, QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North),
+	         (QtCore.Qt.BottomRightCorner, QtCore.Qt.RightDockWidgetArea, QtWidgets.QTabWidget.North)]
     for corner, area, point in widgetPos:
       self.setCorner(corner, area)
       self.setTabPosition(area, point)
@@ -484,17 +487,17 @@ class MainWindow(QtGui.QMainWindow):
     self.__processus.LoadInfoProcess()
 
 
-class TreeModifier(QtGui.QWidget):
+class TreeModifier(QtWidgets.QWidget):
   def __init__(self, parent=None):
-    populateTreeButton = QtGui.QPushButton("Populate base tree")
+    populateTreeButton = QtWidgets.QPushButton("Populate base tree")
     populateTreeButton.clicked.connect(self.populate)
-    registerTreeButton = QtGui.QPushButton("Register random tree")
+    registerTreeButton = QtWidgets.QPushButton("Register random tree")
     registerTreeButton.clicked.connect(registerRandomTree)
-    registerSameButton = QtGui.QPushButton("Register with same name")
+    registerSameButton = QtWidgets.QPushButton("Register with same name")
     registerSameButton.clicked.connect(registerWithSameName)
-    displayChildrenCheckbox = QtGui.QCheckBox("Display children count")
+    displayChildrenCheckbox = QtWidgets.QCheckBox("Display children count")
     displayChildrenCheckbox.stateChanged.connect(self.displayChildrenCount)
-    createFilesCheckbox = QtGui.QCheckBox("Create files")
+    createFilesCheckbox = QtWidgets.QCheckBox("Create files")
     createFilesCheckbox.stateChanged.connect(self.createFiles)
     self.layout().addWidget(populateTreeButton)
     self.layout().addWidget(registerTreeButton)
@@ -512,49 +515,50 @@ class TreeModifier(QtGui.QWidget):
     self.__treeModel.setRootUid(self.__rootUid)
 
 
-class SplashScreen(QtGui.QSplashScreen):
+class SplashScreen(QtWidgets.QSplashScreen):
   def __init__(self, pixmap, windowFlag, versionNumber):
-    QtGui.QSplashScreen.__init__(self, pixmap, windowFlag)
+    QtWidgets.QSplashScreen.__init__(self, pixmap, windowFlag)
     self.__versionNumber = versionNumber
 
 
   def drawContents(self, painter):
-    QtGui.QSplashScreen.drawContents(self, painter) 
+    QtWidgets.QSplashScreen.drawContents(self, painter) 
     painter.drawText(10, 178, "Version " + str(self.__versionNumber))
 
     
-class Gui(QtGui.QApplication, UI):
+#class Gui(QtWidgets.QApplication, UI):
+class Gui(QtWidgets.QApplication):
   def __init__(self, arguments):
-    QtGui.QApplication.__init__(self, sys.argv)
-    UI.__init__(self, arguments)
+    QtWidgets.QApplication.__init__(self, sys.argv)
+    #UI.__init__(self, arguments)
     resource = QtCore.QResource()
-    resource.registerResource(gui_rc.qt_resource_data)
+    #resource.registerResource(gui_rc.qt_resource_data)
     self.__setFusionStyle(False)
     self.__arguments = arguments
     self.setApplicationName("Digital Forensics Framework")
-    self.setApplicationVersion(dff.VERSION)
+    self.setApplicationVersion("Phoenix")
     pixmap = QtGui.QPixmap(":splash.png")
     self.__splash = SplashScreen(pixmap, QtCore.Qt.WindowStaysOnTopHint, self.applicationVersion())
     self.__splash.setMask(pixmap.mask()) 
 
 
   def __setFusionStyle(self, dark=False):
-    self.setStyle(QtGui.QStyleFactory.create("Fusion"))
+    self.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
     if dark:
-      darkPalette = QtGui.QPalette()
-      darkPalette.setColor(QtGui.QPalette.Window, QtGui.QColor(53,53,53))
-      darkPalette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
-      darkPalette.setColor(QtGui.QPalette.Base, QtGui.QColor(25,25,25))
-      darkPalette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53,53,53))
-      darkPalette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
-      darkPalette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
-      darkPalette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
-      darkPalette.setColor(QtGui.QPalette.Button, QtGui.QColor(53,53,53))
-      darkPalette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
-      darkPalette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
-      darkPalette.setColor(QtGui.QPalette.Link, QtGui.QColor(42, 130, 218))
-      darkPalette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(42, 130, 218))
-      darkPalette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
+      darkPalette = QtWidgets.QPalette()
+      darkPalette.setColor(QtWidgets.QPalette.Window, QtWidgets.QColor(53,53,53))
+      darkPalette.setColor(QtWidgets.QPalette.WindowText, QtCore.Qt.white)
+      darkPalette.setColor(QtWidgets.QPalette.Base, QtWidgets.QColor(25,25,25))
+      darkPalette.setColor(QtWidgets.QPalette.AlternateBase, QtWidgets.QColor(53,53,53))
+      darkPalette.setColor(QtWidgets.QPalette.ToolTipBase, QtCore.Qt.white)
+      darkPalette.setColor(QtWidgets.QPalette.ToolTipText, QtCore.Qt.white)
+      darkPalette.setColor(QtWidgets.QPalette.Text, QtCore.Qt.white)
+      darkPalette.setColor(QtWidgets.QPalette.Button, QtWidgets.QColor(53,53,53))
+      darkPalette.setColor(QtWidgets.QPalette.ButtonText, QtCore.Qt.white)
+      darkPalette.setColor(QtWidgets.QPalette.BrightText, QtCore.Qt.red)
+      darkPalette.setColor(QtWidgets.QPalette.Link, QtWidgets.QColor(42, 130, 218))
+      darkPalette.setColor(QtWidgets.QPalette.Highlight, QtWidgets.QColor(42, 130, 218))
+      darkPalette.setColor(QtWidgets.QPalette.HighlightedText, QtCore.Qt.black)
       self.setPalette(darkPalette)
 
 
@@ -564,11 +568,11 @@ class Gui(QtGui.QApplication, UI):
 
   def launch(self, modulesPaths = None, defaultConfig=None):
     self.__splash.show()
-    if modulesPaths or defaultConfig:
-      self.loadModules(modulesPaths, self.__splash.showMessage, defaultConfig)
+    #if modulesPaths or defaultConfig:
+    #  self.loadModules(modulesPaths, self.__splash.showMessage, defaultConfig)
     self.__mainWindow = MainWindow()
     self.__mainWindow.setWindowState(self.__mainWindow.windowState() | QtCore.Qt.WindowMaximized)
-    self.__mainWindow.setWindowTitle("Digital Forensics Framework " + dff.VERSION)
+    self.__mainWindow.setWindowTitle("Digital Forensics Framework (Phoenix edition)")
     self.__mainWindow.render()
     self.__mainWindow.show()
     self.__splash.finish(self.__mainWindow)
@@ -577,6 +581,6 @@ class Gui(QtGui.QApplication, UI):
 
 if __name__ == "__main__":
   """You can place some script command here for testing purpose"""
-  arguments = parseArguments()
-  ui = Gui(arguments)
+  #arguments = parseArguments()
+  ui = Gui([])
   ui.launch(MODULES_PATHS)
