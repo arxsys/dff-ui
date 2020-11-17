@@ -29,7 +29,7 @@ from core.standarditems import HorizontalHeaderItem
 
 
 # XXX_XXX Mock Class
-class EventHandler():
+class EventHandler(object):
   def __init__(self):
     pass
 

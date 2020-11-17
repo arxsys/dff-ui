@@ -15,10 +15,10 @@
 
 from qtpy import QtWidgets, QtCore
 
-from browser.nodesbrowser import NodesBrowser
-from browser.datatypesbrowser import DatatypesBrowser
-from browser.tagsbrowser import TagsBrowser
-from browser.processusbrowser import ProcessusBrowser
+from nodesbrowser import NodesBrowser
+from datatypesbrowser import DatatypesBrowser
+from tagsbrowser import TagsBrowser
+from processusbrowser import ProcessusBrowser
 
 class Browser(QtWidgets.QTabWidget):
     def __init__(self, parent=None):

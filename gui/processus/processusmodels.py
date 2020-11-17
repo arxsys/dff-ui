@@ -25,7 +25,7 @@ from nodes.nodesitems import NodeItem
 from nodes.nodesmodels import NodesModel, NodesListModel
 
 # XXX_XXX Mock Class
-class EventHandler():
+class EventHandler(object):
   def __init__(self):
     pass
 
