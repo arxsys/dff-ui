@@ -63,17 +63,14 @@ class ScreenshotMenu(QtWidgets.QMenu):
     screenshotToReport.setEnabled(False)
     self.addAction(screenshotToReport)
 
-
   def __screenshot(self):
-    pixmap = QtWidgets.QPixmap(self.parent().size())
+    pixmap = QtGui.QPixmap(self.parent().size())
     self.parent().render(pixmap)
     return pixmap.toImage()
-
 
   def __screenshotToClipboard(self):
     pixmap = self.__screenshot()
     QtWidgets.QApplication.clipboard().setImage(pixmap)
-
 
   # XXX Get temp path on Windows platform
   def __screenshotToFile(self):
@@ -81,8 +78,7 @@ class ScreenshotMenu(QtWidgets.QMenu):
     imageFile = QtWidgets.QFileDialog.getSaveFileName(self, self.tr("Save screenshot to file"),
                                                   "/tmp/screenshot.jpg",
                                                   self.tr("Images (*.png *.jpg)"))
-    screenshot.save(imageFile)
-
+    screenshot.save(imageFile[0])
 
   def __screenshotToReport(self):
     pass
@@ -115,12 +111,14 @@ class StandardTreeMenu(QtWidgets.QMenu):
 
 class ViewAppearanceMenu(QtWidgets.QMenu):
 
-  Details = 0
-  List = 1
+  Details = 1
+  List = 2
   Icon64 = 64
   Icon128 = 128
   Icon256 = 256
   Icon512 = 512
+
+  viewActionChanged = QtCore.Signal(int)
   
   def __init__(self, parent=None):
     super(ViewAppearanceMenu, self).__init__(parent)
@@ -140,7 +138,6 @@ class ViewAppearanceMenu(QtWidgets.QMenu):
     action.setData(ViewAppearanceMenu.Details)
     self.setActiveAction(action)
 
-
   def setCheckable(self, checkable):
     for action in self.actions():
       action.setCheckable(checkable)
@@ -150,33 +147,34 @@ class ViewAppearanceMenu(QtWidgets.QMenu):
     else:
       self.triggered.disconnect(self.__actionTriggered)
 
-
   def __actionTriggered(self, currentAction):
     for action in self.actions():
         action.setChecked(False)
     currentAction.setChecked(True)
 
-
 class Slider(QtWidgets.QSlider):
+
+  sliderPositionChanged = QtCore.Signal(int)
+
   def __init__(self, parent=None):
     super(Slider, self).__init__(parent)
     self.setContentsMargins(0, 0, 0, 0)
 
-
   def mouseMoveEvent(self, event):
-    self.emit(QtCore.SIGNAL("sliderPositionChanged(int)"),
-              event.y())
+    self.sliderPositionChanged.emit(event.y())
     
 
 class ViewAppearanceSliderMenu(QtWidgets.QWidget):
+
+  viewActionChanged = QtCore.Signal(int)
+
   def __init__(self, parent=None):
     super(ViewAppearanceSliderMenu, self).__init__(parent)
     self.__menu = ViewAppearanceMenu()
     self.__menu.setStyleSheet("QMenu {border: 0px;} QMenu::item:selected{background-color: transparent;}")
     self.__menu.triggered.connect(self.__actionTriggered)
     self.__slider = Slider()
-    #self.connect(self.__slider, QtCore.SIGNAL("sliderPositionChanged(int)"),
-    #             self.__sliderPositionChanged)
+    self.__slider.sliderPositionChanged.connect(self.__sliderPositionChanged)
     self.__slider.setInvertedAppearance(True)
     self.__actionIndex = 0
     self.__sliderPosition = 0
@@ -189,7 +187,6 @@ class ViewAppearanceSliderMenu(QtWidgets.QWidget):
     self.layout().setContentsMargins(0, 0, 0, 0)
     self.layout().addWidget(self.__slider)
     self.layout().addWidget(self.__menu)
-
 
   def __actionAt(self, yPosition):
     actions = self.__menu.actions()
@@ -213,7 +210,6 @@ class ViewAppearanceSliderMenu(QtWidgets.QWidget):
           foundAction = actions[index]
     return (foundAction, index)
 
-
   def __updateSliderPosition(self, action, index):
     if action is None:
       return
@@ -226,13 +222,11 @@ class ViewAppearanceSliderMenu(QtWidgets.QWidget):
     viewType = data
     if not viewType:
       return
-    #self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
-
+    self.viewActionChanged.emit(viewType)
 
   def __sliderPositionChanged(self, yPosition):
     action, index = self.__actionAt(yPosition)
     self.__updateSliderPosition(action, index)
-
 
   def showEvent(self, event):
     super(ViewAppearanceSliderMenu, self).showEvent(event)
@@ -252,7 +246,6 @@ class ViewAppearanceSliderMenu(QtWidgets.QWidget):
       sliderPosition = self.__menu.actionGeometry(activeAction).center().y()
       self.__slider.setSliderPosition(sliderPosition)
 
-
   def __actionTriggered(self, action):
     if action is None:
       return
@@ -264,9 +257,8 @@ class ViewAppearanceSliderMenu(QtWidgets.QWidget):
       return
     index = self.__menu.actions().index(action)
     self.__updateSliderPosition(action, index)
-    #self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
+    self.viewActionChanged.emit(viewType)
     self.hide()
-
 
   def setCurrentViewAction(self, viewActionData):
     sliderPosition = -1

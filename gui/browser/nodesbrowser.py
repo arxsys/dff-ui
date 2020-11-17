@@ -29,6 +29,9 @@ from core.standardmenus import ViewAppearanceMenu, ViewAppearanceSliderMenu
 
 
 class NodesViewStackedWidget(QtWidgets.QStackedWidget):
+
+    viewActionChanged = QtCore.Signal(int)
+
     def __init__(self, parent=None):
         super(NodesViewStackedWidget, self).__init__(parent)
         self.__detailedView = None
@@ -52,17 +55,14 @@ class NodesViewStackedWidget(QtWidgets.QStackedWidget):
         menu.addAction(self.__viewActions)
         menu.exec_(event.globalPos())
 
-
-    def setCurrentViewAction(self, viewActionData):
-        if not viewActionData.isValid():
+    def setCurrentViewAction(self, viewType):
+        if viewType is None:
             return
-        viewType = viewActionData
         for action in self.__viewMenu.actions():
             action.setChecked(False)
-            if action.data() == viewActionData:
+            if action.data() == viewType:
                 action.setChecked(True)
         self.selectView(viewType)
-
 
     def __selectViewAction(self, action):
         if action is None:
@@ -70,12 +70,12 @@ class NodesViewStackedWidget(QtWidgets.QStackedWidget):
         viewType = action.data()
         if viewType is None:
             return
-        #self.emit(QtCore.SIGNAL("viewActionChanged(QVariant&)"), data)
+        self.viewActionChanged.emit(viewType)
         self.selectView(viewType)
-
 
     def selectView(self, viewType):
         idx = -1
+        print(viewType)
         if viewType in [ViewAppearanceMenu.Icon512, ViewAppearanceMenu.Icon256,
                         ViewAppearanceMenu.Icon128, ViewAppearanceMenu.Icon64]:
             self.__iconView.setIconSize(QtCore.QSize(viewType, viewType))
@@ -87,16 +87,13 @@ class NodesViewStackedWidget(QtWidgets.QStackedWidget):
         if idx != -1:
             self.setCurrentIndex(idx)
 
-
     def setDetailedView(self, view):
         self.__detailedView = view
         self.addWidget(view)
 
-
     def setListView(self, view):
         self.__listView = view
         self.addWidget(view)
-
 
     def setIconView(self, view):
         self.__iconView = view
@@ -108,7 +105,7 @@ class CustomMenuButton(QtWidgets.QPushButton):
         super(CustomMenuButton, self).__init__(parent)
         self.__customMenu = None
         self.setIcon(QtGui.QIcon(":view_icon.png"))
-        self.setText("")
+        self.setText("FKLDFLDFKLDS")
         self.setFlat(True)
         self.setMinimumSize(44, 16)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed,
@@ -154,7 +151,8 @@ class NodesBrowser(QtWidgets.QWidget):
         #self.__nodesTreeView.model().setRootUid(root.uid())
         self.__nodesTreeView.model().setRootUid(0)
 
-        self.__nodesDetailedView = StandardFrozenView(NodesDetailedView)
+        self.__nodesDetailedView = NodesDetailedView()
+        #self.__nodesDetailedView = StandardFrozenView(NodesDetailedView)
         #self.__nodesDetailedView.model().setRootUid(root.uid())
         self.__nodesDetailedView.model().setRootUid(0)
 
@@ -172,27 +170,13 @@ class NodesBrowser(QtWidgets.QWidget):
         viewSelection = CustomMenuButton()
         self.__viewMenu = ViewAppearanceSliderMenu()
         viewSelection.setCustomMenu(self.__viewMenu)
-        # self.connect(self.__stackedWidget,
-        #              QtCore.SIGNAL("viewActionChanged(QVariant&)"),
-        #              self.__viewMenu.setCurrentViewAction)
-        # self.connect(self.__viewMenu,
-        #              QtCore.SIGNAL("viewActionChanged(QVariant&)"),
-        #              self.__stackedWidget.setCurrentViewAction)
-
+        self.__stackedWidget.viewActionChanged.connect(self.__viewMenu.setCurrentViewAction)
+        self.__viewMenu.viewActionChanged.connect(self.__stackedWidget.setCurrentViewAction)
         self.layout().addWidget(viewSelection)
-        # self.connect(self.__nodesTreeView,
-        #              QtCore.SIGNAL("clicked(const QModelIndex&)"),
-        #              self.treeViewClicked)
-        # self.connect(self.__nodesDetailedView,
-        #              QtCore.SIGNAL("doubleClicked(const QModelIndex&)"),
-        #              self.__doubleClicked)
-        # self.connect(self.__nodesDetailedView,
-        #              QtCore.SIGNAL("clicked(const QModelIndex&)"),
-        #              self.__detailedClicked)
-        # self.connect(self.__nodesIconView,
-        #              QtCore.SIGNAL("clicked(const QModelIndex&)"),
-        #              self.__detailedClicked)
-
+        self.__nodesTreeView.clicked.connect(self.treeViewClicked)
+        self.__nodesDetailedView.doubleClicked.connect(self.__doubleClicked)
+        self.__nodesDetailedView.clicked.connect(self.__detailedClicked)
+        self.__nodesIconView.clicked.connect(self.__detailedClicked)
 
         self.__splitter.addWidget(self.__nodesTreeView)
         self.__splitter.addWidget(self.__stackedWidget)
@@ -200,16 +184,14 @@ class NodesBrowser(QtWidgets.QWidget):
         #self.__splitter.addWidget(self.__attributes)
         self.__splitter.setStretchFactor(0, 20)
         self.__splitter.setStretchFactor(1, 55)
-        self.__splitter.setStretchFactor(2, 25)
+        #self.__splitter.setStretchFactor(2, 25)
         viewsLayout.addWidget(self.__splitter)
         self.layout().addLayout(viewsLayout)
-
 
     def __detailedClicked(self, index):
         node = self.__nodeFromIndex(index)
         if node is not None:
             self.__attributes.fill(node)
-
 
     def __nodeFromIndex(self, index):
         if not index.isValid():
@@ -219,7 +201,6 @@ class NodesBrowser(QtWidgets.QWidget):
         if uid is not None and uid >= 0:
             node = VFS.Get().getNodeById(uid)
         return node
-
     
     def treeViewClicked(self, index):
         if not index.isValid():

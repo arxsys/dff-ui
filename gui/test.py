@@ -30,7 +30,7 @@ from browser.browser import Browser
 #from dff.api.types.libtypes import RCVariant, Variant
 #from dff.api.taskmanager.taskmanager import TaskManager
 
-#from dff.ui.gui.resources import gui_rc
+from resources import gui_rc
 #from dff.ui.gui.browser.browser import Browser
 
 #from dff.ui.gui.api.widget.devicesdialog import DevicesDialog
@@ -215,8 +215,8 @@ class OpenEvidenceMenu(QtWidgets.QMenu):
         folder = ewfFile.absoluteDir()
         ewfFiles = folder.entryList(["*E*"], QtCore.QDir.Files, QtCore.QDir.Name)
         for ewfFile in ewfFiles:
-          args['files'].append(str(folder.filePath(ewfFile).toUtf8()))
-        TaskManager().add('ewf', args, [])
+          args['files'].append(str(folder.filePath(ewfFile)))
+        #TaskManager().add('ewf', args, [])
       
   
   def openAff(self):
@@ -243,8 +243,8 @@ class OpenEvidenceMenu(QtWidgets.QMenu):
       args = {}
       args['path'] = []
       for _file in files:
-        args['path'].append(str(_file.toUtf8()))
-      TaskManager().add('local', args, [])
+        args['path'].append(str(_file))
+      #TaskManager().add('local', args, [])
       
 
   def openFolders(self):
@@ -259,8 +259,8 @@ class OpenEvidenceMenu(QtWidgets.QMenu):
       args = {}
       args['path'] = []
       for _folder in folders:
-        args['path'].append(str(_folder.toUtf8()))
-      TaskManager().add('local', args, [])
+        args['path'].append(str(_folder))
+      #TaskManager().add('local', args, [])
 
 
 def translate(context, sourceText, disambiguation=None):
@@ -328,9 +328,9 @@ class MainWindow(QtWidgets.QMainWindow):
     self.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.__mainBrowser)
     #self.__processus = Processus(None)
     self.__processus = None
-    self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
-                       DockWidget(self, self.__processus,
-                                  self.tr("Task manager")))
+    #self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
+    #                   DockWidget(self, self.__processus,
+    #                              self.tr("Task manager")))
     # XXX manage debug flag
     #self.__output = STDOut(None, True)
     #self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
@@ -342,7 +342,7 @@ class MainWindow(QtWidgets.QMainWindow):
     #self.addDockWidget(QtCore.Qt.BottomDockWidgetArea,
     #                   DockWidget(self, self.__preview, self.tr("Preview")))
     self.timer = QtCore.QTimer(self)
-    #self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.__refreshSecondWidgets)
+    self.timer.timeout.connect(self.__refreshSecondWidgets)
     self.timer.start(2000)
     font = self.font()
     font.setPointSize(9)
@@ -484,7 +484,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
   def __refreshSecondWidgets(self):
-    self.__processus.LoadInfoProcess()
+    pass
+    #self.__processus.LoadInfoProcess()
 
 
 class TreeModifier(QtWidgets.QWidget):
@@ -545,26 +546,24 @@ class Gui(QtWidgets.QApplication):
   def __setFusionStyle(self, dark=False):
     self.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
     if dark:
-      darkPalette = QtWidgets.QPalette()
-      darkPalette.setColor(QtWidgets.QPalette.Window, QtWidgets.QColor(53,53,53))
-      darkPalette.setColor(QtWidgets.QPalette.WindowText, QtCore.Qt.white)
-      darkPalette.setColor(QtWidgets.QPalette.Base, QtWidgets.QColor(25,25,25))
-      darkPalette.setColor(QtWidgets.QPalette.AlternateBase, QtWidgets.QColor(53,53,53))
-      darkPalette.setColor(QtWidgets.QPalette.ToolTipBase, QtCore.Qt.white)
-      darkPalette.setColor(QtWidgets.QPalette.ToolTipText, QtCore.Qt.white)
-      darkPalette.setColor(QtWidgets.QPalette.Text, QtCore.Qt.white)
-      darkPalette.setColor(QtWidgets.QPalette.Button, QtWidgets.QColor(53,53,53))
-      darkPalette.setColor(QtWidgets.QPalette.ButtonText, QtCore.Qt.white)
-      darkPalette.setColor(QtWidgets.QPalette.BrightText, QtCore.Qt.red)
-      darkPalette.setColor(QtWidgets.QPalette.Link, QtWidgets.QColor(42, 130, 218))
-      darkPalette.setColor(QtWidgets.QPalette.Highlight, QtWidgets.QColor(42, 130, 218))
-      darkPalette.setColor(QtWidgets.QPalette.HighlightedText, QtCore.Qt.black)
+      darkPalette = QtGui.QPalette()
+      darkPalette.setColor(QtGui.QPalette.Window, QtGui.QColor(53,53,53))
+      darkPalette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
+      darkPalette.setColor(QtGui.QPalette.Base, QtGui.QColor(25,25,25))
+      darkPalette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53,53,53))
+      darkPalette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
+      darkPalette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+      darkPalette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
+      darkPalette.setColor(QtGui.QPalette.Button, QtGui.QColor(53,53,53))
+      darkPalette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
+      darkPalette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
+      darkPalette.setColor(QtGui.QPalette.Link, QtGui.QColor(42, 130, 218))
+      darkPalette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(42, 130, 218))
+      darkPalette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
       self.setPalette(darkPalette)
-
 
   def mainWindow(self):
     return self.__mainWindow
-
 
   def launch(self, modulesPaths = None, defaultConfig=None):
     self.__splash.show()
